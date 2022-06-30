@@ -1,17 +1,18 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "idez/laravel-caradhras-sdk",
+    "description": "Caradhras SDK for Laravel",
     "keywords": [
-        ":vendor_name",
+        "Idez",
         "laravel",
-        ":package_slug"
+        "laravel-caradhras-sdk"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/idez/laravel-caradhras-sdk",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Rafael Laurindo",
+            "email": "rafael@idez.com.br",
+            "homepage": "https://idez.com.br",
             "role": "Developer"
         }
     ],
@@ -35,13 +36,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Idez\\Caradhras\\": "src",
+            "Idez\\Caradhras\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Idez\\Caradhras\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -56,10 +57,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Idez\\Caradhras\\CaradhrasServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "Caradhras": "Idez\\Caradhras\\Facades\\Caradhras"
             }
         }
     },
