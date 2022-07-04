@@ -17,7 +17,7 @@ class TestCase extends Orchestra
         );
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             CaradhrasServiceProvider::class,
@@ -27,6 +27,9 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+        config()->set('caradhras.client', 'testing-client');
+        config()->set('caradhras.secret', 'testing-secret');
+        config()->set('caradhras.enable_sentry_middleware', false);
 
         /*
         $migration = include __DIR__.'/../database/migrations/create_laravel-caradhras-sdk_table.php.stub';

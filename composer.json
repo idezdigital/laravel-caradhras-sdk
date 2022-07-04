@@ -18,16 +18,17 @@
     ],
     "require": {
         "php": "^8.1",
-        "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^9.0"
+        "geekcom/validator-docs": "^3.7",
+        "guzzlehttp/guzzle": "^7.4",
+        "illuminate/contracts": "^9.0",
+        "sentry/sentry-laravel": "^2.12",
+        "spatie/laravel-package-tools": "^1.9.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.8",
         "nunomaduro/collision": "^6.0",
         "nunomaduro/larastan": "^2.0.1",
         "orchestra/testbench": "^7.0",
-        "pestphp/pest": "^1.21",
-        "pestphp/pest-plugin-laravel": "^1.1",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
@@ -47,7 +48,7 @@
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
-        "test": "vendor/bin/pest",
+        "test": "vendor/phpunit/phpunit/phpunit --configuration ./phpunit.xml.dist",
         "test-coverage": "vendor/bin/pest --coverage",
         "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
     },
@@ -58,10 +59,7 @@
         "laravel": {
             "providers": [
                 "Idez\\Caradhras\\CaradhrasServiceProvider"
-            ],
-            "aliases": {
-                "Caradhras": "Idez\\Caradhras\\Facades\\Caradhras"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",
