@@ -27,7 +27,7 @@ abstract class BaseApiClient
      * @return void
      * @throws \Exception
      */
-    public function __construct(private readonly string $apiKey, private readonly string $apiSecret)
+    public function __construct(private $apiKey, private $apiSecret)
     {
         $this->accessToken = $this->getAccessToken();
     }
