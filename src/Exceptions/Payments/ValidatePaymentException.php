@@ -4,7 +4,7 @@ namespace Idez\Caradhras\Exceptions\Payments;
 
 use Idez\Caradhras\Exceptions\CaradhrasException;
 
-class PaymentException extends CaradhrasException
+class ValidatePaymentException extends CaradhrasException
 {
-    //
+    protected $code = 502;
 }

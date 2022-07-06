@@ -8,9 +8,8 @@ use Idez\Caradhras\Exceptions\Payments\InvalidPaymentBarcodeException;
 use Idez\Caradhras\Exceptions\Payments\NotAllowedNowException;
 use Idez\Caradhras\Exceptions\Payments\NotRegisteredAtCipException;
 use Idez\Caradhras\Exceptions\Payments\PaidOrUnregisteredException;
-use Idez\Caradhras\Exceptions\Payments\PaymentException;
-use Idez\Caradhras\Exceptions\Payments\PaymentParseException;
 use Idez\Caradhras\Exceptions\Payments\PaymentTimeoutException;
+use Idez\Caradhras\Exceptions\Payments\ValidatePaymentException;
 
 class CaradhrasPaymentClient extends BaseApiClient
 {
@@ -39,8 +38,8 @@ class CaradhrasPaymentClient extends BaseApiClient
      * @throws NotAllowedNowException
      * @throws NotRegisteredAtCipException
      * @throws PaidOrUnregisteredException
-     * @throws PaymentException
-     * @throws PaymentParseException
+     * @throws ValidatePaymentException
+     * @throws ValidatePaymentException
      * @throws PaymentTimeoutException
      */
     public function validate(string $barcode): object
@@ -54,7 +53,7 @@ class CaradhrasPaymentClient extends BaseApiClient
                 409 => match ($response->json('message')) {
                     self::DEADLINE_EXCEEDED_ERROR => new ExpirationDateException(),
                     self::FAILED_TO_PROCESS_ERROR, self::BARCODE_UNREGISTERED_ERROR => new PaidOrUnregisteredException(),
-                    default => new PaymentException(),
+                    default => new ValidatePaymentException(),
                 },
                 422 => match ($response->json('message')) {
                     self::BARCODE_NOT_REGISTERED_AT_CIP_ERROR,
@@ -63,11 +62,10 @@ class CaradhrasPaymentClient extends BaseApiClient
                     self::EXPIRATION_DATE_EXCEEDED_ERROR => new ExpirationDateException(),
                     self::NOT_ALLOWED_NOW_ERROR => new NotAllowedNowException(),
                     self::ALREADY_PROCESSED_ERROR => new PaidOrUnregisteredException(),
-                    default => new PaymentException(),
+                    default => new ValidatePaymentException(),
                 },
-                424 => new PaymentParseException(),
                 504 => new PaymentTimeoutException(),
-                default => new PaymentException(),
+                default => new ValidatePaymentException(),
             };
         }
 

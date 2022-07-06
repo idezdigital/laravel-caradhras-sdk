@@ -6,8 +6,8 @@ use Idez\Caradhras\Clients\CaradhrasPaymentClient;
 use Idez\Caradhras\Exceptions\Payments\InvalidPaymentBarcodeException;
 use Idez\Caradhras\Exceptions\Payments\NotRegisteredAtCipException;
 use Idez\Caradhras\Exceptions\Payments\PaidOrUnregisteredException;
-use Idez\Caradhras\Exceptions\Payments\PaymentParseException;
 use Idez\Caradhras\Exceptions\Payments\PaymentTimeoutException;
+use Idez\Caradhras\Exceptions\Payments\ValidatePaymentException;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Client\Request;
@@ -91,7 +91,6 @@ class CaradhrasPaymentClientTest extends TestCase
         ]);
 
         $this->expectException(InvalidPaymentBarcodeException::class);
-        $this->expectExceptionMessage(trans('errors.payments.invalid_barcode'));
         $this->expectExceptionCode(400);
 
         $this->paymentClient->validate($barcode);
@@ -110,8 +109,7 @@ class CaradhrasPaymentClientTest extends TestCase
         ]);
 
         $this->expectException(PaidOrUnregisteredException::class);
-        $this->expectExceptionMessage(trans('errors.payments.unregistered_barcode_or_already_paid'));
-        $this->expectExceptionCode(502);
+        $this->expectExceptionCode(400);
 
         $this->paymentClient->validate($barcode);
     }
@@ -129,13 +127,12 @@ class CaradhrasPaymentClientTest extends TestCase
         ]);
 
         $this->expectException(NotRegisteredAtCipException::class);
-        $this->expectExceptionMessage(trans('errors.payments.not_registered_at_cip'));
-        $this->expectExceptionCode(502);
+        $this->expectExceptionCode(400);
 
         $this->paymentClient->validate($barcode);
     }
 
-    public function testHandlePaymentParseException()
+    public function testHandleValidatePaymentException()
     {
         $barcode = $this->faker->regexify('\d{48}');
         $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
@@ -147,8 +144,7 @@ class CaradhrasPaymentClientTest extends TestCase
             ], 424),
         ]);
 
-        $this->expectException(PaymentParseException::class);
-        $this->expectExceptionMessage(trans('errors.payments.failed_to_parse'));
+        $this->expectException(ValidatePaymentException::class);
         $this->expectExceptionCode(502);
 
         $this->paymentClient->validate($barcode);
@@ -167,7 +163,6 @@ class CaradhrasPaymentClientTest extends TestCase
         ]);
 
         $this->expectException(PaymentTimeoutException::class);
-        $this->expectExceptionMessage(trans('errors.payments.timeout'));
         $this->expectExceptionCode(504);
 
         $this->paymentClient->validate($barcode);
