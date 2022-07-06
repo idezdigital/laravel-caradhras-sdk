@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
-use Idez\Caradhras\Adapters\Fingerprint;
 use Idez\Caradhras\Clients\CaradhrasRegDocsClient;
+use Idez\Caradhras\Data\Fingerprint;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Client\Request;

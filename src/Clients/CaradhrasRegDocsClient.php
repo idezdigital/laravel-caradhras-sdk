@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Clients;
 
-use Idez\Caradhras\Adapters\Fingerprint;
+use Idez\Caradhras\Data\Fingerprint;
 use Idez\Caradhras\Exceptions\RegDocsException;
 use Illuminate\Support\Arr;
 
@@ -50,7 +50,7 @@ class CaradhrasRegDocsClient extends BaseApiClient
      * Validate regulatory documents tokens.
      *
      * @param  array  $tokens
-     * @param  \Idez\Caradhras\Adapters\Fingerprint  $fingerprint
+     * @param  \Idez\Caradhras\Data\Fingerprint  $fingerprint
      * @param  null  $registrationId
      * @return object
      * @throws \Idez\Caradhras\Exceptions\RegDocsException
