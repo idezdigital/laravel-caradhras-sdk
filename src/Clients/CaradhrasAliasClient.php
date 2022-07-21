@@ -46,12 +46,21 @@ class CaradhrasAliasClient extends BaseApiClient
 
         if (! in_array($response->status(), [201, 409])) {
             throw match ($response->status()) {
-                400 => new CaradhrasException('Conta inválida.'),
-                404 => new CaradhrasException('Conta não encontrada.'),
-                default => new CaradhrasException('Tente novamente mais tarde.'),
+                400 => new CaradhrasException('Conta inválida.', $response->status()),
+                404 => new CaradhrasException('Conta não encontrada.', $response->status()),
+                default => new CaradhrasException('Tente novamente mais tarde.', $response->status()),
             };
         }
 
-        return $response->object()->data;
+        $responseObject = $response->object();
+
+        if (
+            $response->status() === 409 &&
+            $responseObject?->message === "Transaction not allowed due to lack of regulatory informations or documents."
+        ) {
+            throw new CaradhrasException("A conta possui informações ou documentos pendentes.", $response->status());
+        }
+
+        return $responseObject->data;
     }
 }
