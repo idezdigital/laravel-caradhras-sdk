@@ -2,13 +2,13 @@
 
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
+use Idez\Caradhras\Clients\CaradhrasAliasClient;
+use Idez\Caradhras\Enums\AliasBankProvider;
+use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use Idez\Caradhras\Enums\AliasBankProvider;
-use Illuminate\Foundation\Testing\WithFaker;
-use Idez\Caradhras\Clients\CaradhrasAliasClient;
-use Idez\Caradhras\Exceptions\CaradhrasException;
 
 class CaradhrasAliasClientTest extends TestCase
 {
