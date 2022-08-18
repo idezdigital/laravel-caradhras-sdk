@@ -36,7 +36,7 @@ abstract class BaseApiClient
         $this->accessToken = $this->getAccessToken();
     }
 
-    public function retryPolicy(callable $retryPolicy, int $retryTimes = 1, int $retryInterval = 300): self
+    public function withRetry(callable $retryPolicy, int $retryTimes = 1, int $retryInterval = 300): self
     {
         $this->retryInterval = $retryInterval;
         $this->retryTimes = $retryTimes;
