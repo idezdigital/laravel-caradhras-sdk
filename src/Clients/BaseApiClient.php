@@ -41,7 +41,7 @@ abstract class BaseApiClient
         $this->retryInterval = $retryInterval;
         $this->retryTimes = $retryTimes;
         $this->retryWhen = $retryPolicy;
-        
+
         return $this;
     }
 
@@ -78,7 +78,7 @@ abstract class BaseApiClient
             ->withOptions($options)
             ->withToken($this->accessToken);
 
-        if($this->retryTimes > 0){
+        if ($this->retryTimes > 0) {
             $client->retry($this->retryTimes, $this->retryInterval, $this->retryWhen);
         }
 

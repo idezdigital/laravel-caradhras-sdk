@@ -6,7 +6,7 @@ use App\Models\Company;
 use App\Models\Person;
 use Illuminate\Support\Str;
 
-enum DictKeyType : string
+enum DictKeyType: string
 {
     case Evp = 'evp';
     case Email = 'email';
