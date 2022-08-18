@@ -19,6 +19,10 @@ abstract class BaseApiClient
 
     private $accessToken;
 
+    private $retryTimes = 0;
+    private $retryInterval = 300;
+    private $retryWhen;
+
     /**
      * BaseApiClient constructor.
      *
@@ -30,6 +34,15 @@ abstract class BaseApiClient
     public function __construct(private $apiKey, private $apiSecret)
     {
         $this->accessToken = $this->getAccessToken();
+    }
+
+    public function withRetry(callable $retryPolicy, int $retryTimes = 1, int $retryInterval = 300): self
+    {
+        $this->retryInterval = $retryInterval;
+        $this->retryTimes = $retryTimes;
+        $this->retryWhen = $retryPolicy;
+
+        return $this;
     }
 
     /**
@@ -64,6 +77,10 @@ abstract class BaseApiClient
             ->withMiddleware(Middleware::httpErrors())
             ->withOptions($options)
             ->withToken($this->accessToken);
+
+        if ($this->retryTimes > 0) {
+            $client->retry($this->retryTimes, $this->retryInterval, $this->retryWhen);
+        }
 
         if (config('caradhras.enable_sentry_middleware')) {
             $client = $client->withMiddleware(SentryBreadcrumbsMiddleware::handle());
