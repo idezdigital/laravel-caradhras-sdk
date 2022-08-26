@@ -54,7 +54,8 @@ class CaradhrasCompanyClient extends BaseApiClient
      */
     public function getRegistration(string $registrationId): object
     {
-        $request = $this->apiClient(false)->get("/v1/registrations/{$registrationId}");
+        $request = $this->apiClient(false)
+            ->get("/v1/registrations/{$registrationId}", ['statusSPD' => 'true']);
 
         if ($request->failed()) {
             throw new GetCompanyRegistrationException();
