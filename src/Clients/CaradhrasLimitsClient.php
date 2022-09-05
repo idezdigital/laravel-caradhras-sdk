@@ -10,7 +10,7 @@ class CaradhrasLimitsClient extends BaseApiClient
     {
         return $this->apiClient()->post("/limits/v2/accounts/{$accountId}/services-groups/{$serviceGroup}", [
             'limitType' => (string) $limitType,
-            'requestLimit' => $amount
+            'requestLimit' => $amount,
         ])->object();
     }
 
@@ -18,14 +18,14 @@ class CaradhrasLimitsClient extends BaseApiClient
     {
         return $this->apiClient()->post("/limits/v2/accounts/{$accountId}/batches", [
             'idServicesGroup' => $serviceGroup,
-            'limits' => $limits
+            'limits' => $limits,
         ])->object();
     }
 
     public function getLimitById(string $requestId)
     {
         return $this->apiClient()->get('/limits/v2/requests', [
-            'idRequest' => $requestId
+            'idRequest' => $requestId,
         ])->object();
     }
 }
