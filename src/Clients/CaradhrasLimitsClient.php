@@ -2,8 +2,6 @@
 
 namespace Idez\Caradhras\Clients;
 
-use Idez\Caradhras\Clients\BaseApiClient;
-
 class CaradhrasLimitsClient extends BaseApiClient
 {
     public const API_PREFIX = 'limits';
