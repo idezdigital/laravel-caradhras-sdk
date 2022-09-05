@@ -8,6 +8,7 @@ use Idez\Caradhras\Clients\CaradhrasAliasClient;
 use Idez\Caradhras\Clients\CaradhrasBankTransferInClient;
 use Idez\Caradhras\Clients\CaradhrasCompanyClient;
 use Idez\Caradhras\Clients\CaradhrasIncomeReportsClient;
+use Idez\Caradhras\Clients\CaradhrasLimitsClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
 use Idez\Caradhras\Clients\CaradhrasRegDocsClient;
@@ -24,6 +25,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
         CaradhrasRegDocsClient::class,
         CaradhrasCompanyClient::class,
         CaradhrasIncomeReportsClient::class,
+        CaradhrasLimitsClient::class,
     ];
 
     public function configurePackage(Package $package): void
