@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Clients;
 
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 class CaradhrasDataApiClient extends BaseApiClient
 {
