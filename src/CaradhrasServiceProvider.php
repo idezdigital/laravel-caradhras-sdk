@@ -27,7 +27,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
         CaradhrasCompanyClient::class,
         CaradhrasIncomeReportsClient::class,
         CaradhrasLimitsClient::class,
-        CaradhrasDataApiClient::class
+        CaradhrasDataApiClient::class,
     ];
 
     public function configurePackage(Package $package): void

@@ -15,7 +15,7 @@ class CaradhrasDataApiClient extends BaseApiClient
             'from' => $from->format('Y-m-d'),
             'to' => $to->format('Y-m-d'),
             'accountId' => $accountId,
-            'compress' => $compress
+            'compress' => $compress,
         ])->object();
     }
 
@@ -29,7 +29,7 @@ class CaradhrasDataApiClient extends BaseApiClient
         $query = array_filter([
             'service' => $service,
             'status' => $status,
-            'page' => $page
+            'page' => $page,
         ]);
 
         return $this->apiClient()->get('/v1/tickets', $query)->object();
