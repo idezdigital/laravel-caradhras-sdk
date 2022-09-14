@@ -7,6 +7,7 @@ use Faker\Generator;
 use Idez\Caradhras\Clients\CaradhrasAliasClient;
 use Idez\Caradhras\Clients\CaradhrasBankTransferInClient;
 use Idez\Caradhras\Clients\CaradhrasCompanyClient;
+use Idez\Caradhras\Clients\CaradhrasDataApiClient;
 use Idez\Caradhras\Clients\CaradhrasIncomeReportsClient;
 use Idez\Caradhras\Clients\CaradhrasLimitsClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentClient;
@@ -26,6 +27,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
         CaradhrasCompanyClient::class,
         CaradhrasIncomeReportsClient::class,
         CaradhrasLimitsClient::class,
+        CaradhrasDataApiClient::class
     ];
 
     public function configurePackage(Package $package): void
