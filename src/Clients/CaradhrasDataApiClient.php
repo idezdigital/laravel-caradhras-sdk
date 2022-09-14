@@ -12,8 +12,8 @@ class CaradhrasDataApiClient extends BaseApiClient
     {
         return $this->apiClient()->get("/v1/transactions", [
             'service' => $service,
-            'from' => $from->format('Y-m-d'),
-            'to' => $to->format('Y-m-d'),
+            'from' => $from->toDateString(),
+            'to' => $to->toDateString(),
             'accountId' => $accountId,
             'compress' => $compress,
         ])->object();
