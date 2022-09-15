@@ -8,14 +8,14 @@ class CaradhrasDataApiClient extends BaseApiClient
 {
     public const API_PREFIX = 'data';
 
-    public function requestExtraction(string $service, CarbonInterface $from, CarbonInterface $to, string $accountId, string $compress = 'zip')
+    public function requestExtraction(string $service, CarbonInterface $from, CarbonInterface $to, string $compress = 'zip', array $params = [])
     {
         return $this->apiClient()->get("/v1/transactions", [
             'service' => $service,
             'from' => $from->toDateString(),
             'to' => $to->toDateString(),
-            'accountId' => $accountId,
             'compress' => $compress,
+            ...$params
         ])->object();
     }
 
