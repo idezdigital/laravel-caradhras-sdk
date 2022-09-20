@@ -28,4 +28,12 @@ class CaradhrasLimitsClient extends BaseApiClient
             'idRequest' => $requestId,
         ])->object();
     }
+
+    public function getAccountLimits(string $accountId)
+    {
+        return $this->apiClient()->get("/limits/v2/accounts/{$accountId}")
+            ->object();
+    }
+
+
 }
