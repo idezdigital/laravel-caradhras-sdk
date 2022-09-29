@@ -15,7 +15,7 @@ class CaradhrasDataApiClient extends BaseApiClient
             'from' => $from->toDateString(),
             'to' => $to->toDateString(),
             'compress' => $compress,
-            ...$params
+            ...$params,
         ])->object();
     }
 

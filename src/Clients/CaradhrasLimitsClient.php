@@ -2,8 +2,6 @@
 
 namespace Idez\Caradhras\Clients;
 
-use Carbon\Carbon;
-
 class CaradhrasLimitsClient extends BaseApiClient
 {
     public const API_PREFIX = 'limits';
@@ -49,9 +47,7 @@ class CaradhrasLimitsClient extends BaseApiClient
         $formattedMinute = str_pad($minute, 2, '0');
 
         return $this->apiClient()->put("/limits/v2/accounts/{$accountId}/timetables", [
-            'nighttimeStart' => "{$formattedHour}:{$formattedMinute}"
+            'nighttimeStart' => "{$formattedHour}:{$formattedMinute}",
         ]);
     }
-
-
 }
