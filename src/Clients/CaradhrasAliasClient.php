@@ -74,7 +74,7 @@ class CaradhrasAliasClient extends BaseApiClient
     {
         $response = $this
             ->apiClient(false)
-            ->post('/v1/accounts', [
+            ->get('/v1/accounts', [
                 'idAccount' => $accountId,
                 'bankNumber' => $bankProvider->value,
             ])->object();
