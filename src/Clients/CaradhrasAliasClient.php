@@ -37,6 +37,12 @@ class CaradhrasAliasClient extends BaseApiClient
      */
     public function findOrCreate(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Votorantim): object
     {
+        $alias = $this->find($accountId, $bankProvider);
+
+        if (filled($alias)) {
+            return head($alias);
+        }
+
         $response = $this
             ->apiClient(false)
             ->post('/v1/accounts', [
@@ -62,5 +68,17 @@ class CaradhrasAliasClient extends BaseApiClient
         }
 
         return $responseObject->data;
+    }
+
+    public function find(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Votorantim): array
+    {
+        $response = $this
+            ->apiClient(false)
+            ->post('/v1/accounts', [
+                'idAccount' => $accountId,
+                'bankNumber' => $bankProvider->value,
+            ])->object();
+
+        return $response->items;
     }
 }
