@@ -89,7 +89,6 @@ class CaradhrasCompanyClient extends BaseApiClient
         }
 
         return $request;
-
     }
 
     /**
