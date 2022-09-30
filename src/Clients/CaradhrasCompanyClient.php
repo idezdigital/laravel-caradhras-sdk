@@ -52,16 +52,43 @@ class CaradhrasCompanyClient extends BaseApiClient
      * @return object
      * @throws GetCompanyRegistrationException
      */
-    public function getRegistration(string $registrationId): object
+    public function getRegistration(string $registrationId, bool $spd = true): object
     {
         $request = $this->apiClient(false)
-            ->get("/v1/registrations/{$registrationId}", ['statusSPD' => 'true']);
+            ->get("/v1/registrations/{$registrationId}", ['statusSPD' => $spd ? 'true' : 'false']);
 
         if ($request->failed()) {
             throw new GetCompanyRegistrationException();
         }
 
         return $request->object()->result;
+    }
+
+    public function getCompany(string $companyId, bool $spd = true)
+    {
+        $request = $this->apiClient(false)
+            ->get('/v1/registered/companies/'.$companyId, ['statusSPD' => $spd ? 'true' : 'false']);
+
+        if ($request->failed()) {
+            throw new GetCompanyRegistrationException();
+        }
+
+        return $request;
+    }
+
+    public function updateCompany(string $companyId, array $companyData, array $productSettings)
+    {
+        $request = $this->apiClient(false)
+            ->put("/v1/registered/companies/{$companyId}", [
+                'company' => $companyData,
+                'productSettings' => $productSettings,
+            ]);
+
+        if ($request->failed()) {
+            throw new UpdateCompanyRegistrationException();
+        }
+
+        return $request;
     }
 
     /**
