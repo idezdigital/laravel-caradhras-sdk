@@ -10,6 +10,7 @@ use Idez\Caradhras\Clients\CaradhrasCompanyClient;
 use Idez\Caradhras\Clients\CaradhrasDataApiClient;
 use Idez\Caradhras\Clients\CaradhrasIncomeReportsClient;
 use Idez\Caradhras\Clients\CaradhrasLimitsClient;
+use Idez\Caradhras\Clients\CaradhrasMainClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
 use Idez\Caradhras\Clients\CaradhrasRegDocsClient;
@@ -19,6 +20,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 class CaradhrasServiceProvider extends PackageServiceProvider
 {
     protected array $clients = [
+        CaradhrasMainClient::class,
         CaradhrasAliasClient::class,
         CaradhrasBankTransferInClient::class,
         CaradhrasPaymentClient::class,
