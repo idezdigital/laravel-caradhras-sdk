@@ -2,6 +2,8 @@
 
 namespace Idez\Caradhras\Clients;
 
+use Idez\Caradhras\Enums\AccountStatus;
+
 class CaradhrasMainClient extends BaseApiClient
 {
     public const API_PREFIX = 'api';
@@ -11,7 +13,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  int  $statusId
      * @return object
      */
-    public function cancelAccount(int $accountId, int $statusId = 2): object
+    public function cancelAccount(int $accountId, AccountStatus $statusId = AccountStatus::Canceled): object
     {
         return $this
             ->apiClient()
