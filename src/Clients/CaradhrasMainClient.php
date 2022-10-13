@@ -20,6 +20,21 @@ class CaradhrasMainClient extends BaseApiClient
     }
 
     /**
+     * Get account.
+     *
+     * @param  int  $accountId
+     * @return object
+     */
+    public function getAccount(int $accountId): object
+    {
+        return $this->apiClient()
+            ->retry(3, 1500)
+            ->get("/contas/{$accountId}")
+            ->throw()
+            ->object();
+    }
+
+    /**
      * @param  int  $originAccountId
      * @param  int  $destinationAccountId
      * @param  float  $amount
