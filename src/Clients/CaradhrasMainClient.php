@@ -10,10 +10,10 @@ class CaradhrasMainClient extends BaseApiClient
 
     /**
      * @param  int  $accountId
-     * @param  int  $statusId
+     * @param  AccountStatus  $status
      * @return object
      */
-    public function cancelAccount(int $accountId, AccountStatus $statusId = AccountStatus::Canceled): object
+    public function cancelAccount(int $accountId, AccountStatus $status = AccountStatus::Canceled): object
     {
         return $this
             ->apiClient()
