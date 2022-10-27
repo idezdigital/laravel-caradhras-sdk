@@ -50,7 +50,7 @@ class CaradhrasAliasClient extends BaseApiClient
                 'bankNumber' => $bankProvider->value,
             ]);
 
-        if (! in_array($response->status(), [201, 409])) {
+        if (! in_array($response->status(), [200, 201, 202, 409])) {
             throw match ($response->status()) {
                 400 => new CaradhrasException('Conta inválida.', $response->status()),
                 404 => new CaradhrasException('Conta não encontrada.', $response->status()),
