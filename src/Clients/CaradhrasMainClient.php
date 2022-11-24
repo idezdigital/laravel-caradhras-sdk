@@ -2,12 +2,27 @@
 
 namespace Idez\Caradhras\Clients;
 
-use App\Exceptions\CaradhrasException;
+use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Enums\AccountStatus;
+use Idez\Caradhras\Exceptions\CaradhrasException;
 
 class CaradhrasMainClient extends BaseApiClient
 {
     public const API_PREFIX = 'api';
+
+    public function getTransfer(array $filters): P2PTransferPayload
+    {
+        $transfers = $this->apiClient()
+            ->get("/p2ptransfer", $filters)
+            ->throw()
+            ->json();
+
+        if (blank($transfers)) {
+            throw new CaradhrasException('Transfer Not Found.', 404);
+        }
+
+        return new P2PTransferPayload(head((array) $transfers));
+    }
 
     /**
      * @param  int  $accountId
@@ -73,7 +88,7 @@ class CaradhrasMainClient extends BaseApiClient
     public function getIndividual($personId): object
     {
         if (is_null($personId)) {
-            throw new \Idez\Caradhras\Exceptions\CaradhrasException('Failed to get individual.');
+            throw new CaradhrasException('Failed to get individual.');
         }
 
         return $this
