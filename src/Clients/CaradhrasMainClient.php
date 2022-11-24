@@ -17,7 +17,7 @@ class CaradhrasMainClient extends BaseApiClient
     {
         return $this
             ->apiClient()
-            ->post("/contas/{$accountId}/cancelar?id_status={$statusId}")
+            ->post("/contas/{$accountId}/cancelar?id_status={$statusId->value}")
             ->object();
     }
 
