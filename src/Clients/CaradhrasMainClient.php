@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Clients;
 
+use App\Exceptions\CaradhrasException;
 use Idez\Caradhras\Enums\AccountStatus;
 
 class CaradhrasMainClient extends BaseApiClient
@@ -17,7 +18,7 @@ class CaradhrasMainClient extends BaseApiClient
     {
         return $this
             ->apiClient()
-            ->post("/contas/{$accountId}/cancelar?id_status={$statusId->value}")
+            ->post("/contas/{$accountId}/cancelar?id_status={$status->value}")
             ->object();
     }
 
@@ -60,5 +61,24 @@ class CaradhrasMainClient extends BaseApiClient
                 'transactionDetails' => $details,
             ])
             ->object();
+    }
+
+    /**
+     * Get individual.
+     *
+     * @param  int  $personId
+     * @return object
+     * @throws Exception
+     */
+    public function getIndividual($personId): object
+    {
+        if (is_null($personId)) {
+            throw new \Idez\Caradhras\Exceptions\CaradhrasException('Failed to get individual.');
+        }
+
+        return $this
+            ->apiClient()
+            ->asJson()
+            ->get("/v2/individuals/$personId", ["statusSPD" => 'true']);
     }
 }
