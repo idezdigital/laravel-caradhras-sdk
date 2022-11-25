@@ -342,4 +342,69 @@ class CaradhrasMainClientTest extends TestCase
 // <getAccount>
 // não tem testes ainda
 // </getAccount>
+
+// <backgroundCheck>
+// não tem testes ainda
+// </backgroundCheck>
+
+// <getTransactions>
+// não tem testes ainda
+// </getTransactions>
+
+// <updateAddress>
+// não tem testes ainda
+// </updateAddress>
+
+// <p2p>
+// não tem testes ainda
+// </p2p>
+
+// <getBalance>
+// não tem testes ainda
+// </getBalance>
+
+// <unlockSystemBlockedCard>
+// não tem testes ainda
+// </unlockSystemBlockedCard>
+
+// <listAccounts>
+// não tem testes ainda
+// </listAccounts>
+
+// <getPhoneRecharge>
+// não tem testes ainda
+// </getPhoneRecharge>
+
+// <setCardPassword>
+// não tem testes ainda
+// </setCardPassword>
+
+// <updateCardPassword>
+    // public function testCanUpdateACardPassword()
+    // {
+    //     $crCardId = $this->faker->randomNumber(5, true);
+    //     $newPassword = $this->faker->randomNumber(4, true);
+
+    //     $expectedUrl = $this->caradhrasCoreClient->getApiBaseUrl() . "/cartoes/$crCardId/alterar-senha";
+
+    //     $response = [
+    //         "headers" => [],
+    //         "body" => "Operação executada com sucesso.",
+    //         "statusCodeValue" => 200,
+    //         "statusCode" => "OK",
+    //     ];
+
+    //     Http::fake([
+    //         $expectedUrl => Http::response($response),
+    //     ]);
+
+    //     $this->caradhrasCoreClient->updateCardPassword($crCardId, $newPassword);
+
+    //     Http::assertSent(
+    //         fn (Request $request) => $request->method() === 'PUT' &&
+    //             $request->url() === $expectedUrl &&
+    //             $request->header('senha') === [(string) $newPassword]
+    //     );
+    // }
+// </updateCardPassword>
 }
