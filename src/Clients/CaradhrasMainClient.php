@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Clients;
 
 use Idez\Caradhras\Data\P2PTransferPayload;
+use Idez\Caradhras\Data\Registrations\IndividualRegistration;
 use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 
@@ -10,6 +11,14 @@ class CaradhrasMainClient extends BaseApiClient
 {
     public const API_PREFIX = 'api';
 
+    /**
+     * Get P2P transfer.
+     *
+     * @param  array  $filters
+     * @return P2PTransferPayload
+     * @throws \App\Exceptions\CaradhrasException
+     * @throws \Illuminate\Http\Client\RequestException
+     */
     public function getTransfer(array $filters): P2PTransferPayload
     {
         $transfers = $this->apiClient()
@@ -25,6 +34,93 @@ class CaradhrasMainClient extends BaseApiClient
     }
 
     /**
+     * Get individual.
+     *
+     * @param  string  $registrationId
+     * @param  string  $document
+     * @return object
+     * @throws \App\Exceptions\CaradhrasException
+     */
+    public function findIndividual(string $registrationId, string $document): object
+    {
+        $response = $this
+            ->apiClient(throwsHttpError: false)
+            ->asJson()
+            ->get("/v2/individuals", ['document' => $document]);
+
+        if ($response->failed()) {
+            $message = $response->status() === 404 ? 'Failed to get individual.' : 'Individual not found.';
+            $statusCode = $response->status() === 404 ? 404 : 502;
+
+            throw new CaradhrasException($message, $statusCode);
+        }
+
+        $individual = collect(object_get($response->object(), 'items', []))
+            ->filter(fn ($individual) => $individual?->idRegistration === $registrationId)
+            ->first();
+
+        if (blank($individual)) {
+            throw new CaradhrasException('Individual not found.', 404);
+        }
+
+        return $individual;
+    }
+
+    /**
+     * Associate card to account.
+     *
+     * @param int $cardId
+     * @param int $accountId
+     * @param int $individualId
+     * @return bool
+     * @throws RequestException
+     */
+    public function associateCardToAccount(int $cardId, int $accountId, int $individualId): bool
+    {
+        $this->apiClient()
+            ->post("/contas/{$accountId}/atribuir-cartao-prepago", [
+                'idCartao' => $cardId,
+                'idPessoaFisica' => $individualId,
+            ])
+            ->throw();
+
+        return true;
+    }
+
+    /**
+     * Update a Person.
+     *
+     * @param  IndividualRegistration  $person
+     * @return object
+     * @throws Exception
+     */
+    public function updateIndividuals(IndividualRegistration $person): object
+    {
+        return $this
+            ->apiClient()
+            ->asJson()
+            ->put("/v2/individuals/{$person->id}", $person->jsonSerialize())
+            ->throw()
+            ->object();
+    }
+
+    /**
+     * Get account.
+     *
+     * @param  int  $accountId
+     * @return object
+     * @throws Exception
+     */
+    public function getAccount(int $accountId): object
+    {
+        return $this->apiClient()
+            ->retry(3, 1500)
+            ->get("/contas/{$accountId}")
+            ->throw()
+            ->object();
+    }
+
+    /**
      * @param  int  $accountId
      * @param  AccountStatus  $status
      * @return object
@@ -34,21 +130,6 @@ class CaradhrasMainClient extends BaseApiClient
         return $this
             ->apiClient()
             ->post("/contas/{$accountId}/cancelar?id_status={$status->value}")
-            ->object();
-    }
-
-    /**
-     * Get account.
-     *
-     * @param  int  $accountId
-     * @return object
-     */
-    public function getAccount(int $accountId): object
-    {
-        return $this->apiClient()
-            ->retry(3, 1500)
-            ->get("/contas/{$accountId}")
-            ->throw()
             ->object();
     }
 
