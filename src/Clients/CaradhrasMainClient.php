@@ -3,14 +3,19 @@
 namespace Idez\Caradhras\Clients;
 
 use Idez\Caradhras\Data\Card;
+use Idez\Caradhras\Data\CardCollection;
 use Idez\Caradhras\Data\CardDetails;
 use Idez\Caradhras\Data\CardLimit;
+use Idez\Caradhras\Data\Individual;
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Data\PhoneRecharge;
 use Idez\Caradhras\Data\Registrations\IndividualRegistration;
 use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Enums\AccountStatus;
+use Idez\Caradhras\Enums\AddressType;
 use Idez\Caradhras\Exceptions\CaradhrasException;
+use Idez\Caradhras\Exceptions\CVVMismatchException;
+use Idez\Caradhras\Exceptions\FindCardsException;
 use Idez\Caradhras\Exceptions\FraudDetectorException;
 use Idez\Caradhras\Exceptions\GetCardDetailsException;
 use Idez\Caradhras\Exceptions\InsufficientBalanceException;
@@ -508,6 +513,214 @@ class CaradhrasMainClient extends BaseApiClient
             ]);
 
         return new CardLimit($response->json());
+    }
+
+    /**
+     * Create card limit.
+     *
+     * @param  int  $cardId
+     * @param  float  $amount
+     * @return CardLimit
+     * @throws Exception
+     */
+    public function createCardLimit(int $cardId, float $amount): CardLimit
+    {
+        $createLimitRequest = $this
+            ->apiClient()
+            ->post("/cartoes/{$cardId}/controles-limites", [
+                'limiteDiario' => $amount,
+            ]);
+
+        return new CardLimit($createLimitRequest->json());
+    }
+
+    /**
+     * Get cards.
+     *
+     * @param  array  $query
+     * @return CardCollection
+     * @throws FindCardsException
+     */
+    public function listCards(array $query = []): CardCollection
+    {
+        $response = $this->apiClient(throwsHttpError: false)->get("/cartoes", $query);
+
+        if ($response->failed()) {
+            if ($response->status() === 404) {
+                return new CardCollection(['totalElements' => 0, 'content' => []]);
+            }
+
+            throw new FindCardsException();
+        }
+
+        return new CardCollection($response->json());
+    }
+
+    /**
+     * Validate cvv.
+     *
+     * @param  int  $cardId
+     * @param  string  $cvv
+     * @throws \App\Exceptions\CaradhrasException
+     * @throws CVVMismatchException
+     * @throws Exception
+     */
+    public function validateCVV(int $cardId, string $cvv): bool
+    {
+        $response = $this
+            ->apiClient(false)
+            ->post("/cartoes/{$cardId}/validar-cvv", [
+                'cvv' => $cvv,
+            ]);
+
+        if ($response->failed()) {
+            if ($response->status() === 400 && strpos($response->object()->message, 'criptografia do HSM')) {
+                throw new CVVMismatchException();
+            }
+
+            throw new CaradhrasException('Failed to validate card CVV.', 502);
+        }
+
+        return true;
+    }
+
+    /**
+     * Cancel card.
+     *
+     * @param  string  $cardId
+     * @param  string  $description
+     * @return object
+     * @throws \App\Exceptions\CaradhrasException
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function cancelCard(string $cardId, string $description = ''): object
+    {
+        if (blank($cardId)) {
+            throw new CaradhrasException('Invalid card.');
+        }
+
+        return $this
+            ->apiClient()
+            ->post("/cartoes/{$cardId}/cancelar?id_status=3&observacao={$description}")
+            ->throw()
+            ->object();
+    }
+
+    /**
+     * Create an individual from data.
+     *
+     * @param  array  $data
+     * @return Individual
+     */
+    public function createIndividual(array $data): Individual
+    {
+        $response = $this->apiClient()->asForm()->post("/pessoas", $data);
+
+        return new Individual($response->object());
+    }
+
+    /**
+     * Link account additional.
+     *
+     * @param  int  $accountId
+     * @param  int  $individualId
+     * @param  string  $name
+     * @param  string|null  $email
+     * @return object
+     */
+    public function linkAccountAdditional(
+        int $accountId,
+        int $individualId,
+        string $name,
+        null|string $email = null
+    ): object {
+        $response = $this->apiClient()
+            ->post("/contas/{$accountId}/adicionais", [
+                'idPessoa' => $individualId,
+                'nomeImpresso' => $name,
+                'email' => $email,
+            ]);
+
+        return $response->object();
+    }
+
+    /**
+     * Create address.
+     *
+     * @param  int  $idPessoa
+     * @param  string  $logradouro
+     * @param  int  $numero
+     * @param  string|null  $complemento
+     * @param  string  $bairro
+     * @param  string  $cidade
+     * @param  string  $uf
+     * @param  string  $cep
+     * @param  string  $pais
+     * @param  \App\Enums\Caradhras\AddressType  $tipoEndereco
+     * @return object
+     */
+    public function createAddress(
+        int $idPessoa,
+        string $logradouro,
+        int $numero,
+        ?string $complemento,
+        string $bairro,
+        string $cidade,
+        string $uf,
+        string $cep,
+        string $pais = 'Brasil',
+        AddressType $tipoEndereco = AddressType::Home
+    ): object {
+        $data = [
+            'idTipoEndereco' => $tipoEndereco->value,
+            'idPessoa' => $idPessoa,
+            'logradouro' => $logradouro,
+            'numero' => $numero,
+            'complemento' => $complemento ?? '-',
+            'bairro' => $bairro,
+            'cidade' => $cidade,
+            'uf' => $uf,
+            'cep' => $cep,
+            'pais' => $pais,
+        ];
+
+        $query = http_build_query($data);
+
+        return $this->apiClient()
+            ->post("/enderecos?{$query}")
+            ->object();
+    }
+
+    /**
+     * Get pending account documents.
+     *
+     * @param  string  $registrationId
+     * @return object
+     */
+    public function getPendingAccountDocuments(string $registrationId): object
+    {
+        $response = $this->apiClient()
+            ->get("/v2/individuals/{$registrationId}/documents/status");
+
+        return $response->object();
+    }
+
+    /**
+     * Create phone recharge.
+     *
+     * @param  string  $dealerCode
+     * @param  string  $areaCode
+     * @param  string  $phoneNumber
+     * @return object
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function createPhoneRecharge(string $dealerCode, string $areaCode, string $phoneNumber): object
+    {
+        return $this->apiClient()->post('/recharges', [
+            'dealerCode' => $dealerCode,
+            'ddd' => $areaCode,
+            'phoneNumber' => $phoneNumber,
+        ])->throw()->object();
     }
 
     /**

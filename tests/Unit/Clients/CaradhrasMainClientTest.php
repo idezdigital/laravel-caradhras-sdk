@@ -429,86 +429,86 @@ class CaradhrasMainClientTest extends TestCase
 // </transactions>
 
 // <testCanGetCardDetails>
-// public function testCanGetCardDetails()
-// {
-//     $fakeCrCardId = $this->faker->numberBetween(111, 999);
-//     $fakeCrAccountId = $this->faker->numberBetween(111, 999);
+    // public function testCanGetCardDetails()
+    // {
+    //     $fakeCrCardId = $this->faker->numberBetween(111, 999);
+    //     $fakeCrAccountId = $this->faker->numberBetween(111, 999);
 
-//     $account = Account::factory()
-//         ->active()
-//         ->create([
-//             'cr_account_id' => $fakeCrAccountId,
-//         ]);
+    //     $account = Account::factory()
+    //         ->active()
+    //         ->create([
+    //             'cr_account_id' => $fakeCrAccountId,
+    //         ]);
 
-//     $card = Card::factory()
-//         ->virtual()
-//         ->status(CardStatus::Active)
-//         ->create([
-//             'account_id' => $account->id,
-//             'cr_card_id' => $fakeCrCardId,
-//         ]);
+    //     $card = Card::factory()
+    //         ->virtual()
+    //         ->status(CardStatus::Active)
+    //         ->create([
+    //             'account_id' => $account->id,
+    //             'cr_card_id' => $fakeCrCardId,
+    //         ]);
 
-//     $expectedCardData = CardDetails::factory()->fromCard($card)->make();
+    //     $expectedCardData = CardDetails::factory()->fromCard($card)->make();
 
-//     $expectedRequestUrl = $this->caradhrasCoreClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/consultar-dados-reais";
+    //     $expectedRequestUrl = $this->caradhrasCoreClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/consultar-dados-reais";
 
-//     Http::fake([
-//         $expectedRequestUrl => Http::response($expectedCardData->jsonSerialize()),
-//     ]);
+    //     Http::fake([
+    //         $expectedRequestUrl => Http::response($expectedCardData->jsonSerialize()),
+    //     ]);
 
-//     $cardDetails = $this->caradhrasCoreClient->getCardDetails($card->cr_card_id);
+    //     $cardDetails = $this->caradhrasCoreClient->getCardDetails($card->cr_card_id);
 
-//     Http::assertSent(
-//         fn (Request $request) => $request->url() === $expectedRequestUrl
-//     );
+    //     Http::assertSent(
+    //         fn (Request $request) => $request->url() === $expectedRequestUrl
+    //     );
 
-//     [$first4, $last4] = preg_split('/\*{8}/', $card->number);
+    //     [$first4, $last4] = preg_split('/\*{8}/', $card->number);
 
-//     $cardNumberRegex = "/^{$first4}\d{8}{$last4}$/";
+    //     $cardNumberRegex = "/^{$first4}\d{8}{$last4}$/";
 
-//     $this->assertInstanceOf(CardDetails::class, $cardDetails);
-//     $this->assertEquals($fakeCrCardId, $cardDetails->idCartao);
-//     $this->assertEquals($fakeCrAccountId, $cardDetails->idConta);
-//     $this->assertEquals($account->name, $cardDetails->nomePlastico);
-//     $this->assertEquals(1, $cardDetails->flagVirtual);
-//     $this->assertEquals(1, preg_match('/\d{3}/', $cardDetails->cvv2));
-//     $this->assertEquals(1, preg_match($cardNumberRegex, $cardDetails->numeroCartao));
-// }
-// public function testThrowsCustomExceptionOnGettingCardDetailsFailures()
-// {
-//     $card = Card::factory()
-//         ->virtual()
-//         ->status(CardStatus::Active)
-//         ->create();
+    //     $this->assertInstanceOf(CardDetails::class, $cardDetails);
+    //     $this->assertEquals($fakeCrCardId, $cardDetails->idCartao);
+    //     $this->assertEquals($fakeCrAccountId, $cardDetails->idConta);
+    //     $this->assertEquals($account->name, $cardDetails->nomePlastico);
+    //     $this->assertEquals(1, $cardDetails->flagVirtual);
+    //     $this->assertEquals(1, preg_match('/\d{3}/', $cardDetails->cvv2));
+    //     $this->assertEquals(1, preg_match($cardNumberRegex, $cardDetails->numeroCartao));
+    // }
+    // public function testThrowsCustomExceptionOnGettingCardDetailsFailures()
+    // {
+    //     $card = Card::factory()
+    //         ->virtual()
+    //         ->status(CardStatus::Active)
+    //         ->create();
 
-//     $fakeResponseError = [
-//         'uuid' => $this->faker->uuid(),
-//         'message' => 'fake error message',
-//     ];
+    //     $fakeResponseError = [
+    //         'uuid' => $this->faker->uuid(),
+    //         'message' => 'fake error message',
+    //     ];
 
-//     $expectedRequestUrl = $this->caradhrasCoreClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/consultar-dados-reais";
+    //     $expectedRequestUrl = $this->caradhrasCoreClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/consultar-dados-reais";
 
-//     Http::fake([
-//         $expectedRequestUrl => Http::response($fakeResponseError, 504),
-//     ]);
+    //     Http::fake([
+    //         $expectedRequestUrl => Http::response($fakeResponseError, 504),
+    //     ]);
 
-//     $this->expectException(GetCardDetailsException::class);
-//     $this->expectExceptionCode(502);
-//     $this->expectExceptionMessage(trans('errors.card.failed_get_details'));
+    //     $this->expectException(GetCardDetailsException::class);
+    //     $this->expectExceptionCode(502);
+    //     $this->expectExceptionMessage(trans('errors.card.failed_get_details'));
 
-//     try {
-//         $this->caradhrasCoreClient->getCardDetails($card->cr_card_id);
-//     } catch (GetCardDetailsException $exception) {
-//         $this->assertEquals($fakeResponseError, $exception->getData());
-//         $this->assertEquals('card.failed_get_details', $exception->getKey());
+    //     try {
+    //         $this->caradhrasCoreClient->getCardDetails($card->cr_card_id);
+    //     } catch (GetCardDetailsException $exception) {
+    //         $this->assertEquals($fakeResponseError, $exception->getData());
+    //         $this->assertEquals('card.failed_get_details', $exception->getKey());
 
-//         Http::assertSent(
-//             fn (Request $request) => $request->url() === $expectedRequestUrl
-//         );
+    //         Http::assertSent(
+    //             fn (Request $request) => $request->url() === $expectedRequestUrl
+    //         );
 
-//         throw $exception;
-//     }
-// }
+    //         throw $exception;
+    //     }
+    // }
 // </testCanGetCardDetails>
 
 // <blockAccount>
@@ -522,6 +522,208 @@ class CaradhrasMainClientTest extends TestCase
 // <updateCardLimit>
 // não tem testes ainda
 // </updateCardLimit>
+
+// <createCardLimit>
+// não tem testes ainda
+// </createCardLimit>
+
+// <listCards>
+    // public function testCanListCards()
+    // {
+    //     $account = Account::factory()->personal()->create();
+
+    //     $crRequest = [
+    //         'idPessoa' => $account->holder->cr_person_id,
+    //     ];
+
+    //     $url = $this->caradhrasMainClient->getApiBaseUrl() . '/cartoes?' . http_build_query($crRequest);
+
+    //     $response = [
+    //         "message" => "Ok",
+    //     ];
+
+    //     Http::fake([
+    //         $url => Http::response($response, 200),
+    //     ]);
+
+    //     $request = $this->caradhrasMainClient->listCards($crRequest);
+
+    //     $this->assertEquals($request->message, 'Ok');
+
+    //     Http::assertSent(
+    //         fn (Request $request) => $request->url() === $url &&
+    //             $request->method() === 'GET'
+    //     );
+    // }
+
+    // public function testFailedToListCardsThrowException()
+    // {
+    //     $account = Account::factory()->personal()->create();
+
+    //     $crRequest = [
+    //         'idPessoa' => $account->holder->cr_person_id,
+    //     ];
+
+    //     $url = $this->caradhrasMainClient->getApiBaseUrl() . '/cartoes?' . http_build_query($crRequest);
+
+    //     $responseError = [
+    //         "message" => "Error",
+    //     ];
+
+    //     Http::fake([
+    //         $url => Http::response($responseError, 500),
+    //     ]);
+
+    //     $this->expectException(FindCardsException::class);
+    //     $this->expectExceptionCode(404);
+    //     $this->expectExceptionMessage(trans('errors.card.failed_find_cards'));
+
+    //     try {
+    //         $this->caradhrasMainClient->listCards($crRequest);
+    //     } catch (Throwable $exception) {
+    //         Http::assertSent(
+    //             fn (Request $request) => $request->url() === $url &&
+    //                 $request->method() === 'GET'
+    //         );
+
+    //         throw $exception;
+    //     }
+    // }
+// </listCards>
+
+// <validateCVV>
+    // public function testValidateCVVThrowsException()
+    // {
+    //     /** @var Card $card */
+    //     $card = Card::factory()
+    //         ->physical()
+    //         ->status(CardStatus::Active)
+    //         ->create();
+
+    //     $fakeResponseError = [
+    //         'timestamp' => '2021-05-18T13:57:00.874Z',
+    //         'code' => 400,
+    //         'exception' => 'BadRequestExceptionPIER',
+    //         'message' => 'Erro de inconsistência de dados de criptografia do HSM',
+    //         'path' => '/v2/api/cartoes/100/validar-cvv',
+    //     ];
+
+    //     $expectedRequestUrl = $this->caradhrasMainClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/validar-cvv";
+
+    //     Http::fake([
+    //         $expectedRequestUrl => Http::response($fakeResponseError, 400),
+    //     ]);
+
+    //     $this->expectException(CVVMismatchException::class);
+    //     $this->expectExceptionCode(400);
+    //     $this->expectExceptionMessage(trans('errors.card.cvv_mismatch'));
+
+    //     $this->caradhrasMainClient->validateCVV($card->cr_card_id, 123);
+    // }
+
+    // /**
+    //  * @throws CaradhrasException
+    //  * @throws CVVMismatchException
+    //  */
+    // public function testCanResponseTrueOnValidateCVV(): void
+    // {
+    //     /** @var Card $card */
+    //     $card = Card::factory()
+    //         ->physical()
+    //         ->status(CardStatus::Active)
+    //         ->create();
+
+    //     $fakeResponse = [];
+
+    //     $expectedRequestUrl = $this->caradhrasMainClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/validar-cvv";
+
+    //     Http::fake([
+    //         $expectedRequestUrl => Http::response($fakeResponse, 200),
+    //     ]);
+
+    //     $response = $this->caradhrasMainClient->validateCVV($card->cr_card_id, 123);
+    //     $this->assertTrue($response);
+    // }
+// </validateCVV>
+
+// <cancelCard>
+    // public function testCanCancelCard()
+    // {
+    //     Event::fake(CardUpdated::class);
+
+    //     $card = Card::factory()->create([
+    //         'account_id' => $this->account,
+    //         'status' => CardStatus::Active,
+    //     ]);
+
+    //     $this->partialMock(CaradhrasMainClient::class, function ($mock) {
+    //         $mock->shouldReceive('cancelCard')
+    //             ->andReturn(new \App\Models\Caradhras\Card([
+    //                 'idStatus' => CrCardStatus::Canceled->value,
+    //             ]));
+    //     });
+
+    //     $request = $this->actingAs($this->user, 'api')
+    //         ->deleteJson("/api/cards/{$card->id}");
+
+    //     $request->assertSuccessful()
+    //         ->assertJson([
+    //             'id' => $card->id,
+    //             'status' => CardStatus::Canceled->value,
+    //         ]);
+
+    //     $this->assertDatabaseHas('cards', [
+    //         'id' => $card->id,
+    //         'status' => CardStatus::Canceled->value,
+    //     ]);
+
+    //     Event::assertDispatched(CardUpdated::class);
+    // }
+// </cancelCard>
+
+// <createIndividual>
+// não tem testes ainda
+// </createIndividual>
+
+// <linkAccountAdditional>
+// não tem testes ainda
+// </linkAccountAdditional>
+
+// <createAddress>
+// não tem testes ainda
+// </createAddress>
+
+// <getPendingAccountDocuments>
+// não tem testes ainda
+// </getPendingAccountDocuments>
+
+// <createPhoneRecharge>
+// não tem testes ainda
+// </createPhoneRecharge>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
 
 // <>
 // não tem testes ainda
