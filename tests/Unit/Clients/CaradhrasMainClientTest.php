@@ -407,4 +407,151 @@ class CaradhrasMainClientTest extends TestCase
     //     );
     // }
 // </updateCardPassword>
+
+// <issuePhysicalCard>
+// não tem testes ainda
+// </issuePhysicalCard>
+
+// <issueVirtualCard>
+// não tem testes ainda
+// </issueVirtualCard>
+
+// <getAddressByIndividualId>
+// não tem testes ainda
+// </getAddressByIndividualId>
+
+// <updateAccountProduct>
+// não tem testes ainda
+// </updateAccountProduct>
+
+// <transactions>
+// não tem testes ainda
+// </transactions>
+
+// <testCanGetCardDetails>
+// public function testCanGetCardDetails()
+// {
+//     $fakeCrCardId = $this->faker->numberBetween(111, 999);
+//     $fakeCrAccountId = $this->faker->numberBetween(111, 999);
+
+//     $account = Account::factory()
+//         ->active()
+//         ->create([
+//             'cr_account_id' => $fakeCrAccountId,
+//         ]);
+
+//     $card = Card::factory()
+//         ->virtual()
+//         ->status(CardStatus::Active)
+//         ->create([
+//             'account_id' => $account->id,
+//             'cr_card_id' => $fakeCrCardId,
+//         ]);
+
+//     $expectedCardData = CardDetails::factory()->fromCard($card)->make();
+
+//     $expectedRequestUrl = $this->caradhrasCoreClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/consultar-dados-reais";
+
+//     Http::fake([
+//         $expectedRequestUrl => Http::response($expectedCardData->jsonSerialize()),
+//     ]);
+
+//     $cardDetails = $this->caradhrasCoreClient->getCardDetails($card->cr_card_id);
+
+//     Http::assertSent(
+//         fn (Request $request) => $request->url() === $expectedRequestUrl
+//     );
+
+//     [$first4, $last4] = preg_split('/\*{8}/', $card->number);
+
+//     $cardNumberRegex = "/^{$first4}\d{8}{$last4}$/";
+
+//     $this->assertInstanceOf(CardDetails::class, $cardDetails);
+//     $this->assertEquals($fakeCrCardId, $cardDetails->idCartao);
+//     $this->assertEquals($fakeCrAccountId, $cardDetails->idConta);
+//     $this->assertEquals($account->name, $cardDetails->nomePlastico);
+//     $this->assertEquals(1, $cardDetails->flagVirtual);
+//     $this->assertEquals(1, preg_match('/\d{3}/', $cardDetails->cvv2));
+//     $this->assertEquals(1, preg_match($cardNumberRegex, $cardDetails->numeroCartao));
+// }
+// public function testThrowsCustomExceptionOnGettingCardDetailsFailures()
+// {
+//     $card = Card::factory()
+//         ->virtual()
+//         ->status(CardStatus::Active)
+//         ->create();
+
+//     $fakeResponseError = [
+//         'uuid' => $this->faker->uuid(),
+//         'message' => 'fake error message',
+//     ];
+
+//     $expectedRequestUrl = $this->caradhrasCoreClient->getApiBaseUrl() . "/cartoes/{$card->cr_card_id}/consultar-dados-reais";
+
+//     Http::fake([
+//         $expectedRequestUrl => Http::response($fakeResponseError, 504),
+//     ]);
+
+//     $this->expectException(GetCardDetailsException::class);
+//     $this->expectExceptionCode(502);
+//     $this->expectExceptionMessage(trans('errors.card.failed_get_details'));
+
+//     try {
+//         $this->caradhrasCoreClient->getCardDetails($card->cr_card_id);
+//     } catch (GetCardDetailsException $exception) {
+//         $this->assertEquals($fakeResponseError, $exception->getData());
+//         $this->assertEquals('card.failed_get_details', $exception->getKey());
+
+//         Http::assertSent(
+//             fn (Request $request) => $request->url() === $expectedRequestUrl
+//         );
+
+//         throw $exception;
+//     }
+// }
+// </testCanGetCardDetails>
+
+// <blockAccount>
+// não tem testes ainda
+// </blockAccount>
+
+// <getCardLimit>
+// não tem testes ainda
+// </getCardLimit>
+
+// <updateCardLimit>
+// não tem testes ainda
+// </updateCardLimit>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
+
+// <>
+// não tem testes ainda
+// </>
 }

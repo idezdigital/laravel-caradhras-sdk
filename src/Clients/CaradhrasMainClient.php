@@ -3,13 +3,18 @@
 namespace Idez\Caradhras\Clients;
 
 use Idez\Caradhras\Data\Card;
+use Idez\Caradhras\Data\CardDetails;
+use Idez\Caradhras\Data\CardLimit;
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Data\PhoneRecharge;
 use Idez\Caradhras\Data\Registrations\IndividualRegistration;
+use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Exceptions\FraudDetectorException;
+use Idez\Caradhras\Exceptions\GetCardDetailsException;
 use Idez\Caradhras\Exceptions\InsufficientBalanceException;
+use Idez\Caradhras\Exceptions\IssuePhysicalCardException;
 use Idez\Caradhras\Exceptions\TransferFailedException;
 use Illuminate\Support\Str;
 use Throwable;
@@ -318,6 +323,137 @@ class CaradhrasMainClient extends BaseApiClient
     }
 
     /**
+     * Issue physical card.
+     *
+     * @param  int  $accountId
+     * @param  int  $individualId
+     * @return Card
+     * @throws \Illuminate\Http\Client\RequestException
+     * @throws \Exception
+     */
+    public function issuePhysicalCard(int $accountId, int $individualId): Card
+    {
+        $data = [
+            'id_pessoa' => $individualId,
+            'id_tipo_plastico' => config('app.plastic_id'),
+        ];
+
+        $issueCardResponse = $this->apiClient(false)
+            ->post("/contas/{$accountId}/gerar-cartao-grafica", $data);
+
+        if ($issueCardResponse->failed()) {
+            throw new IssuePhysicalCardException();
+        }
+
+        $cardId = $issueCardResponse->json('idCartao');
+
+        $this->setCardPassword($cardId, random_int(1000, 9999));
+
+        return $this->getCard($cardId);
+    }
+
+    /**
+     * Create virtual card.
+     *
+     * @param  int  $accountId
+     * @param  int  $individualId
+     * @return Card
+     */
+    public function issueVirtualCard(int $accountId, int $individualId): Card
+    {
+        $data = http_build_query([
+            'dataValidade' => now()->addYears(5)->toDateString() . 'T00:00:00.000',
+            'idPessoaFisica' => $individualId,
+        ]);
+
+        $card = $this->apiClient()
+            ->post("/contas/{$accountId}/gerar-cartao-virtual?" . $data)
+            ->object();
+
+        return $this->getCard($card->idCartao);
+    }
+
+    public function getAddressByIndividualId(int $individualId, int $tipoEndereco = 1)
+    {
+        return $this->apiClient()
+            ->get("/enderecos", ['idPessoa' => $individualId, 'idTipoEndereco' => $tipoEndereco])
+            ->throw()
+            ->object();
+    }
+
+    /**
+     * Update account product.
+     *
+     * @param  int  $accountId
+     * @return object
+     * @throws Exception
+     */
+    public function updateAccountProduct(int $accountId): null|object
+    {
+        $data = [
+            'idProduto' => config('app.product_id'),
+            'idOrigemComercial' => config('app.business_source_id'),
+        ];
+
+        return $this
+            ->apiClient()
+            ->asJson()
+            ->post("/contas/{$accountId}/alterar-produto", $data)
+            ->object();
+    }
+
+    /**
+     * Get Account transactions.
+     *
+     * @param  int  $accountId
+     * @param  array  $query  (optional). Default [].
+     * @return TransactionCollection
+     * @throws Exception
+     */
+    public function transactions(int $accountId, array $query = []): TransactionCollection
+    {
+        $response = $this
+            ->apiClient()
+            ->get("/accounts/{$accountId}/transactions", $query);
+
+        return new TransactionCollection($response->json());
+    }
+
+    /**
+     * Get Card details.
+     *
+     * @param  int  $cardId
+     * @return CardDetails
+     * @throws \App\Exceptions\GetCardDetailsException
+     */
+    public function getCardDetails(int $cardId): CardDetails
+    {
+        $response = $this
+            ->apiClient(false)
+            ->get("/cartoes/{$cardId}/consultar-dados-reais");
+
+        if ($response->failed()) {
+            throw new GetCardDetailsException($response->json());
+        }
+
+        return new CardDetails($response->json());
+    }
+
+    /**
+     * Block account.
+     *
+     * @param  int  $accountId
+     * @return object
+     */
+    public function blockAccount(int $accountId): object
+    {
+        return $this
+            ->apiClient()
+            ->post("/contas/{$accountId}/bloquear")
+            ->object();
+    }
+
+    /**
      * @param  int  $accountId
      * @param  AccountStatus  $status
      * @return object
@@ -328,6 +464,50 @@ class CaradhrasMainClient extends BaseApiClient
             ->apiClient()
             ->post("/contas/{$accountId}/cancelar?id_status={$status->value}")
             ->object();
+    }
+
+    /**
+     * Get card limit.
+     * @param  int  $cardId
+     * @param  int  $limitId
+     * @return CardLimit
+     * @throws \App\Exceptions\CaradhrasException
+     */
+    public function getCardLimit(int $cardId, int $limitId): CardLimit
+    {
+        if (blank($cardId)) {
+            throw new CaradhrasException(trans('errors.card.not_issued'), 500);
+        }
+
+        if (blank($limitId)) {
+            throw new CaradhrasException(trans('errors.card.undefined_limit'), 500);
+        }
+
+        $response = $this
+            ->apiClient()
+            ->get("/cartoes/{$cardId}/controles-limites/{$limitId}");
+
+        return new CardLimit($response->json());
+    }
+
+    /**
+     *
+     * @param  int  $cardId
+     * @param  int  $limitId
+     * @param  float|null  $amount
+     * @return CardLimit
+     */
+    public function updateCardLimit(int $cardId, int $limitId, ?float $amount = null): CardLimit
+    {
+        $response = $this
+            ->apiClient()
+            ->patch("/cartoes/{$cardId}/controles-limites/{$limitId}", [
+                'limiteDiario' => $amount,
+                'limiteSemanal' => $amount,
+                'limiteMensal' => $amount,
+            ]);
+
+        return new CardLimit($response->json());
     }
 
     /**
