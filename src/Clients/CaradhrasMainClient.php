@@ -13,13 +13,17 @@ use Idez\Caradhras\Data\Registrations\IndividualRegistration;
 use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Enums\AddressType;
+use Idez\Caradhras\Enums\Cards\CardStatus;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Exceptions\CVVMismatchException;
+use Idez\Caradhras\Exceptions\FailedRequestCardBatchException;
 use Idez\Caradhras\Exceptions\FindCardsException;
 use Idez\Caradhras\Exceptions\FraudDetectorException;
 use Idez\Caradhras\Exceptions\GetCardDetailsException;
 use Idez\Caradhras\Exceptions\InsufficientBalanceException;
 use Idez\Caradhras\Exceptions\IssuePhysicalCardException;
+use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
+use Idez\Caradhras\Exceptions\PhoneRechargeOrderFailedException;
 use Idez\Caradhras\Exceptions\TransferFailedException;
 use Illuminate\Support\Str;
 use Throwable;
@@ -721,6 +725,185 @@ class CaradhrasMainClient extends BaseApiClient
             'ddd' => $areaCode,
             'phoneNumber' => $phoneNumber,
         ])->throw()->object();
+    }
+
+    public function orderPhoneRecharge(string $orderId, string $areaCode, string $phoneNumber, string $dealerCode, float $amount)
+    {
+        $response = $this->apiClient(false)->post("/recharges/{$orderId}", [
+            'dealerCode' => $dealerCode,
+            'ddd' => $areaCode,
+            'phoneNumber' => $phoneNumber,
+            'amount' => $amount * 100,
+        ]);
+
+        if ($response->failed()) {
+            throw new PhoneRechargeOrderFailedException((array) $response->body());
+        }
+
+        return $response->object();
+    }
+
+    public function confirmPhoneRecharge(string $orderId, int $accountId, float $amount)
+    {
+        $response = $this->apiClient(false)->post("/recharges/{$orderId}/confirm", [
+            'accountId' => $accountId,
+            'amount' => $amount * 100,
+        ]);
+
+        if ($response->failed()) {
+            throw new PhoneRechargeConfirmationFailedException((array) $response->body());
+        }
+
+        return $response->object();
+    }
+
+    /**
+     * Create request of Noname Cards batch
+     *
+     * @param  int  $businessSourceId
+     * @param  int  $productId
+     * @param  int  $plasticId
+     * @param  int  $cardImageId
+     * @param  int  $addressId
+     * @param  int  $cardQuantity
+     * @return object
+     * @throws \App\Exceptions\FailedRequestCardBatchException
+     */
+    public function createNonameCardsBatch(
+        int $businessSourceId,
+        int $productId,
+        int $plasticId,
+        int $cardImageId,
+        int $addressId,
+        int $cardQuantity
+    ): object {
+        $query = http_build_query([
+            'idOrigemComercial' => $businessSourceId,
+            'idProduto' => $productId,
+            'idTipoCartao' => $plasticId,
+            'idImagem' => $cardImageId,
+            'idEndereco' => $addressId,
+            'quantidadeCartoes' => $cardQuantity,
+        ]);
+
+        $request = $this->apiClient(false)
+            ->post('/cartoes/lotes-cartoes-pre-pagos?' . $query);
+
+        if ($request->failed()) {
+            throw new FailedRequestCardBatchException();
+        }
+
+        return $request->object();
+    }
+
+    public function getCard(int $cardId): Card
+    {
+        $request = $this->apiClient()->get("/cartoes/{$cardId}")
+            ->object();
+
+        return new Card($request);
+    }
+
+    /**
+     * Lock card.
+     *
+     * @param  int  $cardId
+     * @param  string  $description
+     * @return object
+     * @throws \App\Exceptions\CaradhrasException
+     */
+    public function lockCard(int $cardId, string $description): object
+    {
+        $request = $this->apiClient(false)
+            ->post("/cartoes/{$cardId}/bloquear?id_status=2&observacao={$description}");
+
+        if ($request->failed()) {
+            throw match ($request->status()) {
+                400, 403, 404 => new CaradhrasException(trans('errors.services.caradhras.card.lock_failed'), $request->status()),
+                default => new CaradhrasException(trans('errors.services.caradhras.generic_error'), 502)
+            };
+        }
+
+        return $request->object();
+    }
+
+    /**
+     * Unlock card.
+     *
+     * @param  int  $cardId
+     * @return Card
+     * @throws \App\Exceptions\CaradhrasException
+     */
+    public function unlockCard(int $cardId): Card
+    {
+        $card = $this->getCard($cardId);
+
+        return match (CardStatus::tryFrom($card->idStatus)) {
+            CardStatus::BlockedPassword => $this->unlockSystemBlockedCard($cardId),
+            CardStatus::BlockedTemporary => $this->unlockUserBlockedCard($cardId),
+            default => $card
+        };
+    }
+
+    /**
+     * @param $cardId
+     * @return Card
+     * @throws CaradhrasException
+     */
+    public function unlockUserBlockedCard($cardId): Card
+    {
+        $request = $this->apiClient(false)
+            ->post("/cartoes/{$cardId}/desbloquear");
+
+        if ($request->failed()) {
+            throw new CaradhrasException(match ($request->status()) {
+                400 => trans('errors.card.unlock.failed'),
+                403 => trans('caradhras.card_not_printed'),
+                default => trans('errors.generic'),
+            }, 502);
+        }
+
+        return new Card($request);
+    }
+
+    /**
+     * Search P2P
+     *
+     * @param  array  $filters
+     * @return array|object
+     */
+    public function searchP2P(array $filters)
+    {
+        return $this->apiClient()
+            ->get('/p2ptransfer', $filters)
+            ->object();
+    }
+
+    /**
+     * Get account transactions.
+     *
+     * @param  int  $accountId
+     * @param  int  $limit
+     * @param  int  $page
+     * @return TransactionCollection
+     */
+    public function getAccountTransactions(int $accountId, int $limit = 25, int $page = 0): TransactionCollection
+    {
+        $response = $this->apiClient()
+            ->get("/accounts/{$accountId}/transactions", [
+                'page' => $page,
+                'limit' => $limit,
+            ]);
+
+        return new TransactionCollection($response);
+    }
+
+    public function createPerson(IndividualRegistration $personRegistration)
+    {
+        $response = $this->apiClient(false)
+            ->post('/v2/individuals', $personRegistration->toArray());
+
+        return $response->object();
     }
 
     /**

@@ -701,45 +701,130 @@ class CaradhrasMainClientTest extends TestCase
 // não tem testes ainda
 // </createPhoneRecharge>
 
-// <>
+// <orderPhoneRecharge>
 // não tem testes ainda
-// </>
+// </orderPhoneRecharge>
 
-// <>
+// <confirmPhoneRecharge>
 // não tem testes ainda
-// </>
+// </confirmPhoneRecharge>
 
-// <>
-// não tem testes ainda
-// </>
+// <createNonameCardsBatch>
+    // public function testCanCreateCardBatch()
+    // {
+    //     $address = Address::factory()->create(['cr_address_id' => '30873']);
+    //     $account = Account::factory()->create(['address_id' => $address->id]);
 
-// <>
-// não tem testes ainda
-// </>
+    //     $crRequest = [
+    //         'idOrigemComercial' => config('app.business_source_id'),
+    //         'idProduto' => config('app.product_id'),
+    //         'idTipoCartao' => config('app.plastic_id'),
+    //         'idImagem' => config('app.card_image_id'),
+    //         'idEndereco' => $account->address->cr_address_id,
+    //         'quantidadeCartoes' => 10,
+    //     ];
 
-// <>
-// não tem testes ainda
-// </>
+    //     $url = $this->caradhrasMainClient->getApiBaseUrl() . '/cartoes/lotes-cartoes-pre-pagos?' . http_build_query($crRequest);
 
-// <>
-// não tem testes ainda
-// </>
+    //     $response = [
+    //         "message" => "Ok",
+    //     ];
 
-// <>
-// não tem testes ainda
-// </>
+    //     Http::fake([
+    //         $url => Http::response($response, 200),
+    //     ]);
 
-// <>
-// não tem testes ainda
-// </>
+    //     $request = $this->caradhrasMainClient->createNonameCardsBatch(
+    //         businessSourceId: config('app.business_source_id'),
+    //         productId: config('app.product_id'),
+    //         plasticId: config('app.plastic_id'),
+    //         cardImageId: config('app.card_image_id'),
+    //         addressId: $account->address->cr_address_id,
+    //         cardQuantity: 10
+    //     );
 
-// <>
-// não tem testes ainda
-// </>
+    //     $this->assertEquals($request->message, $response['message']);
 
-// <>
+    //     Http::assertSent(
+    //         fn (Request $request) => $request->url() === $url &&
+    //             $request->method() === 'POST'
+    //     );
+    // }
+
+    // public function testFailedToCreateCardBatchThrowException()
+    // {
+    //     $account = Account::factory()->create();
+
+    //     $crRequest = [
+    //         'idOrigemComercial' => config('app.business_source_id'),
+    //         'idProduto' => config('app.product_id'),
+    //         'idTipoCartao' => config('app.plastic_id'),
+    //         'idImagem' => config('app.card_image_id'),
+    //         'idEndereco' => $account->address->cr_address_id,
+    //         'quantidadeCartoes' => 10,
+    //     ];
+
+    //     $url = $this->caradhrasMainClient->getApiBaseUrl() . '/cartoes/lotes-cartoes-pre-pagos?' . http_build_query($crRequest);
+
+    //     $responseError = [
+    //         "message" => "Error",
+    //     ];
+
+    //     Http::fake([
+    //         $url => Http::response($responseError, 500),
+    //     ]);
+
+    //     $this->expectException(FailedRequestCardBatchException::class);
+    //     $this->expectExceptionCode(502);
+    //     $this->expectExceptionMessage(trans('errors.card.failed_request_card_batch'));
+
+    //     try {
+    //         $this->caradhrasMainClient->createNonameCardsBatch(
+    //             businessSourceId: config('app.business_source_id'),
+    //             productId: config('app.product_id'),
+    //             plasticId: config('app.plastic_id'),
+    //             cardImageId: config('app.card_image_id'),
+    //             addressId: $account->address->cr_address_id,
+    //             cardQuantity: 10
+    //         );
+    //     } catch (Throwable $exception) {
+    //         Http::assertSent(
+    //             fn (Request $request) => $request->url() === $url &&
+    //                 $request->method() === 'POST'
+    //         );
+
+    //         throw $exception;
+    //     }
+    // }
+// </createNonameCardsBatch>
+
+// <getCard>
 // não tem testes ainda
-// </>
+// </getCard>
+
+// <lockCard>
+// não tem testes ainda
+// </lockCard>
+
+// <unlockCard>
+// não tem testes ainda
+// </unlockCard>
+
+// <unlockUserBlockedCard>
+// não tem testes ainda
+// </unlockUserBlockedCard>
+
+// <searchP2P>
+// não tem testes ainda
+// </searchP2P>
+
+// <getAccountTransactions>
+// não tem testes ainda
+// </getAccountTransactions>
+
+// <createPerson>
+// não tem testes ainda
+// </createPerson>
 
 // <>
 // não tem testes ainda
