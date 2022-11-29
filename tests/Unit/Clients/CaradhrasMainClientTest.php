@@ -826,19 +826,97 @@ class CaradhrasMainClientTest extends TestCase
 // não tem testes ainda
 // </createPerson>
 
-// <>
+// <addPersonDocument>
 // não tem testes ainda
-// </>
+// </addPersonDocument>
 
-// <>
+// <createPersonalAccount>
 // não tem testes ainda
-// </>
+// </createPersonalAccount>
 
-// <>
+// <createCardSettings>
 // não tem testes ainda
-// </>
+// </createCardSettings>
 
-// <>
+// <updateCardSettings>
 // não tem testes ainda
-// </>
+// </updateCardSettings>
+
+// <getCardSettings>
+// não tem testes ainda
+// </getCardSettings>
+
+// <attachMccGroupsToCard>
+    // public function testCanAttachAMccGroupsToCard()
+    // {
+    //     $crCardId = $this->faker->randomNumber(4, true);
+    //     $mccGroupIds = [
+    //         $this->faker->numberBetween(1, 48),
+    //         $this->faker->numberBetween(1, 48),
+    //         $this->faker->numberBetween(1, 48),
+    //     ];
+
+    //     $expectedUrl = $this->caradhrasMainClient->getApiBaseUrl() . "/cartoes/$crCardId/controles-grupomcc";
+
+    //     foreach ($mccGroupIds as $mccGroupId) {
+    //         $fakeResponse[] = CardMccGroupControl::factory()
+    //             ->cardId($crCardId)
+    //             ->mccGroupId($mccGroupId)
+    //             ->make()
+    //             ->toArray();
+    //     }
+
+    //     Http::fake([
+    //         $expectedUrl => Http::response($fakeResponse),
+    //     ]);
+
+    //     $mccGroupsResponse = $this->caradhrasMainClient->attachMccGroupsToCard($crCardId, $mccGroupIds);
+
+    //     $this->assertCount(3, $mccGroupsResponse);
+
+    //     foreach ($mccGroupIds as $index => $mccGroupId) {
+    //         $this->assertInstanceOf(CardMccGroupControl::class, $mccGroupsResponse[$index]);
+    //         $this->assertEquals($fakeResponse[$index]['id'], $mccGroupsResponse[$index]->id);
+    //         $this->assertEquals($mccGroupId, $mccGroupsResponse[$index]->grupoMCC->id);
+    //     }
+
+    //     Http::assertSent(function (Request $request) use ($expectedUrl, $mccGroupIds) {
+    //         $this->assertEquals('POST', $request->method());
+    //         $this->assertEquals($expectedUrl, $request->url());
+
+    //         $requestData = $request->data();
+    //         $this->assertIsArray($requestData);
+    //         $this->assertArrayHasKey('idsGruposMCC', $requestData);
+    //         $this->assertEquals($mccGroupIds, $requestData['idsGruposMCC']);
+
+    //         return true;
+    //     });
+    // }
+// </attachMccGroupsToCard>
+
+// <deleteCardMccGroup>
+    // public function testCanDeleteCardMccGroupControl()
+    // {
+    //     $crCardId = $this->faker->randomNumber(4, true);
+    //     $crCardMccGroupControl = $this->faker->randomNumber(4, true);
+
+    //     $expectedUrl = $this->caradhrasMainClient->getApiBaseUrl() . "/cartoes/$crCardId/controles-grupomcc/{$crCardMccGroupControl}";
+
+    //     Http::fake([
+    //         $expectedUrl => Http::response(status: 204),
+    //     ]);
+
+    //     $response = $this->caradhrasMainClient->deleteCardMccGroup($crCardId, $crCardMccGroupControl);
+
+    //     $this->assertTrue($response);
+
+
+    //     Http::assertSent(function (Request $request) use ($expectedUrl) {
+    //         $this->assertEquals('DELETE', $request->method());
+    //         $this->assertEquals($expectedUrl, $request->url());
+
+    //         return true;
+    //     });
+    // }
+// </deleteCardMccGroup>
 }

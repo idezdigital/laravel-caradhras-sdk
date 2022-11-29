@@ -2,10 +2,13 @@
 
 namespace Idez\Caradhras\Clients;
 
+use GuzzleHttp\Psr7\Stream;
 use Idez\Caradhras\Data\Card;
 use Idez\Caradhras\Data\CardCollection;
 use Idez\Caradhras\Data\CardDetails;
 use Idez\Caradhras\Data\CardLimit;
+use Idez\Caradhras\Data\CardMccGroupControl;
+use Idez\Caradhras\Data\CardSettings;
 use Idez\Caradhras\Data\Individual;
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Data\PhoneRecharge;
@@ -14,8 +17,18 @@ use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Enums\AddressType;
 use Idez\Caradhras\Enums\Cards\CardStatus;
+use Idez\Caradhras\Enums\Documents\DocumentErrorCode;
+use Idez\Caradhras\Enums\Documents\DocumentSelfieReasonCode;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Exceptions\CVVMismatchException;
+use Idez\Caradhras\Exceptions\Documents\DuplicatedImageException;
+use Idez\Caradhras\Exceptions\Documents\FaceNotVisibleException;
+use Idez\Caradhras\Exceptions\Documents\InconsistentSelfieException;
+use Idez\Caradhras\Exceptions\Documents\InvalidDocumentException;
+use Idez\Caradhras\Exceptions\Documents\InvalidSelfieException;
+use Idez\Caradhras\Exceptions\Documents\LowQualitySelfieException;
+use Idez\Caradhras\Exceptions\Documents\SendDocumentException;
+use Idez\Caradhras\Exceptions\FailedCreatePersonalAccount;
 use Idez\Caradhras\Exceptions\FailedRequestCardBatchException;
 use Idez\Caradhras\Exceptions\FindCardsException;
 use Idez\Caradhras\Exceptions\FraudDetectorException;
@@ -37,7 +50,7 @@ class CaradhrasMainClient extends BaseApiClient
      *
      * @param  array  $filters
      * @return P2PTransferPayload
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws \Idez\Caradhras\Exceptions\CaradhrasException;
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function getTransfer(array $filters): P2PTransferPayload
@@ -60,7 +73,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  string  $registrationId
      * @param  string  $document
      * @return object
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function findIndividual(string $registrationId, string $document): object
     {
@@ -177,7 +190,7 @@ class CaradhrasMainClient extends BaseApiClient
      *
      * @param  array  $addressData
      * @return object
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function updateAddress(array $addressData): object
     {
@@ -199,8 +212,8 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  array  $data
      * @param  string  $id
      * @return object
-     * @throws \App\Exceptions\InsufficientBalanceException
-     * @throws \App\Exceptions\TransferFailedException
+     * @throws Idez\Caradhras\Exceptions\InsufficientBalanceException
+     * @throws Idez\Caradhras\Exceptions\TransferFailedException
      */
     public function p2p(array $data, string $id): object
     {
@@ -433,7 +446,7 @@ class CaradhrasMainClient extends BaseApiClient
      *
      * @param  int  $cardId
      * @return CardDetails
-     * @throws \App\Exceptions\GetCardDetailsException
+     * @throws Idez\Caradhras\Exceptions\GetCardDetailsException
      */
     public function getCardDetails(int $cardId): CardDetails
     {
@@ -480,7 +493,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  int  $cardId
      * @param  int  $limitId
      * @return CardLimit
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function getCardLimit(int $cardId, int $limitId): CardLimit
     {
@@ -565,7 +578,7 @@ class CaradhrasMainClient extends BaseApiClient
      *
      * @param  int  $cardId
      * @param  string  $cvv
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
      * @throws CVVMismatchException
      * @throws Exception
      */
@@ -594,7 +607,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  string  $cardId
      * @param  string  $description
      * @return object
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function cancelCard(string $cardId, string $description = ''): object
@@ -660,7 +673,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  string  $uf
      * @param  string  $cep
      * @param  string  $pais
-     * @param  \App\Enums\Caradhras\AddressType  $tipoEndereco
+     * @param  \Idez\Caradhras\EnumsAddressType  $tipoEndereco
      * @return object
      */
     public function createAddress(
@@ -767,7 +780,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  int  $addressId
      * @param  int  $cardQuantity
      * @return object
-     * @throws \App\Exceptions\FailedRequestCardBatchException
+     * @throws \Idez\Caradhras\Exceptions\FailedRequestCardBatchException;
      */
     public function createNonameCardsBatch(
         int $businessSourceId,
@@ -810,7 +823,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  int  $cardId
      * @param  string  $description
      * @return object
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function lockCard(int $cardId, string $description): object
     {
@@ -832,7 +845,7 @@ class CaradhrasMainClient extends BaseApiClient
      *
      * @param  int  $cardId
      * @return Card
-     * @throws \App\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function unlockCard(int $cardId): Card
     {
@@ -907,6 +920,143 @@ class CaradhrasMainClient extends BaseApiClient
     }
 
     /**
+     * Add a document to a personal account.
+     *
+     * @param  string  $registrationId
+     * @param  string  $documentType
+     * @param  Stream  $file
+     * @param  string  $contentType
+     * @return Idez\Caradhras\Data\Registrations\IndividualRegistration
+     *
+     * @throws Idez\Caradhras\Exceptions\DuplicatedImageException
+     * @throws Idez\Caradhras\Exceptions\FaceNotVisibleException
+     * @throws Idez\Caradhras\Exceptions\InconsistentSelfieException
+     * @throws Idez\Caradhras\Exceptions\InvalidDocumentException
+     * @throws Idez\Caradhras\Exceptions\InvalidSelfieException
+     * @throws Idez\Caradhras\Exceptions\LowQualitySelfieException
+     * @throws Idez\Caradhras\Exceptions\SendDocumentException
+     */
+    public function addPersonDocument(string $registrationId, string $documentType, Stream $file, string $contentType = 'image/jpeg'): IndividualRegistration
+    {
+        $queryParams = http_build_query([
+            'additionalDetails' => true,
+            'category' => $documentType,
+        ]);
+
+        $response = $this->apiClient(false)
+            ->withBody($file, $contentType)
+            ->post("/v2/individuals/{$registrationId}/documents?" . $queryParams);
+
+        if ($response->failed()) {
+            $errorCode = $response->json('errorCode');
+            $reasonCode = $response->json('reasonCode');
+
+            if (filled($errorCode)) {
+                throw match (DocumentErrorCode::tryFrom($errorCode)) {
+                    DocumentErrorCode::DuplicatedImage => new DuplicatedImageException(),
+                    DocumentErrorCode::InvalidSelfie => match (DocumentSelfieReasonCode::tryFrom($reasonCode)) {
+                        DocumentSelfieReasonCode::LowQuality => new LowQualitySelfieException(),
+                        DocumentSelfieReasonCode::FaceNotVisible => new FaceNotVisibleException(),
+                        DocumentSelfieReasonCode::Inconsistent => new InconsistentSelfieException(),
+                        default => new InvalidSelfieException()
+                    },
+                    default => new InvalidDocumentException(),
+                };
+            }
+
+            throw new SendDocumentException($response->json(), $response->status());
+        }
+
+        return new IndividualRegistration($response->object());
+    }
+
+    /**
+     * Create personal account.
+     *
+     * @param  array  $payload
+     * @return object
+     * @throws Idez\Caradhras\Exceptions\CaradhrasException
+     * @throws Idez\Caradhras\Exceptions\FailedCreatePersonalAccount
+     */
+    public function createPersonalAccount(array $payload): object
+    {
+        $response = $this->apiClient(false)->post('/v2/individuals/accounts', $payload);
+
+        if ($response->failed()) {
+            if ($response->clientError()) {
+                throw new FailedCreatePersonalAccount($response->json(), $response->status());
+            }
+
+            throw new CaradhrasException('Failed to create personal account');
+        }
+
+        return $response->object();
+    }
+
+    public function createCardSettings(int $cardId, CardSettings $cardSettings)
+    {
+        $request = $this->apiClient()
+            ->post("/cartoes/{$cardId}/controles-configuracoes", $cardSettings->toArray())
+            ->throw();
+
+        return new CardSettings($request->json());
+    }
+
+    public function updateCardSettings(int $cardId, int $settingsId, CardSettings $cardSettings)
+    {
+        return $this->apiClient()
+            ->patch("/cartoes/{$cardId}/controles-configuracoes/{$settingsId}", $cardSettings->toArray())
+            ->throw()
+            ->object();
+    }
+
+    public function getCardSettings(int $cardId, int $settingsId)
+    {
+        return $this->apiClient()
+            ->get("/cartoes/{$cardId}/controles-configuracoes/{$settingsId}")
+            ->object();
+    }
+
+    /**
+     * Attach MCC groups to a card.
+     *
+     * @param  int  $cardId
+     * @param  array<int>  $idsGruposMCC
+     * @return CardMccGroupControl[]
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function attachMccGroupsToCard(int $cardId, array $idsGruposMCC): array
+    {
+        $response = $this->apiClient()
+            ->post("/cartoes/{$cardId}/controles-grupomcc", [
+                'idsGruposMCC' => $idsGruposMCC,
+            ])
+            ->throw();
+
+        return array_map(
+            fn ($cardMccGroupControl) => new CardMccGroupControl($cardMccGroupControl),
+            $response->object()
+        );
+    }
+
+    /**
+     * Delete a MCC groups from card.
+     *
+     * @param  int  $cardId
+     * @param  int  $mccGroupControlId
+     * @return bool
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function deleteCardMccGroup(int $cardId, int $mccGroupControlId): bool
+    {
+        $response = $this->apiClient()
+            ->delete("/cartoes/{$cardId}/controles-grupomcc/{$mccGroupControlId}")
+            ->throw();
+
+        return $response->successful();
+    }
+
+    /**
      * @param  int  $originAccountId
      * @param  int  $destinationAccountId
      * @param  float  $amount
@@ -949,5 +1099,20 @@ class CaradhrasMainClient extends BaseApiClient
             ->apiClient()
             ->asJson()
             ->get("/v2/individuals/$personId", ["statusSPD" => 'true']);
+    }
+
+    /** @deprecated */
+    public function getBankTransfer(int $adjustmentId)
+    {
+        return $this->apiClient()->get("/banktransfers/adjustment/{$adjustmentId}")->throw()->json();
+    }
+
+    /** @deprecated */
+    public function listBankTransferOut(int $accountId)
+    {
+        return $this->apiClient()
+            ->get("/banktransfers/account/{$accountId}")
+            ->throw()
+            ->object();
     }
 }
