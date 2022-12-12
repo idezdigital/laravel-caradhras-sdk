@@ -3,7 +3,6 @@
 namespace Idez\Caradhras\Data;
 
 use Psr\Http\Message\ResponseInterface;
-
 abstract class Struct implements \JsonSerializable
 {
     /**
@@ -105,3 +104,4 @@ abstract class Struct implements \JsonSerializable
         return $this->attributes;
     }
 }
+

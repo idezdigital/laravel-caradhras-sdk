@@ -329,7 +329,7 @@ class CaradhrasMainClient extends BaseApiClient
             ->object();
     }
 
-        /**
+    /**
      * Update card password.
      *
      * @param  string  $cardId
@@ -650,7 +650,8 @@ class CaradhrasMainClient extends BaseApiClient
         int $individualId,
         string $name,
         null|string $email = null
-    ): object {
+    ): object
+    {
         $response = $this->apiClient()
             ->post("/contas/{$accountId}/adicionais", [
                 'idPessoa' => $individualId,
@@ -673,7 +674,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  string  $uf
      * @param  string  $cep
      * @param  string  $pais
-     * @param  \Idez\Caradhras\EnumsAddressType  $tipoEndereco
+     * @param  AddressType  $tipoEndereco
      * @return object
      */
     public function createAddress(
@@ -687,7 +688,8 @@ class CaradhrasMainClient extends BaseApiClient
         string $cep,
         string $pais = 'Brasil',
         AddressType $tipoEndereco = AddressType::Home
-    ): object {
+    ): object
+    {
         $data = [
             'idTipoEndereco' => $tipoEndereco->value,
             'idPessoa' => $idPessoa,

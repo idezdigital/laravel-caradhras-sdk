@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Caradhras\Cards\CardStatus;
 use Idez\Caradhras\Data\Card;
+use Idez\Caradhras\Enums\Cards\CardStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CardFactory extends Factory
