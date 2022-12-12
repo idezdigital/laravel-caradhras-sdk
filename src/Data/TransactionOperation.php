@@ -2,8 +2,8 @@
 
 namespace App\Enums\Transactions;
 
-use Idez\Caradhras\Traits\NovaSelectEnum;
 use Idez\Caradhras\Contracts\NovaSelectEnumInterface;
+use Idez\Caradhras\Traits\NovaSelectEnum;
 
 enum TransactionOperation: string implements NovaSelectEnumInterface
 {

@@ -2,9 +2,9 @@
 
 namespace Idez\Caradhras\Data;
 
+use Idez\Caradhras\Contracts\NovaSelectEnumInterface;
 use Idez\Caradhras\Enums\SPDStatusCode;
 use Idez\Caradhras\Traits\NovaSelectEnum;
-use Idez\Caradhras\Contracts\NovaSelectEnumInterface;
 
 enum AccountStatus: string implements NovaSelectEnumInterface
 {
@@ -121,7 +121,7 @@ enum AccountStatus: string implements NovaSelectEnumInterface
             self::Denied,
             self::Canceled,
             self::Failed,
-            self::Blocked
+            self::Blocked,
         ]);
     }
 

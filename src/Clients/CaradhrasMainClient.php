@@ -650,8 +650,7 @@ class CaradhrasMainClient extends BaseApiClient
         int $individualId,
         string $name,
         null|string $email = null
-    ): object
-    {
+    ): object {
         $response = $this->apiClient()
             ->post("/contas/{$accountId}/adicionais", [
                 'idPessoa' => $individualId,
@@ -688,8 +687,7 @@ class CaradhrasMainClient extends BaseApiClient
         string $cep,
         string $pais = 'Brasil',
         AddressType $tipoEndereco = AddressType::Home
-    ): object
-    {
+    ): object {
         $data = [
             'idTipoEndereco' => $tipoEndereco->value,
             'idPessoa' => $idPessoa,
