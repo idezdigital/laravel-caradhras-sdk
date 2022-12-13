@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Data;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Idez\Caradhras\Database\Factories\CardMccGroupControlFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CardMccGroupControl extends Struct
 {

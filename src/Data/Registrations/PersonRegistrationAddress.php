@@ -3,8 +3,8 @@
 namespace Idez\Caradhras\Data\Registrations;
 
 use Idez\Caradhras\Data\Data;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Idez\Caradhras\Database\Factories\Registrations\PersonRegistrationAddressFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
