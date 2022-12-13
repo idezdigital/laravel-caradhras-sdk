@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Data;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Idez\Caradhras\Database\Factories\TransactionFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $idAdjustment

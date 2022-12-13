@@ -2,10 +2,9 @@
 
 namespace Idez\Caradhras\Data;
 
+use Idez\Caradhras\Contracts\NovaSelectEnumInterface;
 use Idez\Caradhras\Enums\SPDStatusCode;
 use Idez\Caradhras\Traits\NovaSelectEnum;
-use Idez\Caradhras\Data\AccountStatusCode;
-use Idez\Caradhras\Contracts\NovaSelectEnumInterface;
 
 enum AccountStatus: string implements NovaSelectEnumInterface
 {
