@@ -2,44 +2,44 @@
 
 namespace Idez\Caradhras\Clients;
 
+use Throwable;
 use GuzzleHttp\Psr7\Stream;
+use Illuminate\Support\Str;
 use Idez\Caradhras\Data\Card;
-use Idez\Caradhras\Data\CardCollection;
-use Idez\Caradhras\Data\CardDetails;
 use Idez\Caradhras\Data\CardLimit;
-use Idez\Caradhras\Data\CardMccGroupControl;
-use Idez\Caradhras\Data\CardSettings;
 use Idez\Caradhras\Data\Individual;
-use Idez\Caradhras\Data\P2PTransferPayload;
-use Idez\Caradhras\Data\PhoneRecharge;
-use Idez\Caradhras\Data\Registrations\IndividualRegistration;
-use Idez\Caradhras\Data\TransactionCollection;
-use Idez\Caradhras\Enums\AccountStatus;
+use Idez\Caradhras\Data\CardDetails;
+use Idez\Caradhras\Data\CardSettings;
 use Idez\Caradhras\Enums\AddressType;
+use Idez\Caradhras\Data\PhoneRecharge;
+use Idez\Caradhras\Data\CardCollection;
+use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Enums\Cards\CardStatus;
-use Idez\Caradhras\Enums\Documents\DocumentErrorCode;
-use Idez\Caradhras\Enums\Documents\DocumentSelfieReasonCode;
+use Idez\Caradhras\Data\P2PTransferPayload;
+use Idez\Caradhras\Data\CardMccGroupControl;
+use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Exceptions\CaradhrasException;
-use Idez\Caradhras\Exceptions\CVVMismatchException;
-use Idez\Caradhras\Exceptions\Documents\DuplicatedImageException;
-use Idez\Caradhras\Exceptions\Documents\FaceNotVisibleException;
-use Idez\Caradhras\Exceptions\Documents\InconsistentSelfieException;
-use Idez\Caradhras\Exceptions\Documents\InvalidDocumentException;
-use Idez\Caradhras\Exceptions\Documents\InvalidSelfieException;
-use Idez\Caradhras\Exceptions\Documents\LowQualitySelfieException;
-use Idez\Caradhras\Exceptions\Documents\SendDocumentException;
-use Idez\Caradhras\Exceptions\FailedCreatePersonalAccount;
-use Idez\Caradhras\Exceptions\FailedRequestCardBatchException;
 use Idez\Caradhras\Exceptions\FindCardsException;
+use Idez\Caradhras\Exceptions\CVVMismatchException;
+use Idez\Caradhras\Enums\Documents\DocumentErrorCode;
 use Idez\Caradhras\Exceptions\FraudDetectorException;
 use Idez\Caradhras\Exceptions\GetCardDetailsException;
-use Idez\Caradhras\Exceptions\InsufficientBalanceException;
-use Idez\Caradhras\Exceptions\IssuePhysicalCardException;
-use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
-use Idez\Caradhras\Exceptions\PhoneRechargeOrderFailedException;
 use Idez\Caradhras\Exceptions\TransferFailedException;
-use Illuminate\Support\Str;
-use Throwable;
+use Idez\Caradhras\Exceptions\IssuePhysicalCardException;
+use Idez\Caradhras\Exceptions\FailedCreatePersonalAccount;
+use Idez\Caradhras\Exceptions\InsufficientBalanceException;
+use Idez\Caradhras\Enums\Documents\DocumentSelfieReasonCode;
+use Idez\Caradhras\Data\Registrations\PersonRegistration;
+use Idez\Caradhras\Exceptions\Documents\SendDocumentException;
+use Idez\Caradhras\Exceptions\FailedRequestCardBatchException;
+use Idez\Caradhras\Exceptions\Documents\InvalidSelfieException;
+use Idez\Caradhras\Exceptions\Documents\FaceNotVisibleException;
+use Idez\Caradhras\Exceptions\PhoneRechargeOrderFailedException;
+use Idez\Caradhras\Exceptions\Documents\DuplicatedImageException;
+use Idez\Caradhras\Exceptions\Documents\InvalidDocumentException;
+use Idez\Caradhras\Exceptions\Documents\LowQualitySelfieException;
+use Idez\Caradhras\Exceptions\Documents\InconsistentSelfieException;
+use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
 
 class CaradhrasMainClient extends BaseApiClient
 {
@@ -124,11 +124,11 @@ class CaradhrasMainClient extends BaseApiClient
     /**
      * Update a Person.
      *
-     * @param  IndividualRegistration  $person
+     * @param  PersonRegistration  $person
      * @return object
      * @throws Exception
      */
-    public function updateIndividuals(IndividualRegistration $person): object
+    public function updateIndividuals(PersonRegistration $person): object
     {
         return $this
             ->apiClient()
@@ -480,8 +480,10 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  AccountStatus  $status
      * @return object
      */
-    public function cancelAccount(int $accountId, AccountStatus $status = AccountStatus::Canceled): object
+    public function cancelAccount(int $accountId): object
     {
+        $status = AccountStatus::Canceled;
+
         return $this
             ->apiClient()
             ->post("/contas/{$accountId}/cancelar?id_status={$status->value}")
@@ -911,7 +913,7 @@ class CaradhrasMainClient extends BaseApiClient
         return new TransactionCollection($response);
     }
 
-    public function createPerson(IndividualRegistration $personRegistration)
+    public function createPerson(PersonRegistration $personRegistration)
     {
         $response = $this->apiClient(false)
             ->post('/v2/individuals', $personRegistration->toArray());
@@ -926,7 +928,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  string  $documentType
      * @param  Stream  $file
      * @param  string  $contentType
-     * @return Idez\Caradhras\Data\Registrations\IndividualRegistration
+     * @return Idez\Caradhras\Data\Registrations\PersonRegistration
      *
      * @throws Idez\Caradhras\Exceptions\DuplicatedImageException
      * @throws Idez\Caradhras\Exceptions\FaceNotVisibleException
@@ -936,7 +938,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @throws Idez\Caradhras\Exceptions\LowQualitySelfieException
      * @throws Idez\Caradhras\Exceptions\SendDocumentException
      */
-    public function addPersonDocument(string $registrationId, string $documentType, Stream $file, string $contentType = 'image/jpeg'): IndividualRegistration
+    public function addPersonDocument(string $registrationId, string $documentType, Stream $file, string $contentType = 'image/jpeg'): PersonRegistration
     {
         $queryParams = http_build_query([
             'additionalDetails' => true,
@@ -967,7 +969,7 @@ class CaradhrasMainClient extends BaseApiClient
             throw new SendDocumentException($response->json(), $response->status());
         }
 
-        return new IndividualRegistration($response->object());
+        return new PersonRegistration($response->object());
     }
 
     /**

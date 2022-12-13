@@ -4,6 +4,7 @@ namespace Idez\Caradhras\Data\Registrations;
 
 use Idez\Caradhras\Data\Data;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Idez\Caradhras\Database\Factories\Registrations\PersonRegistrationPhoneFactory;
 
 /**
  * @property int $id
@@ -14,4 +15,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PersonRegistrationPhone extends Data
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return PersonRegistrationPhoneFactory::new();
+    }
 }

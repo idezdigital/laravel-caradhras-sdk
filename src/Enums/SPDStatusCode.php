@@ -17,5 +17,17 @@ enum SPDStatusCode: int
     case WaitingDocumentsCashInAllowed = 11;
     case BlockedByDocumentAnalysisCashInAllowed = 12;
     case BlockedByDocumentAnalysisCashFullBlock = 13;
+    case CommercialDisinterest = 14;
+    case CancelledByRiskPolicy = 21;
+    case BlockedByRiskyPoliceResendDocuments = 15;
+    case BlockedByRiskyPolice = 16;
+    case BlockedFraudConfirmed = 17;
+    case BlockedBySanitization = 18;
+    case BlockedBySanitizationResendDocuments = 19;
+    case BlockedBySanitizationDocumentaryAdjustment = 20;
+    case BlockedIncompleteDocumentation = 22;
+    case BlockedClosingRegistration = 23;
     case BlockedDueInactivity = 24;
+    case BlockedViolationAlert = 25;
+    case BlockedViolationSuspected = 26;
 }

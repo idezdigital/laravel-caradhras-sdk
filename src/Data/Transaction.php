@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Data;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Idez\Caradhras\Database\Factories\TransactionFactory;
 
 /**
  * @property int $idAdjustment
@@ -39,6 +40,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Transaction extends Data
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return TransactionFactory::new();
+    }
 
     public const STATUS_NORMAL = 0;
     public const STATUS_CANCELED = 1;

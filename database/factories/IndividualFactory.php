@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
+use Idez\Caradhras\Data\Individual;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class IndividualFactory extends Factory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Individual::class;
+
     /**
      * Define the model's default state.
      *
