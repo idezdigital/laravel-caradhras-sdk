@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Data;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Idez\Caradhras\Database\Factories\CardDetailsFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property  string  $numeroCartao

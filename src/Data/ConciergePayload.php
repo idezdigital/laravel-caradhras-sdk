@@ -2,9 +2,6 @@
 
 namespace Idez\Caradhras\Data;
 
-use Idez\Caradhras\Data\Struct;
-
-
 /**
  * @property string $origin
  * @property string $id

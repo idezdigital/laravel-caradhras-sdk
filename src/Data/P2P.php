@@ -2,8 +2,6 @@
 
 namespace Idez\Caradhras\Data;
 
-use Idez\Caradhras\Data\ConciergePayload;
-
 /**
 * @property string $transactionCode
 * @property int $originalAccount
