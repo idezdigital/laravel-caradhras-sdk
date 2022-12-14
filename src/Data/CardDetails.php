@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Data;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Idez\Caradhras\Database\Factories\CardDetailsFactory;
 
 /**
  * @property  string  $numeroCartao
@@ -25,4 +26,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CardDetails extends Data
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return CardDetailsFactory::new();
+    }
 }
