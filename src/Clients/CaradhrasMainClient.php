@@ -176,13 +176,15 @@ class CaradhrasMainClient extends BaseApiClient
      * @param  array  $query
      * @return array
      */
-    public function getTransactions(int $accountId, array $query = []): array
+    public function getTransactions(int $accountId, array $query = []): TransactionCollection
     {
-        return $this
-            ->apiClient()
-            ->retry(3, 1500)
-            ->get("/accounts/{$accountId}/transactions", $query)
-            ->json();
+        return new TransactionCollection(
+            $this
+                ->apiClient()
+                ->retry(3, 1500)
+                ->get("/accounts/{$accountId}/transactions", $query)
+                ->json()
+        );
     }
 
     /**
