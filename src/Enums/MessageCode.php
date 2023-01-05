@@ -41,13 +41,13 @@ enum MessageCode: string
     public static function caseByCode(int $code): MessageCode
     {
         return match ($code) {
-             1000 => self::InvalidDocument,
-             1001 => self::IrregularDocument,
-             1002 => self::IncorrectName,
-             1003 => self::IncorrectMother_Name,
-             1004 => self::IncorrectBirth_Date,
-             1005 => self::SanctionedDocument,
-             1006 => self::BlackListDocument,
+            1000 => self::InvalidDocument,
+            1001 => self::IrregularDocument,
+            1002 => self::IncorrectName,
+            1003 => self::IncorrectMother_Name,
+            1004 => self::IncorrectBirth_Date,
+            1005 => self::SanctionedDocument,
+            1006 => self::BlackListDocument,
         };
     }
 }
