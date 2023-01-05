@@ -2,38 +2,23 @@
 
 namespace Idez\Caradhras\Exceptions;
 
+use Idez\Caradhras\Enums\MessageCode;
+
 class FailedCreatePersonalAccount extends BaseException implements ExceptionLevel
 {
-    public const INVALID_DOCUMENT = 'invalid_document';
-    public const IRREGULAR_DOCUMENT = 'irregular_document';
-    public const INCORRECT_NAME = 'incorrect_name';
-    public const INCORRECT_MOTHER_NAME = 'incorrect_mother_name';
-    public const INCORRECT_BIRTH_DATE = 'incorrect_birth_date';
-    public const SANCTIONED_DOCUMENT = 'sanctioned_document';
-    public const BLACK_LIST_DOCUMENT = 'black_list_document';
-
-    public const CARADHRAS_MESSAGE_CODES = [
-        1000 => self::INVALID_DOCUMENT,
-        1001 => self::IRREGULAR_DOCUMENT,
-        1002 => self::INCORRECT_NAME,
-        1003 => self::INCORRECT_MOTHER_NAME,
-        1004 => self::INCORRECT_BIRTH_DATE,
-        1005 => self::SANCTIONED_DOCUMENT,
-        1006 => self::BLACK_LIST_DOCUMENT,
-    ];
-
     public function __construct(array $caradhrasError, int $statusCode = 400)
     {
         $errorKey = 'caradhras.account.something_went_wrong';
 
-        if (isset($caradhrasError['message'])) {
-            $errorKey = 'caradhras.account.validation_error';
-            $message = $this->getErrorTranslation($caradhrasError['message']);
-        } elseif ($statusCode === 409) {
-            $caradhrasErrorCode = $caradhrasError['code'];
-            $errorKey = 'caradhras.account.' . self::CARADHRAS_MESSAGE_CODES[$caradhrasErrorCode];
-            $statusCode = 412;
-        }
+        $this->setsErrorDataifMessageAlreadySet;
+
+        $errorKey = $this->setsErrorDataifMessageAlreadySet['errorKey'] ?? '';
+        $message = $this->setsErrorDataifMessageAlreadySet['message'] ?? '';
+
+        $this->setsErrorDataIfMessageIsntSetAndThereIsConflict;
+
+        $errorKey = $errorKey ?? $this->setsErrorDataIfMessageIsntSetAndThereIsConflict['errorKey'];
+        $statusCode = $statusCode ?? $this->setsErrorDataIfMessageIsntSetAndThereIsConflict['statusCode'];
 
         $message = $message ?? trans($errorKey);
 
@@ -42,6 +27,31 @@ class FailedCreatePersonalAccount extends BaseException implements ExceptionLeve
         }
 
         parent::__construct($message, $statusCode, $errorKey, $data ?? []);
+    }
+
+    public function setsErrorDataifMessageAlreadySet(array $caradhrasErrorMessage): array
+    {
+        if (isset($caradhrasErrorMessage)) {
+            $errorKey = 'caradhras.account.validation_error';
+            $message = $this->getErrorTranslation($caradhrasErrorMessage);
+
+            return ['errorKey' => $errorKey, 'message' => $message];
+        }
+
+        return ['errorKey' => '', 'message' => ''];
+    }
+
+    public function setsErrorDataIfMessageIsntSetAndThereIsConflict(array $caradhrasError, int $statusCode): array
+    {
+        if ($statusCode === 409 && !isset($caradhrasError['message'])) {
+            $caradhrasErrorCode = $caradhrasError['code'];
+            $errorKey = 'caradhras.account.' . MessageCode::caseByCode($caradhrasErrorCode)->value;
+            $statusCode = 412;
+
+            return ['errorKey' => $errorKey, '$statusCode' => $statusCode];
+        }
+
+        return ['errorKey' => '', '$statusCode' => ''];
     }
 
     /**
