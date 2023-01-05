@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Exceptions;
 
-class FailedCreatePersonalAccount extends BaseException
+class FailedCreatePersonalAccount extends BaseException implements ExceptionLevel
 {
     public const INVALID_DOCUMENT = 'invalid_document';
     public const IRREGULAR_DOCUMENT = 'irregular_document';

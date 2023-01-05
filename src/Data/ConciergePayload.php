@@ -14,7 +14,8 @@ abstract class ConciergePayload extends Struct
     private string $origin;
     private string $id;
     private string $accountId;
-
+    private string|null $type;
+    private string|null $createdAt;
     public array $payload = [];
 
     public function getConciergeId()

@@ -14,7 +14,6 @@ use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Data\PhoneRecharge;
 use Idez\Caradhras\Data\Registrations\PersonRegistration;
 use Idez\Caradhras\Data\TransactionCollection;
-use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Enums\AddressType;
 use Idez\Caradhras\Enums\Cards\CardStatus;
 use Idez\Caradhras\Enums\Documents\DocumentErrorCode;
@@ -83,18 +82,14 @@ class CaradhrasMainClient extends BaseApiClient
             ->get("/v2/individuals", ['document' => $document]);
 
         if ($response->failed()) {
-            $message = $response->status() === 404 ? 'Failed to get individual.' : 'Individual not found.';
-            $statusCode = $response->status() === 404 ? 404 : 502;
-
-            throw new CaradhrasException($message, $statusCode);
+            throw CaradhrasException::failedGetIndividual($response);
         }
 
         $individual = collect(object_get($response->object(), 'items', []))
-            ->filter(fn ($individual) => $individual?->idRegistration === $registrationId)
-            ->first();
+            ->firstWhere(fn ($individual) => $individual?->idRegistration === $registrationId);
 
         if (blank($individual)) {
-            throw new CaradhrasException('Individual not found.', 404);
+            throw CaradhrasException::failedGetIndividual($response);
         }
 
         return $individual;
@@ -109,7 +104,7 @@ class CaradhrasMainClient extends BaseApiClient
      * @return bool
      * @throws RequestException
      */
-    public function associateCardToAccount(int $cardId, int $accountId, int $individualId): bool
+    public function associatePrepaidCardToAccount(int $cardId, int $accountId, int $individualId): bool
     {
         $this->apiClient()
             ->post("/contas/{$accountId}/atribuir-cartao-prepago", [
@@ -479,16 +474,13 @@ class CaradhrasMainClient extends BaseApiClient
 
     /**
      * @param  int  $accountId
-     * @param  AccountStatus  $status
      * @return object
      */
     public function cancelAccount(int $accountId): object
     {
-        $status = AccountStatus::Canceled;
-
         return $this
             ->apiClient()
-            ->post("/contas/{$accountId}/cancelar?id_status={$status->value}")
+            ->post("/contas/{$accountId}/cancelar?id_status=2")
             ->object();
     }
 

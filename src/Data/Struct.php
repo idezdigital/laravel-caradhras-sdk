@@ -84,8 +84,8 @@ abstract class Struct implements \JsonSerializable
                 continue;
             }
 
-            if (is_object($var) && enum_exists($var::class)) {
-                $var = $var->value;
+            if ($value instanceof self) {
+                $value = $value->toArray();
             }
 
             $array[$key] = $var;

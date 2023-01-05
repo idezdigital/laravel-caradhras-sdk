@@ -28,10 +28,10 @@ class CardMccGroupControlFactory extends Factory
                 "id" => $this->faker->numberBetween(1000, 9999),
                 "descricao" => $this->faker->text(20),
                 "descricaoExtrato" => $this->faker->text(20),
-                "duracao" => 7,
-                "percentualMin" => 10.00,
-                "percentualMax" => 10.00,
-                "intervaloMatch" => 5,
+                "duracao" => $this->faker->numberBetween(1, 59),
+                "percentualMin" => $this->faker->randomFloat(2, 1, 90),
+                "percentualMax" => $this->faker->randomFloat(2, 1, 90),
+                "intervaloMatch" => $this->faker->numberBetween(1, 9),
             ],
         ];
     }

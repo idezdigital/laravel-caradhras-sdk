@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 abstract class BaseException extends Exception implements HttpExceptionInterface
 {
-    public const DEFAULT_ERROR_KEY = 'api.generic_error';
+    public const DEFAULT_ERROR_KEY = 'caradhras.generic_error';
     public const DEFAULT_STATUS_CODE = 500;
 
     /**
