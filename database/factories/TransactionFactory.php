@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Transactions\TransactionOperation;
+use Idez\Caradhras\Enums\Transaction\TransactionOperation;
 use Idez\Caradhras\Data\Transaction;
 use Idez\Caradhras\Data\TransactionLegacy;
 use Carbon\Carbon;

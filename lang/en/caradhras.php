@@ -37,16 +37,5 @@ return [
             'zipcode_must_have_a_length_of_8_numbers' => 'Zipcode must have a length of 8 numbers.',
             'name_must_have_only_letters' => 'Name must have only letters.',
         ],
-    ],
-    'alias_bank' => [
-        'created' => 'Alias Bank successfully created for provider :provider',
-        'something_went_wrong' => 'Something went wrong. Please check the data provided.',
-    ],
-    'card_not_printed' => 'Invalid card status for activation.',
-    'bank_transfer' => [
-        'not_found' => "We didn't find this transfer, please check your details and try again.",
-        'empty_list' => "There are no records on this page.",
-        'action_not_allowed' => "We were unable to complete your transfer now, please try again later.",
-        'default' => "There was an instability in the provider, please try again later.",
-    ],
+    ]
 ];

@@ -2,26 +2,26 @@
 
 namespace Idez\Caradhras\Enums;
 
-enum MessageCode: string
+enum MessageCode: int
 {
-    case InvalidDocument = 'invalid_document';
-    case IrregularDocument = 'irregular_document';
-    case IncorrectName = 'incorrect_name';
-    case IncorrectMother_Name = 'incorrect_mother_name';
-    case IncorrectBirth_Date = 'incorrect_birth_date';
-    case SanctionedDocument = 'sanctioned_document';
-    case BlackListDocument = 'black_list_document';
+    case InvalidDocument = 1000;
+    case IrregularDocument = 1001;
+    case IncorrectName = 1002;
+    case IncorrectMother_Name = 1003;
+    case IncorrectBirth_Date = 1004;
+    case SanctionedDocument = 1005;
+    case BlackListDocument = 1006;
 
-    public function code(): int
+    public function label(): string
     {
         return match ($this) {
-            self::InvalidDocument => 1000,
-            self::IrregularDocument => 1001,
-            self::IncorrectName => 1002,
-            self::IncorrectMother_Name => 1003,
-            self::IncorrectBirth_Date => 1004,
-            self::SanctionedDocument => 1005,
-            self::BlackListDocument => 1006,
+            self::InvalidDocument => 'invalid_document',
+            self::IrregularDocument => 'irregular_document',
+            self::IncorrectName => 'incorrect_name',
+            self::IncorrectMother_Name => 'incorrect_mother_name',
+            self::IncorrectBirth_Date => 'incorrect_birth_date',
+            self::SanctionedDocument => 'sanctioned_document',
+            self::BlackListDocument => 'black_list_document',
         };
     }
 

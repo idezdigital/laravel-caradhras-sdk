@@ -196,9 +196,7 @@ class CaradhrasMainClient extends BaseApiClient
             $queryString = http_build_query($addressData);
             $request = $this->apiClient()->put("/enderecos?{$queryString}")->throw();
         } catch (Throwable $exception) {
-            $errorKey = 'caradhras.update_address_failed';
-
-            throw new CaradhrasException(trans("errors.services.{$errorKey}"), 502, $errorKey);
+            throw new CaradhrasException(trans("errors.services.caradhras.update_address_failed"), 502, 'caradhras.update_address_failed');
         }
 
         return $request->object();
