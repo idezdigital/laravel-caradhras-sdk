@@ -43,7 +43,7 @@ class FailedCreatePersonalAccount extends BaseException implements ExceptionLeve
 
     public function setsErrorDataIfMessageIsntSetAndThereIsConflict(array $caradhrasError, int $statusCode): array
     {
-        if ($statusCode === 409 && !isset($caradhrasError['message'])) {
+        if ($statusCode === 409 && ! isset($caradhrasError['message'])) {
             $caradhrasErrorCode = $caradhrasError['code'];
             $errorKey = 'caradhras.account.' . MessageCode::caseByCode($caradhrasErrorCode)->value;
             $statusCode = 412;

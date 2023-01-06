@@ -14,6 +14,7 @@ use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Data\PhoneRecharge;
 use Idez\Caradhras\Data\Registrations\PersonRegistration;
 use Idez\Caradhras\Data\TransactionCollection;
+use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Enums\AddressType;
 use Idez\Caradhras\Enums\Cards\CardStatus;
 use Idez\Caradhras\Enums\Documents\DocumentErrorCode;
@@ -478,9 +479,11 @@ class CaradhrasMainClient extends BaseApiClient
      */
     public function cancelAccount(int $accountId): object
     {
+        $status = AccountStatus::Canceled->value;
+
         return $this
             ->apiClient()
-            ->post("/contas/{$accountId}/cancelar?id_status=2")
+            ->post("/contas/{$accountId}/cancelar?id_status={$status}")
             ->object();
     }
 
