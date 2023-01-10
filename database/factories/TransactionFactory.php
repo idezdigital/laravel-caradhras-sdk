@@ -2,10 +2,10 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use Idez\Caradhras\Enums\Transaction\TransactionOperation;
 use Idez\Caradhras\Data\Transaction;
 use Idez\Caradhras\Data\TransactionLegacy;
 use Carbon\Carbon;
+use Idez\Caradhras\Enums\Transaction\TransactionOperation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -40,7 +40,7 @@ class TransactionFactory extends Factory
 
         return [
             'idAdjustment' => $this->faker->randomNumber(5),
-            'description' => TransactionOperation::PurchaseNational->getDescription(),
+            'description' => TransactionOperation::PrepaidNationalVisaPurchase->value,
             'idAccount' => $this->faker->randomNumber(5),
             'idTransactionReversal' => 0,
             'creditFlag' => 0,
@@ -95,7 +95,7 @@ class TransactionFactory extends Factory
     public function deposit(): self
     {
         return $this->credit()->state([
-            "description" => TransactionOperation::Deposit->getDescription(),
+            "description" => TransactionOperation::SuccesfulPayment->value,
         ]);
     }
 
@@ -103,7 +103,7 @@ class TransactionFactory extends Factory
     {
         return $this->state([
             "idTipoTransacao" => TransactionLegacy::PAYMENT,
-            "description" => TransactionOperation::PaymentSent->getDescription(),
+            "description" => TransactionOperation::BillPayment->value,
         ]);
     }
 
@@ -113,7 +113,7 @@ class TransactionFactory extends Factory
         $usdRate = $this->faker->randomFloat(2, 5, 6);
 
         return $this->state(fn (array $attributes) => [
-            "description" => TransactionOperation::PurchaseInternational->getDescription(),
+            "description" => TransactionOperation::PrepaidInternationalVisaPurchase->value,
             "amountBrl" => $usdAmt * $usdRate,
             "amountUsd" => $usdAmt,
             "usdExchangeRate" => $usdRate,
@@ -129,21 +129,21 @@ class TransactionFactory extends Factory
     public function purchaseNational(): self
     {
         return $this->state(fn (array $attributes) => [
-            'description' => TransactionOperation::PurchaseNational->getDescription(),
+            'description' => TransactionOperation::PrepaidNationalVisaPurchase->value,
         ]);
     }
 
     public function transferP2pSent(): self
     {
         return $this->state([
-            'description' => TransactionOperation::TransferSent->getDescription(),
+            'description' => TransactionOperation::TransferBetweenAccountsSent->value,
         ]);
     }
 
     public function transferP2pReceived(): self
     {
         return $this->state([
-            'description' => TransactionOperation::TransferReceived->getDescription(),
+            'description' => TransactionOperation::TransferBetweenAccountsReceived->value,
         ]);
     }
 
@@ -158,7 +158,7 @@ class TransactionFactory extends Factory
     public function withdrawal(): self
     {
         return $this->state([
-            'description' => TransactionOperation::Withdrawal->getDescription(),
+            'description' => TransactionOperation::VisaPrepaidNationalWithdrawal->value,
         ]);
     }
 }
