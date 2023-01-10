@@ -20,6 +20,7 @@ use Idez\Caradhras\Exceptions\IssuePhysicalCardException;
 class CaradhrasCardClient extends BaseApiClient
 {
     public const CARD_NOT_PRINTED = 'Invalid card status for activation.';
+
     /**
      * Associate card to account.
      *

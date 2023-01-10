@@ -8,7 +8,7 @@ return [
             'card' => [
                 'lock_failed' => 'Falha ao bloquear este cartão, verifique seus dados e tente novamente.',
             ],
-        ]
+        ],
     ],
 
     'phone-recharge' => [
