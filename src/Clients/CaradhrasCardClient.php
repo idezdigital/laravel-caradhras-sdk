@@ -108,7 +108,7 @@ class CaradhrasCardClient extends BaseApiClient
     public function issueVirtualCard(int $accountId, int $individualId): Card
     {
         $data = http_build_query([
-            'dataValidade' => now()->addYears(5)->toDateString() . 'T00:00:00.000',
+            'dataValidade' => now()->addYears(5)->format('Y-m-d\TH:i:s'),
             'idPessoaFisica' => $individualId,
         ]);
 
@@ -250,7 +250,7 @@ class CaradhrasCardClient extends BaseApiClient
             ]);
 
         if ($response->failed()) {
-            if ($response->status() === 400 && strpos($response->object()->message, 'criptografia do HSM')) {
+            if ($response->status() === 400 && str_contains($response->object()->message, 'criptografia do HSM')) {
                 throw new CVVMismatchException();
             }
 
@@ -396,7 +396,7 @@ class CaradhrasCardClient extends BaseApiClient
         if ($request->failed()) {
             throw new CaradhrasException(match ($request->status()) {
                 400 => trans('errors.card.unlock_failed'),
-                403 => trans(self::CARD_NOT_PRINTED),
+                403 => 'Status de cartão inválido para ativação.',
                 default => trans('errors.generic'),
             }, 502);
         }

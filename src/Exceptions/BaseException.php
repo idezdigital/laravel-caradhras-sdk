@@ -35,7 +35,7 @@ abstract class BaseException extends Exception implements HttpExceptionInterface
     {
         parent::__construct();
 
-        $this->message = $message ?? 'Ocorreu um erro ao realizar a requisição.';
+        $this->message = $message ?? trans('errors.api.generic_error');
         $this->code = $httpCode ?? self::DEFAULT_STATUS_CODE;
         $this->key = $key ?? self::DEFAULT_ERROR_KEY;
         $this->data = $data ?? [];

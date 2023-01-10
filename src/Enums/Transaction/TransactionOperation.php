@@ -2,12 +2,8 @@
 
 namespace Idez\Caradhras\Enums\Transaction;
 
-use Idez\Caradhras\Traits\NovaSelectEnum;
-
 enum TransactionOperation: string
 {
-    use NovaSelectEnum;
-
     case PixSentTransactionalAccount = 'Pix Enviado-Conta Transacional';
     case PixReceivedTransactionalAccount = 'Pix Recebido-Cta Transacional';
     case VisaPrepaidNationalWithdrawal = 'Saque Nacional Pré-Pago Visa';
@@ -40,14 +36,4 @@ enum TransactionOperation: string
     case BacenjudTransfer = '655 Transferencia Bacenjud';
     case BacenjudUnlock = '655 Desbloqueio Bacenjud';
     case DailyIncome = 'Remuneração-Cta Pgto';
-
-    public static function novaBadgeMap(): array
-    {
-        $mappedItems = [];
-        foreach (self::cases() as $case) {
-            $mappedItems[$case->value] = 'info';
-        }
-
-        return $mappedItems;
-    }
 }

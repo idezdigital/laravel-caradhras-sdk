@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'api' => [
+        'generic_error' => 'An error occurred while executing the request.',
+    ],
+
     'services' => [
         'caradhras' => [
             'update_address_failed' => 'Failed to try to update the document.',
