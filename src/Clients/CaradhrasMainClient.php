@@ -280,8 +280,8 @@ class CaradhrasMainClient extends BaseApiClient
     public function updateAccountProduct(int $accountId): null|object
     {
         $data = [
-            'idProduto' => config('app.product_id'),
-            'idOrigemComercial' => config('app.business_source_id'),
+            'idProduto' => config('caradhras.app.product_id'),
+            'idOrigemComercial' => config('caradhras.app.business_source_id'),
         ];
 
         return $this

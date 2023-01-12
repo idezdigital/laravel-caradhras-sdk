@@ -97,7 +97,7 @@ abstract class BaseApiClient
      */
     protected function createApiBaseUri(string $prefix): string
     {
-        $endpoint = config('services.caradhras.endpoint');
+        $endpoint = config('caradhras.services.endpoint');
 
         return "https://{$prefix}.{$endpoint}";
     }

@@ -20,6 +20,23 @@ use Idez\Caradhras\Exceptions\IssuePhysicalCardException;
 class CaradhrasCardClient extends BaseApiClient
 {
     /**
+     * Set card password.
+     *
+     * @param  string  $cardId
+     * @param  string  $password
+     * @return object
+     * @throws \Illuminate\Http\Client\RequestException
+     */
+    public function setCardPassword(string $cardId): object
+    {
+        return $this->apiClient()
+            ->withHeaders(['senha' => str_pad(random_int(1000, 9999), 4, '0', STR_PAD_LEFT)])
+            ->post("/cartoes/{$cardId}/cadastrar-senha")
+            ->throw()
+            ->object();
+    }
+
+    /**
      * Associate card to account.
      *
      * @param int $cardId
@@ -79,7 +96,7 @@ class CaradhrasCardClient extends BaseApiClient
     {
         $data = [
             'id_pessoa' => $individualId,
-            'id_tipo_plastico' => config('app.plastic_id'),
+            'id_tipo_plastico' => config('caradhras.app.plastic_id'),
         ];
 
         $issueCardResponse = $this->apiClient(false)
@@ -91,7 +108,7 @@ class CaradhrasCardClient extends BaseApiClient
 
         $cardId = $issueCardResponse->json('idCartao');
 
-        $this->setCardPassword($cardId, random_int(1000, 9999));
+        $this->setCardPassword($cardId);
 
         return $this->getCard($cardId);
     }
