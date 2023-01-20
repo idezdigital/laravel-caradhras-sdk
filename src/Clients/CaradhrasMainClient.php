@@ -5,7 +5,6 @@ namespace Idez\Caradhras\Clients;
 use GuzzleHttp\Psr7\Stream;
 use Idez\Caradhras\Data\Individual;
 use Idez\Caradhras\Data\P2PTransferPayload;
-use Idez\Caradhras\Data\PhoneRecharge;
 use Idez\Caradhras\Data\Registrations\PersonRegistration;
 use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Enums\AccountStatus;
@@ -23,8 +22,6 @@ use Idez\Caradhras\Exceptions\Documents\SendDocumentException;
 use Idez\Caradhras\Exceptions\FailedCreatePersonalAccount;
 use Idez\Caradhras\Exceptions\FraudDetectorException;
 use Idez\Caradhras\Exceptions\InsufficientBalanceException;
-use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
-use Idez\Caradhras\Exceptions\PhoneRechargeOrderFailedException;
 use Idez\Caradhras\Exceptions\TransferFailedException;
 use Illuminate\Support\Str;
 use Throwable;
@@ -253,15 +250,6 @@ class CaradhrasMainClient extends BaseApiClient
         return $this->apiClient()->get('/contas', $search)->throw()->object();
     }
 
-    public function getPhoneRecharge(int $adjustmentId): PhoneRecharge
-    {
-        $response = $this->apiClient()->get("/recharges/adjustment/{$adjustmentId}")
-            ->throw()
-            ->json();
-
-        return new PhoneRecharge($response);
-    }
-
     public function getAddressByIndividualId(int $individualId, int $tipoEndereco = 1)
     {
         return $this->apiClient()
@@ -431,54 +419,6 @@ class CaradhrasMainClient extends BaseApiClient
     {
         $response = $this->apiClient()
             ->get("/v2/individuals/{$registrationId}/documents/status");
-
-        return $response->object();
-    }
-
-    /**
-     * Create phone recharge.
-     *
-     * @param  string  $dealerCode
-     * @param  string  $areaCode
-     * @param  string  $phoneNumber
-     * @return object
-     * @throws \Illuminate\Http\Client\RequestException
-     */
-    public function createPhoneRecharge(string $dealerCode, string $areaCode, string $phoneNumber): object
-    {
-        return $this->apiClient()->post('/recharges', [
-            'dealerCode' => $dealerCode,
-            'ddd' => $areaCode,
-            'phoneNumber' => $phoneNumber,
-        ])->throw()->object();
-    }
-
-    public function orderPhoneRecharge(string $orderId, string $areaCode, string $phoneNumber, string $dealerCode, float $amount)
-    {
-        $response = $this->apiClient(false)->post("/recharges/{$orderId}", [
-            'dealerCode' => $dealerCode,
-            'ddd' => $areaCode,
-            'phoneNumber' => $phoneNumber,
-            'amount' => $amount * 100,
-        ]);
-
-        if ($response->failed()) {
-            throw new PhoneRechargeOrderFailedException((array) $response->body());
-        }
-
-        return $response->object();
-    }
-
-    public function confirmPhoneRecharge(string $orderId, int $accountId, float $amount)
-    {
-        $response = $this->apiClient(false)->post("/recharges/{$orderId}/confirm", [
-            'accountId' => $accountId,
-            'amount' => $amount * 100,
-        ]);
-
-        if ($response->failed()) {
-            throw new PhoneRechargeConfirmationFailedException((array) $response->body());
-        }
 
         return $response->object();
     }

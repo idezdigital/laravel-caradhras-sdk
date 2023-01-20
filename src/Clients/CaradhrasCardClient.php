@@ -27,10 +27,10 @@ class CaradhrasCardClient extends BaseApiClient
      * @return object
      * @throws \Illuminate\Http\Client\RequestException
      */
-    public function setCardPassword(string $cardId): object
+    public function setCardPassword(string $cardId, $password): object
     {
         return $this->apiClient()
-            ->withHeaders(['senha' => str_pad(random_int(1000, 9999), 4, '0', STR_PAD_LEFT)])
+            ->withHeaders(['senha' => str_pad($password, 4, '0', STR_PAD_LEFT)])
             ->post("/cartoes/{$cardId}/cadastrar-senha")
             ->throw()
             ->object();
@@ -92,7 +92,7 @@ class CaradhrasCardClient extends BaseApiClient
      * @throws \Illuminate\Http\Client\RequestException
      * @throws \Exception
      */
-    public function issuePhysicalCard(int $accountId, int $individualId): Card
+    public function issuePhysicalCard(int $accountId, int $individualId, $password): Card
     {
         $data = [
             'id_pessoa' => $individualId,
@@ -108,7 +108,7 @@ class CaradhrasCardClient extends BaseApiClient
 
         $cardId = $issueCardResponse->json('idCartao');
 
-        $this->setCardPassword($cardId);
+        $this->setCardPassword($cardId, $password);
 
         return $this->getCard($cardId);
     }
@@ -123,7 +123,7 @@ class CaradhrasCardClient extends BaseApiClient
     public function issueVirtualCard(int $accountId, int $individualId): Card
     {
         $data = http_build_query([
-            'dataValidade' => now()->addYears(5)->format('Y-m-d\TH:i:s'),
+            'dataValidade' => now()->addYears(5)->toIso8601String(),
             'idPessoaFisica' => $individualId,
         ]);
 
@@ -411,7 +411,7 @@ class CaradhrasCardClient extends BaseApiClient
         if ($request->failed()) {
             throw new CaradhrasException(match ($request->status()) {
                 400 => trans('errors.card.unlock_failed'),
-                403 => 'Status de cartão inválido para ativação.',
+                403 => trans('errors.card.not_printed'),
                 default => trans('errors.generic'),
             }, 502);
         }

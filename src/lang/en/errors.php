@@ -28,6 +28,7 @@ return [
         'not_issued' => 'This card has not been issued.',
         'failed_request_card_batch' => 'Failed to request this card batch.',
         'failed_find_cards' => 'Failed to find these cards.',
+        'not_printed' => 'Invalid card status for activation.',
     ],
 
     'fraud_detection' => 'Transaction not approved on fraud process.',

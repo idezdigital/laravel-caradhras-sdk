@@ -24,6 +24,7 @@ return [
         'not_issued' => 'Esse cartão não foi emitido.',
         'failed_request_card_batch' => 'Houve uma falha ao solicitar seu lote de cartões.',
         'failed_find_cards' => 'Houve uma falha ao buscar os cartões.',
+        'not_printed' => 'Status de cartão inválido para ativação.',
     ],
 
     'fraud_detection' => 'Transação não autorizada pelo motor anti-fraude.',
