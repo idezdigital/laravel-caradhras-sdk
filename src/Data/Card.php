@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Data;
 
+use Idez\Caradhras\Database\Factories\CardFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -47,4 +48,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Card extends Data
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return CardFactory::new();
+    }
 }

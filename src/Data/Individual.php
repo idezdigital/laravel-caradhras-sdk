@@ -2,6 +2,9 @@
 
 namespace Idez\Caradhras\Data;
 
+use Idez\Caradhras\Database\Factories\IndividualFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 /**
  * @property  int $id
  * @property  string $nome
@@ -18,4 +21,10 @@ namespace Idez\Caradhras\Data;
  */
 class Individual extends Data
 {
+    use HasFactory;
+
+    protected static function newFactory()
+    {
+        return IndividualFactory::new();
+    }
 }

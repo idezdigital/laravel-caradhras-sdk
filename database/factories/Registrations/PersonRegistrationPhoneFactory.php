@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Caradhras\Registrations;
+namespace Idez\Caradhras\Database\Factories\Registrations;
 
 use Idez\Caradhras\Data\Registrations\PersonRegistrationPhone;
 use Illuminate\Database\Eloquent\Factories\Factory;

@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Data\Registrations;
 
 use Idez\Caradhras\Data\Data;
+use Idez\Caradhras\Database\Factories\Registrations\PersonRegistrationAddressFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -21,4 +22,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PersonRegistrationAddress extends Data
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return PersonRegistrationAddressFactory::new();
+    }
 }

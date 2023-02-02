@@ -3,17 +3,18 @@
 namespace Idez\Caradhras\Database\Factories;
 
 use Idez\Caradhras\Data\Card;
+use Idez\Caradhras\Data\CardSettings;
 use Idez\Caradhras\Enums\Cards\CardStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CardFactory extends Factory
+class CardSettingsFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Card::class;
+    protected $model = CardSettings::class;
 
     /**
      * Define the model's default state.

@@ -14,6 +14,7 @@ enum PierTransactionStatus: string
     case ExpiredCard = 'expired-card';
     case FormatError = 'format-error';
     case FraudRisk = 'fraud-risk';
+    case RetypeTransaction = 'retype-transaction';
     case InsufficientBalance = 'insuficient-balance';
     case InvalidAmount = 'invalid-amount';
     case InvalidCard = 'invalid-card';
@@ -28,6 +29,8 @@ enum PierTransactionStatus: string
     case StolenCard = 'stolen-card';
     case SystemError = 'system-error';
     case TransactionNotFound = 'transaction-not-found';
+    case RefusedDueCvv2Failure = 'refused-due-cvv2-failure';
+    case TransactionCanceled = 'transaction-canceled';
     case TryAgain = 'try-again';
     case UnregisteredEstablishment = 'unregistered-establishment';
     case WrongPassword = 'wrong-password';
@@ -47,6 +50,7 @@ enum PierTransactionStatus: string
             '12' => self::NotAllowed, // A transação (débito ou crédito) não corresponde ao produto selecionado (débito ou crédito).
             '13' => self::InvalidAmount, // Montante inválido.
             '14' => self::InvalidCard, // Cartão inválido (ver status).
+            '19' => self::RetypeTransaction, // Transação não pode ser processada temporariamente.
             '30' => self::FormatError, // Erro de formato.
             '31' => self::UnregisteredEstablishment, // O estabelecimento não pertence à rede.
             '39' => self::InvalidCard, // O Portador do cartão deve usar um cartão físico com um chip.
@@ -65,6 +69,7 @@ enum PierTransactionStatus: string
             '65' => self::ExceededWithdrawalLimit, // Overlimit de uso do limite.
             '75' => self::BlockedCard,
             '76' => self::BlockedCard, // Cartão bloqueado.
+            '78' => self::TransactionCanceled, // Transação cancelada.
             '80' => self::LimitExceeded, // Total excedido.
             '81' => self::DuplicatedPayment, // Pagamento duplicado.
             '82' => self::LimitExceeded, // Quantidade fora do limite.
@@ -74,6 +79,7 @@ enum PierTransactionStatus: string
             '94' => self::RepeatedTransaction, // Transação repetida.
             '96' => self::SystemError, // Erro no sistema.
             '99' => self::TransactionNotFound, // Transação original não encontrada ou erros de parâmetro.
+            'N7' => self::RefusedDueCvv2Failure, // Usada para indicar que a autorização não passou na verificação de CVV2
         };
     }
 }

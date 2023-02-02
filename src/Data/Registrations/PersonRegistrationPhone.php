@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Data\Registrations;
 
 use Idez\Caradhras\Data\Data;
+use Idez\Caradhras\Database\Factories\Registrations\PersonRegistrationPhoneFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -14,4 +15,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PersonRegistrationPhone extends Data
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return PersonRegistrationPhoneFactory::new();
+    }
 }

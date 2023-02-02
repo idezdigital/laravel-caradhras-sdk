@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Data\Registrations;
 
 use Idez\Caradhras\Data\Data;
+use Idez\Caradhras\Database\Factories\Registrations\PersonRegistrationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -42,6 +43,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PersonRegistration extends Data
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return PersonRegistrationFactory::new();
+    }
 
     public const STATUS_ACTIVE = 'ACTIVE';
 }
