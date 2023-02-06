@@ -6,6 +6,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Idez\Caradhras\Clients\CaradhrasAliasClient;
 use Idez\Caradhras\Clients\CaradhrasBankTransferInClient;
+use Idez\Caradhras\Clients\CaradhrasCardClient;
 use Idez\Caradhras\Clients\CaradhrasCompanyClient;
 use Idez\Caradhras\Clients\CaradhrasDataApiClient;
 use Idez\Caradhras\Clients\CaradhrasIncomeReportsClient;
@@ -21,6 +22,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
 {
     protected array $clients = [
         CaradhrasMainClient::class,
+        CaradhrasCardClient::class,
         CaradhrasAliasClient::class,
         CaradhrasBankTransferInClient::class,
         CaradhrasPaymentClient::class,

@@ -3,6 +3,8 @@
 namespace Idez\Caradhras\Data;
 
 use App\Enums\Account\AccountStatus;
+use Idez\Caradhras\Database\Factories\AccountFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
 * @property int $id
@@ -48,11 +50,18 @@ use App\Enums\Account\AccountStatus;
 */
 class Account extends Data
 {
+    use HasFactory;
+
+    protected static function newFactory()
+    {
+        return AccountFactory::new();
+    }
+
     public const STATUS_MAP = [
         0 => AccountStatus::Active,
         1 => AccountStatus::Blocked,
-        33 => AccountStatus::Blocked,
         2 => AccountStatus::Canceled,
+        33 => AccountStatus::Blocked,
     ];
 
     public const CR_WAITING_DOCUMENTS = 'WAITING_DOCUMENTS';

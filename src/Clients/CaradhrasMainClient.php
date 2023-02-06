@@ -28,6 +28,8 @@ use Throwable;
 
 class CaradhrasMainClient extends BaseApiClient
 {
+    public const API_PREFIX = 'api';
+
     /**
      * Get P2P transfer.
      *

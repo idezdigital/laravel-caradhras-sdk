@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
+use Idez\Caradhras\Data\Card;
 use Idez\Caradhras\Data\CardDetails;
-use App\Models\Card;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
