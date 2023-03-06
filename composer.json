@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.1|^8.2",
         "geekcom/validator-docs": "^3.7",
         "guzzlehttp/guzzle": "^7.4",
         "illuminate/contracts": "^10.0",
