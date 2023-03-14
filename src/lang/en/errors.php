@@ -31,6 +31,13 @@ return [
         'not_printed' => 'Invalid card status for activation.',
     ],
 
+    'bank-transfer' => [
+        'not_found' => "We didn't find this transfer, please check your details and try again.",
+        'empty_list' => "There are no records on this page.",
+        'action_not_allowed' => "We were unable to complete your transfer now, please try again later.",
+        'default' => "There was an instability in the provider, please try again later.",
+    ],
+
     'fraud_detection' => 'Transaction not approved on fraud process.',
     'insufficient_balance_to_transaction' => 'Insufficient balance to make the transaction.',
     'generic' => 'An error occurred while executing the request.',
