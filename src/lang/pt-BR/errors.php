@@ -31,7 +31,7 @@ return [
         'not_found' => 'Não encontramos essa transferência, verifique seus dados e tente novamente.',
         'empty_list' => 'Não existem registros nessa página.',
         'action_not_allowed' => 'Não foi possível realizar sua transferência agora, por favor, tente novamente mais tarde.',
-        'default' => 'Houve uma instabilidade no provedor, por favor, tente novamente mais tarde.'
+        'default' => 'Houve uma instabilidade no provedor, por favor, tente novamente mais tarde.',
     ],
 
     'fraud_detection' => 'Transação não autorizada pelo motor anti-fraude.',

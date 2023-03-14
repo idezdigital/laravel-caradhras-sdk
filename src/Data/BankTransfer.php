@@ -2,9 +2,6 @@
 
 namespace Idez\Caradhras\Data;
 
-use App\Models\Caradhras\Struct;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 /**
  * @property string $transactionId
  * @property int $adjustmentId
