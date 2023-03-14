@@ -6,7 +6,7 @@ use Idez\Caradhras\Data\PhoneRecharge;
 use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
 use Idez\Caradhras\Exceptions\PhoneRechargeOrderFailedException;
 
-class CaradhrasPhoneRechargeClientClient extends BaseApiClient
+class CaradhrasPhoneRechargeClient extends BaseApiClient
 {
     public function getPhoneRecharge(int $adjustmentId): PhoneRecharge
     {
