@@ -23,11 +23,34 @@ use Idez\Caradhras\Exceptions\FailedCreatePersonalAccount;
 use Idez\Caradhras\Exceptions\FraudDetectorException;
 use Idez\Caradhras\Exceptions\InsufficientBalanceException;
 use Idez\Caradhras\Exceptions\TransferFailedException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Str;
 use Throwable;
 
 class CaradhrasMainClient extends BaseApiClient
 {
+
+    /**
+     * Associate card to account.
+     *
+     * @param int $cardId
+     * @param int $accountId
+     * @param int $individualId
+     * @return bool
+     * @throws RequestException
+     */
+    public function associateCardToAccount(int $cardId, int $accountId, int $individualId): bool
+    {
+        $this->apiClient()
+            ->post("/contas/{$accountId}/atribuir-cartao-prepago", [
+                'idCartao' => $cardId,
+                'idPessoaFisica' => $individualId,
+            ])
+            ->throw();
+
+        return true;
+    }
+
     /**
      * Get P2P transfer.
      *
