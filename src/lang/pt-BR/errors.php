@@ -27,6 +27,13 @@ return [
         'not_printed' => 'Status de cartão inválido para ativação.',
     ],
 
+    'bank-transfer' => [
+        'not_found' => 'Não encontramos essa transferência, verifique seus dados e tente novamente.',
+        'empty_list' => 'Não existem registros nessa página.',
+        'action_not_allowed' => 'Não foi possível realizar sua transferência agora, por favor, tente novamente mais tarde.',
+        'default' => 'Houve uma instabilidade no provedor, por favor, tente novamente mais tarde.',
+    ],
+
     'fraud_detection' => 'Transação não autorizada pelo motor anti-fraude.',
     'insufficient_balance_to_transaction' => 'Saldo insuficiente para realizar a transação.',
     'generic' => 'Ocorreu um erro ao realizar a requisição.',
