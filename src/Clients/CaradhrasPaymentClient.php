@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Clients;
 
+use Exception;
 use Idez\Caradhras\Exceptions\Payments\ExpirationDateException;
 use Idez\Caradhras\Exceptions\Payments\InvalidAmountException;
 use Idez\Caradhras\Exceptions\Payments\InvalidPaymentBarcodeException;
@@ -10,6 +11,7 @@ use Idez\Caradhras\Exceptions\Payments\NotRegisteredAtCipException;
 use Idez\Caradhras\Exceptions\Payments\PaidOrUnregisteredException;
 use Idez\Caradhras\Exceptions\Payments\PaymentTimeoutException;
 use Idez\Caradhras\Exceptions\Payments\ValidatePaymentException;
+use Illuminate\Http\Client\PendingRequest;
 
 class CaradhrasPaymentClient extends BaseApiClient
 {
@@ -45,7 +47,9 @@ class CaradhrasPaymentClient extends BaseApiClient
     public function validate(string $barcode): object
     {
         $barcode = preg_replace('/[^0-9]/i', '', $barcode);
-        $response = $this->apiClient(false)->get("/v1/validate/{$barcode}");
+        $response = $this->apiClient(false)
+            ->retry(5, 2000, fn (Exception $exception, PendingRequest $request) => $exception->getCode() === 503, false)
+            ->get("/v1/validate/{$barcode}");
 
         if ($response->failed()) {
             throw match ($response->status()) {
@@ -97,8 +101,9 @@ class CaradhrasPaymentClient extends BaseApiClient
         float $amount,
         string $description
     ): object {
-        $response = $this->apiClient()
+        $response = $this->apiClient(false)
             ->asJson()
+            ->retry(5, 2000, fn (Exception $exception, PendingRequest $request) => in_array($exception->getCode(), [424, 422, 409]), false)
             ->post('/v1', [
                 'idAccount' => $accountId,
                 'barCodeNumber' => $barCodeNumber,
