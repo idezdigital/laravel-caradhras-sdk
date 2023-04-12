@@ -31,7 +31,7 @@ class SentryBreadcrumbsMiddleware
                 return $handler($request, $options)->then(function (ResponseInterface $response) use ($sentry) {
                     $level = Breadcrumb::LEVEL_DEBUG;
                     if ($response->getStatusCode() > 400) {
-                        $sentry->configureScope(fn($scope) => $scope->setTag('service', 'cr_'));
+                        $sentry->configureScope(fn ($scope) => $scope->setTag('service', 'cr_'));
                         $level = Breadcrumb::LEVEL_ERROR;
                     }
 
