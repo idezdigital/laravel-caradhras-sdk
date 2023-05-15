@@ -36,45 +36,45 @@ class CaradhrasCompanyClientTest extends TestCase
             "note" => [
                 "id" => "ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj",
                 "create" => "2023-05-10T12:41:08.581590Z",
-                "text" => "{'name': 'stepBasicDataCompanyRules', 'description': 'PJ Dados Básicos - Validacao com sucesso', 'status': 'APPROVED', 'reasonCode': 'PJBDC-012'}"
+                "text" => "{'name': 'stepBasicDataCompanyRules', 'description': 'PJ Dados Básicos - Validacao com sucesso', 'status': 'APPROVED', 'reasonCode': 'PJBDC-012'}",
             ],
             "documents" => [
                 "uploaded" => [
                     "company" => [],
-                    "individuals" => []
+                    "individuals" => [],
                 ],
                 "pendingUpload" => [
                     "company" => [
                         "mustHave" => [],
-                        "atLeastOne" => []
+                        "atLeastOne" => [],
                     ],
                     "individuals" => [
                         [
                             "partnerId" => "kkkkkkkk-llll-mmmm-nnnn-oooooooooooo",
                             "profile" => "OWNER",
                             "type" => [
-                                "MASTER"
+                                "MASTER",
                             ],
                             "mustHave" => [
-                                "SELFIE"
+                                "SELFIE",
                             ],
                             "atLeastOne" => [
                                 [
                                     "IDENTITY_CARD_FRONT",
-                                    "IDENTITY_CARD_VERSE"
+                                    "IDENTITY_CARD_VERSE",
                                 ],
                                 [
                                     "DRIVER_LICENSE_FRONT",
-                                    "DRIVER_LICENSE_VERSE"
+                                    "DRIVER_LICENSE_VERSE",
                                 ],
                                 [
-                                    "DIGITAL_DRIVER_LICENSE"
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                    "DIGITAL_DRIVER_LICENSE",
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $url = $this->getApiBaseUrl() . "/v1/registrations/{$registrationId}/documents/status";
