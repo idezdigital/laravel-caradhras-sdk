@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
+use GuzzleHttp\Exception\ClientException;
 use Idez\Caradhras\Clients\CaradhrasCompanyClient;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -82,7 +83,7 @@ class CaradhrasCompanyClientTest extends TestCase
             $url => Http::response($body),
         ]);
 
-        $response = $this->client->getPendingAccountDocuments($registrationId);
+        $response = $this->client->getPendingDocuments($registrationId);
 
         Http::assertSent(
             fn (Request $request) => $request->url() === $url && $request->method() === 'GET'
@@ -90,5 +91,17 @@ class CaradhrasCompanyClientTest extends TestCase
 
         $this->assertEquals(json_decode(json_encode($body)), $response);
         $this->assertIsObject($response);
+    }
+
+    public function testGetPendingDocumentsThrowsError()
+    {
+        $registrationId = $this->faker->uuid;
+        $url = $this->getApiBaseUrl() . "/v1/registrations/{$registrationId}/documents/status";
+        Http::fake([
+            $url => Http::response([], 400),
+        ]);
+
+        $this->expectException(ClientException::class);
+        $this->client->getPendingDocuments($registrationId);
     }
 }

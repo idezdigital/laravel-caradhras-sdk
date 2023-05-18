@@ -216,10 +216,11 @@ class CaradhrasCompanyClient extends BaseApiClient
         return new CompanyDocument($response->object()->result);
     }
 
-    public function getPendingAccountDocuments(string $registrationId): object
+    public function getPendingDocuments(string $registrationId): object
     {
         return $this->apiClient()
                     ->get("/v1/registrations/{$registrationId}/documents/status")
+                    ->throw()
                     ->object();
     }
 }
