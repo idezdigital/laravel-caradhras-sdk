@@ -9,6 +9,7 @@ use Idez\Caradhras\Data\InvoicePaymentSlipFine;
 use Idez\Caradhras\Data\InvoicePaymentSlipInterest;
 use Idez\Caradhras\Data\InvoicePaymentSlipPayer;
 use Idez\Caradhras\Data\RechargePaymentSlip;
+use Idez\Caradhras\Enums\PaymentSlip\BeneficiaryType;
 use Idez\Caradhras\Enums\PaymentSlip\PaymentSlipInvoiceType;
 use Idez\Caradhras\Enums\PaymentSlip\PaymentSlipType;
 use Idez\Caradhras\Exceptions\CaradhrasException;
@@ -146,6 +147,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
      * @param  null|InvoicePaymentSlipFine  $fine
      * @param  null|InvoicePaymentSlipDiscount  $discount
      * @param  null|InvoicePaymentSlipInterest  $interest
+     * @param  int  $beneficiaryType
      *
      * @return InvoicePaymentSlip
      *
@@ -162,9 +164,14 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
         InvoicePaymentSlipFine $fine = null,
         InvoicePaymentSlipDiscount $discount = null,
         InvoicePaymentSlipInterest $interest = null,
+        int $beneficiaryType = 1,
     ): InvoicePaymentSlip {
         if (! PaymentSlipInvoiceType::tryFrom($invoiceTypeCode)) {
             throw new CaradhrasException('Invalid invoice type code.', 400);
+        }
+
+        if (! BeneficiaryType::tryFrom($beneficiaryType)) {
+            throw new CaradhrasException('Invalid beneficiary type.', 400);
         }
 
         $requestData = [
@@ -193,7 +200,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
             $requestData['interest'] = $interest->jsonSerialize();
         }
 
-        $response = $this->apiClient(false)->post('/v1/invoice', $requestData);
+        $response = $this->apiClient(false)->post("/v1/invoice?beneficiaryType={$beneficiaryType}", $requestData);
 
         if ($response->failed()) {
             throw new CreatePaymentSlipException($response);
