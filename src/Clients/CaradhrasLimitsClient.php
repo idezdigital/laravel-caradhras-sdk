@@ -35,6 +35,14 @@ class CaradhrasLimitsClient extends BaseApiClient
             ->object();
     }
 
+    public function getAccountLimitRequests(string $accountId)
+    {
+        return $this
+            ->apiClient()
+            ->get("/limits/v2/requests?idAccount={$accountId}")
+            ->object();
+    }
+
     public function listAccountTimetable(string $accountId)
     {
         return $this->apiClient()->get("/limits/v2/accounts/{$accountId}/timetables")
