@@ -39,7 +39,7 @@ class CaradhrasLimitsClient extends BaseApiClient
     {
         return $this
             ->apiClient()
-            ->get("/limits/v2/requests?idAccount={$accountId}")
+            ->get('/limits/v2/requests', ['idAccount' => $accountId])
             ->object();
     }
 
