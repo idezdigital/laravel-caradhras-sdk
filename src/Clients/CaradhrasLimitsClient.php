@@ -2,6 +2,8 @@
 
 namespace Idez\Caradhras\Clients;
 
+use Idez\Caradhras\Data\LimitCollection;
+
 class CaradhrasLimitsClient extends BaseApiClient
 {
     public const API_PREFIX = 'limits';
@@ -33,6 +35,16 @@ class CaradhrasLimitsClient extends BaseApiClient
     {
         return $this->apiClient()->get("/limits/v2/accounts/{$accountId}")
             ->object();
+    }
+
+    public function getAccountLimitRequests(string $accountId): LimitCollection
+    {
+        $response = $this
+            ->apiClient()
+            ->get('/limits/v2/requests', ['idAccount' => $accountId])
+            ->toPsrResponse();
+
+        return new LimitCollection($response);
     }
 
     public function listAccountTimetable(string $accountId)
