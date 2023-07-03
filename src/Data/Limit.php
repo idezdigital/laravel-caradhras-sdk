@@ -2,8 +2,6 @@
 
 namespace Idez\Caradhras\Data;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 /**
  * @property int $idAccount
  * @property float $requestLimit

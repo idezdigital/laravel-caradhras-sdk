@@ -75,8 +75,8 @@ class CaradhrasLimitsClientTest extends TestCase
                         'ispb' => null,
                         'bankBranchNumber' => null,
                         'bankAccountNumber' => null,
-                        'idAccount' => null
-                    ]
+                        'idAccount' => null,
+                    ],
                 ],
                 [
                     'idAccount' => 1234,
@@ -96,8 +96,8 @@ class CaradhrasLimitsClientTest extends TestCase
                         'ispb' => null,
                         'bankBranchNumber' => null,
                         'bankAccountNumber' => null,
-                        'idAccount' => null
-                    ]
+                        'idAccount' => null,
+                    ],
                 ],
                 [
                     'idAccount' => 1234,
@@ -117,10 +117,10 @@ class CaradhrasLimitsClientTest extends TestCase
                         'ispb' => null,
                         'bankBranchNumber' => null,
                         'bankAccountNumber' => null,
-                        'idAccount' => null
-                    ]
-                ]
-            ]
+                        'idAccount' => null,
+                    ],
+                ],
+            ],
          ];
     }
 }
