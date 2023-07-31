@@ -177,6 +177,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
             ],
             'payer' => $payer->toArray(),
             'others' => [
+                'acceptance' => 'A',
                 'deadlineAutomaticCancellation' => $deadline,
             ],
         ];
