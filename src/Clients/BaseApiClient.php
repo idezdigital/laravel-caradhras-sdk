@@ -126,7 +126,7 @@ abstract class BaseApiClient
         }
 
         // TODO: remove this random token
-        if (blank($this->apiKey) || blank($this->apiSecret) || app()->environment('testing')) {
+        if (blank($this->apiKey) || blank($this->apiSecret) || app()->environment('testing') || app()->environment('ci')) {
             return Str::random(36);
         }
 
