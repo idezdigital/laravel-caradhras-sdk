@@ -44,6 +44,45 @@ class CaradhrasAliasClientTest extends TestCase
         $this->aliasClient->findOrCreate($accountId, AliasBankProvider::Votorantim);
     }
 
+    public function testIfCanListWithSuccess(): void
+    {
+        $accountId = $this->faker->randomNumber(5);
+
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . "/v1/accounts?idAccount={$accountId}";
+
+        $expectedItems = [
+            [
+                'idAccount' => $accountId,
+                'bankNumber' => '301',
+                'bankAccountStatus' => 'OPEN',
+            ],
+            [
+                'idAccount' => $accountId,
+                'bankNumber' => '208',
+                'bankAccountStatus' => 'CLOSED',
+            ],
+        ];
+
+        $fakeResponse = [
+            'items' => $expectedItems,
+        ];
+
+        Http::fake([
+            $expectedRequestUrl => Http::response(body: $fakeResponse, status: 200),
+        ]);
+
+        $result = $this->aliasClient->list($accountId);
+
+        $this->assertEquals($result, json_decode(json_encode($expectedItems)));
+
+        Http::assertSent(
+            function (Request $request) use ($expectedRequestUrl, $accountId) {
+                return $request->url() === $expectedRequestUrl &&
+                    $request['idAccount'] === $accountId;
+            }
+        );
+    }
+
     public function testIfCanCancelAccountWithSuccess(): void
     {
         $accountId = $this->faker->randomNumber(5);

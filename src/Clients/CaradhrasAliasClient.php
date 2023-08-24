@@ -82,6 +82,17 @@ class CaradhrasAliasClient extends BaseApiClient
         return $response->items;
     }
 
+    public function list(int $accountId): array
+    {
+        $response = $this
+            ->apiClient(false)
+            ->get('/v1/accounts', [
+                'idAccount' => $accountId,
+            ])->object();
+
+        return $response->items;
+    }
+
     /**
      * Delete an alias.
      *
