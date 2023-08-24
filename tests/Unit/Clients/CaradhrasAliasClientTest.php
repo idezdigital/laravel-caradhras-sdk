@@ -7,6 +7,7 @@ use Idez\Caradhras\Enums\AliasBankProvider;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
 class CaradhrasAliasClientTest extends TestCase
@@ -41,5 +42,27 @@ class CaradhrasAliasClientTest extends TestCase
         $this->expectExceptionMessage("A conta possui informações ou documentos pendentes.");
 
         $this->aliasClient->findOrCreate($accountId, AliasBankProvider::Votorantim);
+    }
+
+    public function testIfCanCancelAccountWithSuccess(): void
+    {
+        $accountId = $this->faker->randomNumber(5);
+        $bankNumber = AliasBankProvider::Votorantim;
+
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . '/v1/accounts';
+
+        Http::fake([
+            $expectedRequestUrl => Http::response(status: 200),
+        ]);
+
+        $this->aliasClient->delete($accountId, $bankNumber);
+
+        Http::assertSent(
+            function (Request $request) use ($expectedRequestUrl, $accountId, $bankNumber) {
+                return $request->url() === $expectedRequestUrl &&
+                    $request['idAccount'] === $accountId &&
+                    $request['bankNumber'] === $bankNumber->value;
+            }
+        );
     }
 }
