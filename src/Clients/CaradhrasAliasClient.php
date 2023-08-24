@@ -82,6 +82,12 @@ class CaradhrasAliasClient extends BaseApiClient
         return $response->items;
     }
 
+    /**
+     * List account aliases.
+     *
+     * @param  int  $accountId
+     * @return array
+     */
     public function list(int $accountId): array
     {
         $response = $this
