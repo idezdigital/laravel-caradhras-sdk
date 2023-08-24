@@ -73,7 +73,7 @@ class CaradhrasAliasClientTest extends TestCase
 
         $result = $this->aliasClient->list($accountId);
 
-        $this->assertEquals($result, json_decode(json_encode($expectedItems)));
+        $this->assertEquals($result, $this->arrayToObject($expectedItems));
 
         Http::assertSent(
             function (Request $request) use ($expectedRequestUrl, $accountId) {

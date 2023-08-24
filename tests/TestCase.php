@@ -24,6 +24,11 @@ class TestCase extends Orchestra
         ];
     }
 
+    protected function arrayToObject(array $data): array|object
+    {
+        return json_decode(json_encode($data));
+    }
+
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
