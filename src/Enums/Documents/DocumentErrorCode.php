@@ -10,4 +10,5 @@ enum DocumentErrorCode: int
     case InvalidHeadersImage = 4001022;
     case InvalidHeadersDocument = 4001021;
     case InvalidFormat = 4001020;
+    case UniquePartner = 4002023;
 }
