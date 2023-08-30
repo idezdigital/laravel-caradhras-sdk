@@ -167,11 +167,11 @@ class CaradhrasCompanyClient extends BaseApiClient
      *
      * Send company or partner document with custom API prefix and endpoint.
      *
-     * @param  string  $apiPrefix
-     * @param  string  $endpoint
-     * @param  string  $documentType
-     * @param  Stream  $file
-     * @param  string  $contentType
+     * @param string $apiPrefix
+     * @param string $endpoint
+     * @param string $documentType
+     * @param Stream $file
+     * @param string $contentType
      * @return \Idez\Caradhras\Data\CompanyDocument
      *
      * @throws DuplicatedImageException
@@ -181,6 +181,7 @@ class CaradhrasCompanyClient extends BaseApiClient
      * @throws InvalidSelfieException
      * @throws LowQualitySelfieException
      * @throws SendDocumentException
+     * @throws UniquePartnerException
      */
     private function sendDocumentWithCustomApi(string $apiPrefix, string $endpoint, string $documentType, Stream $file, string $contentType = 'image/jpeg'): CompanyDocument
     {
@@ -195,23 +196,7 @@ class CaradhrasCompanyClient extends BaseApiClient
             ->post($endpoint . '?' . $queryParams);
 
         if ($response->failed()) {
-            $errorCode = $response->json('errorCode');
-            $reasonCode = $response->json('reasonCode');
-
-            if (filled($errorCode)) {
-                throw match ($errorCode) {
-                    DocumentErrorCode::DuplicatedImage => new DuplicatedImageException(),
-                    DocumentErrorCode::InvalidSelfie => match (DocumentSelfieReasonCode::tryFrom($reasonCode)) {
-                        DocumentSelfieReasonCode::LowQuality => new LowQualitySelfieException(),
-                        DocumentSelfieReasonCode::FaceNotVisible => new FaceNotVisibleException(),
-                        DocumentSelfieReasonCode::Inconsistent => new InconsistentSelfieException(),
-                        default => new InvalidSelfieException()
-                    },
-                    default => new InvalidDocumentException(),
-                };
-            }
-
-            throw new SendDocumentException($response->json(), $response->status());
+            $this->throwsDocumentError($response);
         }
 
         return new CompanyDocument($response->object()->result);
