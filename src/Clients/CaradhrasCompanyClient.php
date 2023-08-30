@@ -270,7 +270,7 @@ class CaradhrasCompanyClient extends BaseApiClient
             'jwt' => $jwt,
         ];
 
-        if (filled($jwt)) {
+        if ($documentType === 'SELFIE' && filled($jwt)) {
             unset($body['imageBase64']);
         }
 
