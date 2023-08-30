@@ -13,6 +13,7 @@ use Idez\Caradhras\Exceptions\Documents\InvalidDocumentException;
 use Idez\Caradhras\Exceptions\Documents\InvalidSelfieException;
 use Idez\Caradhras\Exceptions\Documents\LowQualitySelfieException;
 use Idez\Caradhras\Exceptions\Documents\SendDocumentException;
+use Idez\Caradhras\Exceptions\Documents\UniquePartnerException;
 use Idez\Caradhras\Exceptions\FailedCreateCompanyAccount;
 use Idez\Caradhras\Exceptions\GetCompanyRegistrationException;
 use Idez\Caradhras\Exceptions\UpdateCompanyRegistrationException;
@@ -222,5 +223,79 @@ class CaradhrasCompanyClient extends BaseApiClient
                     ->get("/v1/registrations/{$registrationId}/documents/status")
                     ->throw()
                     ->object();
+    }
+
+    /**
+     * @param $response
+     * @return never
+     * @throws DuplicatedImageException
+     * @throws FaceNotVisibleException
+     * @throws InconsistentSelfieException
+     * @throws InvalidDocumentException
+     * @throws InvalidSelfieException
+     * @throws LowQualitySelfieException
+     * @throws SendDocumentException
+     * @throws UniquePartnerException
+     */
+    private function throwsDocumentError($response): never
+    {
+        $errorCode = $response->json('errorCode');
+        $reasonCode = $response->json('reasonCode');
+
+        if (filled($errorCode)) {
+            throw match ($errorCode) {
+                DocumentErrorCode::DuplicatedImage => new DuplicatedImageException(),
+                DocumentErrorCode::UniquePartner => new UniquePartnerException(),
+                DocumentErrorCode::InvalidSelfie => match (DocumentSelfieReasonCode::tryFrom($reasonCode)) {
+                    DocumentSelfieReasonCode::LowQuality => new LowQualitySelfieException(),
+                    DocumentSelfieReasonCode::FaceNotVisible => new FaceNotVisibleException(),
+                    DocumentSelfieReasonCode::Inconsistent => new InconsistentSelfieException(),
+                    default => new InvalidSelfieException()
+                },
+                default => new InvalidDocumentException(),
+            };
+        }
+
+        throw new SendDocumentException($response->json(), $response->status());
+    }
+
+    /**
+     * @throws LowQualitySelfieException
+     * @throws InconsistentSelfieException
+     * @throws InvalidDocumentException
+     * @throws DuplicatedImageException
+     * @throws InvalidSelfieException
+     * @throws FaceNotVisibleException
+     * @throws SendDocumentException
+     * @throws UniquePartnerException
+     */
+    public function addCompanyDocumentBiometric(
+        string $registrationId,
+        string $documentType,
+        $base64,
+        $jwt
+    ): CompanyDocument {
+        $queryParams = http_build_query([
+            'additionalDetails' => true,
+            'category' => $documentType,
+        ]);
+
+        $body = [
+            'imageBase64' => $base64,
+            'jwt' => $jwt,
+        ];
+
+        if (filled($jwt)) {
+            unset($body['imageBase64']);
+        }
+
+        $response = $this->apiClient(false)
+            ->post("/v1/registrations/{$registrationId}/documents/biometric?" . $queryParams, $body);
+
+        if ($response->failed()) {
+            $this->throwsDocumentError($response);
+        }
+
+        return new CompanyDocument($response->object()->result);
     }
 }
