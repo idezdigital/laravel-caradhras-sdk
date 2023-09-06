@@ -76,10 +76,9 @@ class CaradhrasAliasClientTest extends TestCase
         $this->assertEquals($result, $this->arrayToObject($expectedItems));
 
         Http::assertSent(
-            function (Request $request) use ($expectedRequestUrl, $accountId) {
-                return $request->url() === $expectedRequestUrl &&
-                    $request['idAccount'] === $accountId;
-            }
+            fn (Request $request) => $request->url() === $expectedRequestUrl
+                && $request->method() === 'GET'
+                && $request['idAccount'] === $accountId
         );
     }
 
@@ -97,11 +96,10 @@ class CaradhrasAliasClientTest extends TestCase
         $this->aliasClient->delete($accountId, $bankNumber);
 
         Http::assertSent(
-            function (Request $request) use ($expectedRequestUrl, $accountId, $bankNumber) {
-                return $request->url() === $expectedRequestUrl &&
-                    $request['idAccount'] === $accountId &&
-                    $request['bankNumber'] === $bankNumber->value;
-            }
+            fn (Request $request) => $request->url() === $expectedRequestUrl
+                && $request->method() === 'DELETE'
+                && $request['idAccount'] === $accountId
+                && $request['bankNumber'] === $bankNumber->value
         );
     }
 }
