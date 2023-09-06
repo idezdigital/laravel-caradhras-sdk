@@ -91,7 +91,7 @@ class CaradhrasAliasClient extends BaseApiClient
     public function list(int $accountId): array
     {
         $response = $this
-            ->apiClient(false)
+            ->apiClient()
             ->get('/v1/accounts', [
                 'idAccount' => $accountId,
             ])->object();
@@ -109,7 +109,7 @@ class CaradhrasAliasClient extends BaseApiClient
     public function delete(int $accountId, AliasBankProvider $bankProvider): Response
     {
         return $this
-            ->apiClient(false)
+            ->apiClient()
             ->delete('/v1/accounts', [
                 'idAccount' => $accountId,
                 'bankNumber' => $bankProvider->value,
