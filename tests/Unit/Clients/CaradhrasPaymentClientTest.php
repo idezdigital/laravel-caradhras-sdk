@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
 use Idez\Caradhras\Clients\CaradhrasPaymentClient;
+use Idez\Caradhras\Exceptions\Payments\ConvenantNotAuthorizedException;
 use Idez\Caradhras\Exceptions\Payments\InvalidPaymentBarcodeException;
 use Idez\Caradhras\Exceptions\Payments\NotRegisteredAtCipException;
 use Idez\Caradhras\Exceptions\Payments\PaidOrUnregisteredException;
@@ -164,6 +165,24 @@ class CaradhrasPaymentClientTest extends TestCase
 
         $this->expectException(PaymentTimeoutException::class);
         $this->expectExceptionCode(504);
+
+        $this->paymentClient->validate($barcode);
+    }
+
+    public function testHandleConenantNotAuthorized()
+    {
+        $barcode = $this->faker->regexify('\d{48}');
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+
+        Http::fake([
+            $expectedRequestUrl => Http::response([
+                "message" => $this->paymentClient::COVENANT_NOT_AUTHORIZED,
+                "uuid" => $this->faker->uuid(),
+            ], 424),
+        ]);
+
+        $this->expectException(ConvenantNotAuthorizedException::class);
+        $this->expectExceptionCode(400);
 
         $this->paymentClient->validate($barcode);
     }

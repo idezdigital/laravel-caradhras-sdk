@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Clients;
 
 use Exception;
+use Idez\Caradhras\Exceptions\Payments\ConvenantNotAuthorizedException;
 use Idez\Caradhras\Exceptions\Payments\ExpirationDateException;
 use Idez\Caradhras\Exceptions\Payments\InvalidAmountException;
 use Idez\Caradhras\Exceptions\Payments\InvalidPaymentBarcodeException;
@@ -28,6 +29,7 @@ class CaradhrasPaymentClient extends BaseApiClient
     public const ALREADY_PROCESSED_ERROR = 'This payment slip was already processed and can no longer be paid';
     public const EXTERNAL_FAILURE_ERROR = 'External failure while executing transaction';
     public const TIMEOUT_ERROR = 'Timeout expired while executing transaction';
+    public const COVENANT_NOT_AUTHORIZED = 'Covenant not authorized to receive payments';
 
     /**
      * Validate a payment barcode.
@@ -66,6 +68,10 @@ class CaradhrasPaymentClient extends BaseApiClient
                     self::EXPIRATION_DATE_EXCEEDED_ERROR => new ExpirationDateException(),
                     self::NOT_ALLOWED_NOW_ERROR => new NotAllowedNowException(),
                     self::ALREADY_PROCESSED_ERROR => new PaidOrUnregisteredException(),
+                    default => new ValidatePaymentException(),
+                },
+                424 => match ($response->json('message')) {
+                    self::COVENANT_NOT_AUTHORIZED => new ConvenantNotAuthorizedException(),
                     default => new ValidatePaymentException(),
                 },
                 504 => new PaymentTimeoutException(),
