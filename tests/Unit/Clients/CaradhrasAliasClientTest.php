@@ -90,7 +90,12 @@ class CaradhrasAliasClientTest extends TestCase
         $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . '/v1/accounts';
 
         Http::fake([
-            $expectedRequestUrl => Http::response(status: 200),
+            $expectedRequestUrl => Http::response(
+                body: [
+                    'message' => 'This account are closed'
+                ],
+                status: 200,
+            ),
         ]);
 
         $this->aliasClient->delete($accountId, $bankNumber);
