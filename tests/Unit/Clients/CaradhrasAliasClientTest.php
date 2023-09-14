@@ -92,7 +92,7 @@ class CaradhrasAliasClientTest extends TestCase
         Http::fake([
             $expectedRequestUrl => Http::response(
                 body: [
-                    'message' => 'This account are closed'
+                    'message' => 'This account are closed',
                 ],
                 status: 200,
             ),
