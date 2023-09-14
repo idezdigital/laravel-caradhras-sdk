@@ -81,4 +81,39 @@ class CaradhrasAliasClient extends BaseApiClient
 
         return $response->items;
     }
+
+    /**
+     * List account aliases.
+     *
+     * @param  int  $accountId
+     * @return array
+     */
+    public function list(int $accountId): array
+    {
+        $response = $this
+            ->apiClient()
+            ->get('/v1/accounts', [
+                'idAccount' => $accountId,
+            ])->object();
+
+        return $response->items;
+    }
+
+    /**
+     * Delete an alias.
+     *
+     * @param  int  $accountId
+     * @param  \Idez\Caradhras\Enums\AliasBankProvider $bankProvider
+     * @return object
+     */
+    public function delete(int $accountId, AliasBankProvider $bankProvider): object
+    {
+        return $this
+            ->apiClient()
+            ->delete('/v1/accounts', [
+                'idAccount' => $accountId,
+                'bankNumber' => $bankProvider->value,
+            ])
+            ->object();
+    }
 }
