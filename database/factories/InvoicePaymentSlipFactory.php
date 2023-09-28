@@ -4,6 +4,7 @@ namespace Idez\Caradhras\Database\Factories;
 
 use App\Models\Account;
 use App\Models\BankSlip;
+use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
 use Idez\Caradhras\Data\InvoicePaymentSlip;
 use Idez\Caradhras\Data\RechargePaymentSlipPayer;
 use App\Models\Person;
@@ -62,7 +63,7 @@ class InvoicePaymentSlipFactory extends Factory
                 'deadlineAutomaticCancellation' => 120,
             ],
             "bankBranchNumber" => 1111,
-            "bankNumber" => 655,
+            "bankNumber" => CaradhrasPaymentSlipClient::DEFAULT_BANK_NUMBER,
             "instructions" => "Não receber após vencimento",
             "acceptance" => "N",
             "status" => BankSlip::CR_STATUS_CODE_REGISTERED,

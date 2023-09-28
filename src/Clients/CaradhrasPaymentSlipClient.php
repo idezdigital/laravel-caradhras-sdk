@@ -22,7 +22,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
 {
     public const API_PREFIX = 'paymentslip';
 
-    public const DEFAULT_BANK_NUMBER = 655;
+    public const DEFAULT_BANK_NUMBER = 301;
 
     public const PAYMENT_SLIP_EXPIRED_ERROR = 'Payment slip expired';
 
