@@ -4,6 +4,7 @@ namespace Idez\Caradhras\Database\Factories;
 
 use App\Models\Account;
 use App\Models\BankSlip;
+use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
 use Idez\Caradhras\Data\RechargePaymentSlip;
 use Idez\Caradhras\Data\RechargePaymentSlipPayer;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -55,7 +56,7 @@ class RechargePaymentSlipFactory extends Factory
                 "name" => $this->faker->company(),
             ],
             "bankBranchNumber" => 1111,
-            "bankNumber" => 655,
+            "bankNumber" => CaradhrasPaymentSlipClient::DEFAULT_BANK_NUMBER,
             "instructions" => "Não receber após vencimento",
             "acceptance" => "N",
             "status" => BankSlip::CR_STATUS_CODE_REGISTERED,
