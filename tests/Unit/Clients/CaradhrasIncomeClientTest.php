@@ -2,10 +2,7 @@
 
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
-use Idez\Caradhras\Clients\CaradhrasAliasClient;
 use Idez\Caradhras\Clients\CaradhrasIncomeClient;
-use Idez\Caradhras\Enums\AliasBankProvider;
-use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Client\Request;
