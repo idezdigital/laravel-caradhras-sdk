@@ -8,6 +8,7 @@ use Idez\Caradhras\Clients\CaradhrasAliasClient;
 use Idez\Caradhras\Clients\CaradhrasBankTransferInClient;
 use Idez\Caradhras\Clients\CaradhrasCompanyClient;
 use Idez\Caradhras\Clients\CaradhrasDataApiClient;
+use Idez\Caradhras\Clients\CaradhrasIncomeClient;
 use Idez\Caradhras\Clients\CaradhrasIncomeReportsClient;
 use Idez\Caradhras\Clients\CaradhrasLimitsClient;
 use Idez\Caradhras\Clients\CaradhrasMainClient;
@@ -24,6 +25,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
         CaradhrasAliasClient::class,
         CaradhrasBankTransferInClient::class,
         CaradhrasPaymentClient::class,
+        CaradhrasIncomeClient::class,
         CaradhrasPaymentSlipClient::class,
         CaradhrasRegDocsClient::class,
         CaradhrasCompanyClient::class,
