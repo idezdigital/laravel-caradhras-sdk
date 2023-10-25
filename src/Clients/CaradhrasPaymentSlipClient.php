@@ -97,7 +97,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
 
         $result = head($response->object()->items ?? []);
 
-        if (! $result) {
+        if (!$result) {
             throw new PaymentSlipNotFoundException();
         }
 
@@ -123,7 +123,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
 
         $result = head($response->object()->items ?? []);
 
-        if (! $result) {
+        if (!$result) {
             throw new PaymentSlipNotFoundException();
         }
 
@@ -163,7 +163,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
         InvoicePaymentSlipDiscount $discount = null,
         InvoicePaymentSlipInterest $interest = null,
     ): InvoicePaymentSlip {
-        if (! PaymentSlipInvoiceType::tryFrom($invoiceTypeCode)) {
+        if (!PaymentSlipInvoiceType::tryFrom($invoiceTypeCode)) {
             throw new CaradhrasException('Invalid invoice type code.', 400);
         }
 
@@ -203,10 +203,11 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
         return new InvoicePaymentSlip($response->object());
     }
 
-    public function cancel(string $documentNumber): void
+    public function cancel(string $documentNumber): object
     {
-        $this->apiClient()
+        return $this->apiClient()
             ->post("/v1/$documentNumber/write-off")
-            ->throw();
+            ->throw()
+            ->object();
     }
 }

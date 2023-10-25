@@ -2,12 +2,9 @@
 
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
-use App\Models\Account;
 use Idez\Caradhras\Clients\CaradhrasMainClient;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Http;
 
 class CaradhrasMainClientTest extends TestCase
 {
