@@ -202,4 +202,12 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
 
         return new InvoicePaymentSlip($response->object());
     }
+
+    public function cancel(string $documentNumber): object
+    {
+        return $this->apiClient()
+            ->post("/v1/$documentNumber/write-off")
+            ->throw()
+            ->object();
+    }
 }
