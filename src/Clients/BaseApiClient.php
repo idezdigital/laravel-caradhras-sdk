@@ -26,12 +26,12 @@ abstract class BaseApiClient
     /**
      * BaseApiClient constructor.
      *
-     * @param  string  $apiKey
-     * @param  string  $apiSecret
-     * @return void
+     * @param string $apiKey
+     * @param string $apiSecret
+     * @param string|null $origin
      * @throws \Exception
      */
-    public function __construct(private $apiKey, private $apiSecret)
+    public function __construct(private $apiKey, private $apiSecret, private ?string $origin = null)
     {
         $this->accessToken = $this->getAccessToken();
     }
@@ -61,11 +61,18 @@ abstract class BaseApiClient
         return $auth->access_token;
     }
 
+    private function getRequestsOriginHeader(): array
+    {
+        $origin = $this->origin ?? config('caradhras.requests_origin');
+
+        return $origin ? ['X-Idez-Origin' => $origin] : [];
+    }
+
     /**
      * Return API Client with middlewares and auth.
      *
-     * @param  bool  $throwsHttpError  (optional). Set as false to disable default exception handling.
-     * @param  string|null  $apiPrefix
+     * @param bool $throwsHttpError (optional). Set as false to disable default exception handling.
+     * @param string|null $apiPrefix
      * @return PendingRequest
      */
     protected function apiClient(bool $throwsHttpError = true, string $apiPrefix = null): PendingRequest
@@ -75,6 +82,7 @@ abstract class BaseApiClient
 
         $client = Http::baseUrl($baseUrl)
             ->withMiddleware(Middleware::httpErrors())
+            ->withHeaders($this->getRequestsOriginHeader())
             ->withOptions($options)
             ->withToken($this->accessToken);
 
@@ -92,14 +100,14 @@ abstract class BaseApiClient
     /**
      * Create API base URL from prefix.
      *
-     * @param  string  $prefix
+     * @param string $prefix
      * @return string
      */
     protected function createApiBaseUri(string $prefix): string
     {
         $endpoint = config('services.caradhras.endpoint');
 
-        return "https://{$prefix}.{$endpoint}";
+        return "https://$endpoint/$prefix";
     }
 
     /**
@@ -143,6 +151,7 @@ abstract class BaseApiClient
     {
         $response = Http::baseUrl($this->createApiBaseUri('auth'))
             ->withBasicAuth($this->apiKey, $this->apiSecret)
+            ->withHeaders($this->getRequestsOriginHeader())
             ->asForm()
             ->post('/oauth2/token?grant_type=client_credentials');
 
