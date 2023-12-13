@@ -29,7 +29,6 @@ use Throwable;
 
 class CaradhrasMainClient extends BaseApiClient
 {
-
     /**
      * Associate card to account.
      *
