@@ -8,7 +8,7 @@ class CaradhrasLimitsClient extends BaseApiClient
 {
     public const API_PREFIX = 'limits';
 
-    public function createLimit(string $accountId, string $beneficiaryType, int $serviceGroup, int $limitType, float $amount)
+    public function createLimit(string $accountId, int $serviceGroup, int $limitType, float $amount, string $beneficiaryType)
     {
         return $this->apiClient()->post("/limits/v2/accounts/{$accountId}/services-groups/{$serviceGroup}", [
             'limitType' => (string) $limitType,
@@ -17,7 +17,7 @@ class CaradhrasLimitsClient extends BaseApiClient
         ])->object();
     }
 
-    public function createBatchLimit(string $accountId, string $beneficiaryType, int $serviceGroup, array $limits)
+    public function createBatchLimit(string $accountId, int $serviceGroup, array $limits, string $beneficiaryType)
     {
         return $this->apiClient()->post("/limits/v2/accounts/{$accountId}/batches", [
             'idServicesGroup' => $serviceGroup,
