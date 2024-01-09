@@ -8,40 +8,42 @@ class CaradhrasLimitsClient extends BaseApiClient
 {
     public const API_PREFIX = 'limits';
 
-    public function createLimit(string $accountId, int $serviceGroup, int $limitType, float $amount)
+    public function createLimit(string $accountId, int $serviceGroup, int $limitType, float $amount, string $beneficiaryType)
     {
         return $this->apiClient()->post("/limits/v2/accounts/{$accountId}/services-groups/{$serviceGroup}", [
             'limitType' => (string) $limitType,
             'requestLimit' => $amount,
+            'beneficiaryType' => $beneficiaryType,
         ])->object();
     }
 
-    public function createBatchLimit(string $accountId, int $serviceGroup, array $limits)
+    public function createBatchLimit(string $accountId, int $serviceGroup, array $limits, string $beneficiaryType)
     {
         return $this->apiClient()->post("/limits/v2/accounts/{$accountId}/batches", [
             'idServicesGroup' => $serviceGroup,
             'limits' => $limits,
+            'beneficiaryType' => $beneficiaryType,
         ])->object();
     }
 
-    public function getLimitById(string $requestId)
+    public function getLimitById(string $requestId, string $beneficiaryType)
     {
         return $this->apiClient()->get('/limits/v2/requests', [
-            'idRequest' => $requestId,
+            'idRequest' => $requestId, 'beneficiaryType' => $beneficiaryType,
         ])->object();
     }
 
-    public function getAccountLimits(string $accountId)
+    public function getAccountLimits(string $accountId, string $beneficiaryType)
     {
-        return $this->apiClient()->get("/limits/v2/accounts/{$accountId}")
+        return $this->apiClient()->get("/limits/v2/accounts/{$accountId}", ['beneficiaryType' => $beneficiaryType,])
             ->object();
     }
 
-    public function getAccountLimitRequests(string $accountId): LimitCollection
+    public function getAccountLimitRequests(string $accountId, string $beneficiaryType): LimitCollection
     {
         $response = $this
             ->apiClient()
-            ->get('/limits/v2/requests', ['idAccount' => $accountId])
+            ->get('/limits/v2/requests', ['idAccount' => $accountId, 'beneficiaryType' => $beneficiaryType,])
             ->toPsrResponse();
 
         return new LimitCollection($response);
