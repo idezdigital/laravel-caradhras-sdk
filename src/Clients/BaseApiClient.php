@@ -105,15 +105,16 @@ abstract class BaseApiClient
      */
     protected function createApiBaseUri(string $prefix): string
     {
-        if(config('caradhras.use_proxy')) {
-            $endpoint = config('caradhras.proxy_endpoint');
-
-            return "https://$endpoint/$prefix";
-        }
-
         $endpoint = config('caradhras.endpoint');
 
         return "https://$prefix.$endpoint";
+    }
+
+    protected function getProxyUrl(string $prefix): string
+    {
+        $endpoint = config('caradhras.proxy_endpoint');
+
+        return "https://$endpoint/$prefix";
     }
 
     /**
@@ -151,7 +152,12 @@ abstract class BaseApiClient
      */
     public function getApiClientAuthentication(): object
     {
-        $response = Http::baseUrl($this->createApiBaseUri('auth'))
+        $url = match(config('caradhras.use_proxy')) {
+            true => $this->getProxyUrl('auth'),
+            false => $this->createApiBaseUri('auth')
+        };
+
+        $response = Http::baseUrl($url)
             ->withBasicAuth($this->apiKey, $this->apiSecret)
             ->withHeaders($this->getRequestsOriginHeader())
             ->asForm()
