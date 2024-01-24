@@ -35,7 +35,6 @@ abstract class BaseApiClient
      * @throws \Exception
      */
     public function __construct(
-        private readonly string $endpoint,
         private $apiKey,
         private $apiSecret,
         private readonly string $origin
@@ -106,9 +105,15 @@ abstract class BaseApiClient
      */
     protected function createApiBaseUri(string $prefix): string
     {
+        if(config('caradhras.use_proxy')) {
+            $endpoint = config('caradhras.proxy_endpoint');
+
+            return "https://$endpoint/$prefix";
+        }
+
         $endpoint = config('caradhras.endpoint');
 
-        return "https://$endpoint/$prefix";
+        return "https://$prefix.$endpoint";
     }
 
     /**
