@@ -50,7 +50,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
             $this->app->bind($client, fn ($app) => new $client(
                 $app['config']['caradhras']['client'],
                 $app['config']['caradhras']['secret'],
-                $app['config']['caradhras']['requests_origin'],
+                $app['config']['caradhras']['requests_origin']
             ));
         }
 
