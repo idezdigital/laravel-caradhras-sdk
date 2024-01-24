@@ -48,6 +48,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
         foreach ($this->clients as $client) {
             // TODO use bind and handle access_token ttl.
             $this->app->bind($client, fn ($app) => new $client(
+                $app['config']['caradhras']['endpoint'],
                 $app['config']['caradhras']['client'],
                 $app['config']['caradhras']['secret'],
                 $app['config']['caradhras']['requests_origin']
