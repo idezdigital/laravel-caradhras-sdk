@@ -481,4 +481,14 @@ class CaradhrasCardClient extends BaseApiClient
 
         return $response->successful();
     }
+
+    public function updateHolderName(int $accountId, int $personId, string $name){
+        $response = $this->apiClient()
+            ->patch("/contas/{$accountId}/pessoas/{$personId}/portadores", [
+                'nomeImpresso' => $name
+            ])
+            ->throw();
+
+        return $response->object();
+    }
 }
