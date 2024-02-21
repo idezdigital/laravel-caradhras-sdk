@@ -17,7 +17,7 @@ class CaradhrasIncomeReportsClient extends BaseApiClient
      * @return object
      * @throws \Idez\Caradhras\Exceptions\FindIncomeReportsException
      */
-    public function getAvailable(int $accountId): object
+    public function getAvailable(int $accountId): ?object
     {
         $request = $this->apiClient(false)
             ->get("/v1/reports/{$accountId}");
