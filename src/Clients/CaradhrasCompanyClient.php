@@ -21,6 +21,7 @@ use Idez\Caradhras\Exceptions\UpdateCompanyRegistrationException;
 class CaradhrasCompanyClient extends BaseApiClient
 {
     public const API_PREFIX = 'companies';
+
     public const API_DOCUMENTS_PREFIX = 'docspy-api';
 
     /**
@@ -265,14 +266,14 @@ class CaradhrasCompanyClient extends BaseApiClient
             'category' => $documentType,
         ]);
 
-        $body = [
-            'imageBase64' => $base64,
-            'jwt' => $jwt,
-        ];
-
-        if ($documentType === 'SELFIE' && filled($jwt)) {
-            unset($body['imageBase64']);
-        }
+        $body = match ($documentType) {
+            'SELFIE' => ['jwt' => $jwt],
+            'DIGITAL_DRIVER_LICENSE' => ['imageBase64' => $base64],
+            default => [
+                'imageBase64' => $base64,
+                'jwt' => $jwt,
+            ],
+        };
 
         $response = $this->apiClient(false)
             ->post("/v1/registrations/{$registrationId}/documents/biometric?" . $queryParams, $body);
