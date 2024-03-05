@@ -140,20 +140,21 @@ class CaradhrasCardClient extends BaseApiClient
      * Get Card details.
      *
      * @param  int  $cardId
-     * @return CardDetails
-     * @throws Idez\Caradhras\Exceptions\GetCardDetailsException
+     * @param  int  $individualId
+     * @return string
+     * @throws GetCardDetailsException
      */
-    public function getCardDetails(int $cardId): CardDetails
+    public function getCardDetails(int $cardId, int $individualId): string
     {
         $response = $this
             ->apiClient(false)
-            ->get("/cartoes/{$cardId}/consultar-dados-reais");
+            ->get("/cards/{$cardId}/cardholders/{$individualId}/data/real");
 
         if ($response->failed()) {
-            throw new GetCardDetailsException($response->json());
+            throw new GetCardDetailsException();
         }
 
-        return new CardDetails($response->json());
+        return $response;
     }
 
     /**
