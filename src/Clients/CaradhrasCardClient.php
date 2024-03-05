@@ -84,15 +84,12 @@ class CaradhrasCardClient extends BaseApiClient
     }
 
     /**
-     * Issue physical card.
-     *
      * @param  int  $accountId
      * @param  int  $individualId
      * @return Card
-     * @throws \Illuminate\Http\Client\RequestException
-     * @throws \Exception
+     * @throws IssuePhysicalCardException
      */
-    public function issuePhysicalCard(int $accountId, int $individualId, $password): Card
+    public function issuePhysicalCard(int $accountId, int $individualId): Card
     {
         $data = [
             'id_pessoa' => $individualId,
@@ -107,9 +104,6 @@ class CaradhrasCardClient extends BaseApiClient
         }
 
         $cardId = $issueCardResponse->json('idCartao');
-
-        $this->setCardPassword($cardId, $password);
-
         return $this->getCard($cardId);
     }
 
