@@ -15,9 +15,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PixTransfer extends Data
 {
     use HasFactory;
+
     public const TYPE_MANUAL = 0;
+
     public const TYPE_KEY = 1;
+
     public const TYPE_STATIC_QRCODE = 2;
+
     public const TYPE_DYNAMIC_QRCODE = 3;
 
     public const TYPES = [
@@ -28,8 +32,11 @@ class PixTransfer extends Data
     ];
 
     public const STATUS_EXECUTED = 'EXECUTED';
+
     public const STATUS_NOT_EXECUTED = 'NOT_EXECUTED';
+
     public const STATUS_PENDING = 'PENDING';
+
     public const STATUS_REVERSAL_EXECUTED = 'REVERSAL_EXECUTED';
 
     public const STATUS = [

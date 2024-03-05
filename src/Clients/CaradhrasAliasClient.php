@@ -12,10 +12,6 @@ class CaradhrasAliasClient extends BaseApiClient
 
     /**
      * Create an alias.
-     *
-     * @param  int  $accountId
-     * @param  \Idez\Caradhras\Enums\AliasBankProvider  $bankProvider
-     * @return Response
      */
     public function create(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Votorantim): Response
     {
@@ -30,9 +26,6 @@ class CaradhrasAliasClient extends BaseApiClient
     /**
      * Find or create an alias.
      *
-     * @param  int  $accountId
-     * @param  \Idez\Caradhras\Enums\AliasBankProvider  $bankProvider
-     * @return object
      * @throws \Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function findOrCreate(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Votorantim): object
@@ -62,9 +55,9 @@ class CaradhrasAliasClient extends BaseApiClient
 
         if (
             $response->status() === 409 &&
-            $responseObject?->message === "Transaction not allowed due to lack of regulatory informations or documents."
+            $responseObject?->message === 'Transaction not allowed due to lack of regulatory informations or documents.'
         ) {
-            throw new CaradhrasException("A conta possui informações ou documentos pendentes.", $response->status());
+            throw new CaradhrasException('A conta possui informações ou documentos pendentes.', $response->status());
         }
 
         return $responseObject->data;
@@ -84,9 +77,6 @@ class CaradhrasAliasClient extends BaseApiClient
 
     /**
      * List account aliases.
-     *
-     * @param  int  $accountId
-     * @return array
      */
     public function list(int $accountId): array
     {
@@ -101,10 +91,6 @@ class CaradhrasAliasClient extends BaseApiClient
 
     /**
      * Delete an alias.
-     *
-     * @param  int  $accountId
-     * @param  \Idez\Caradhras\Enums\AliasBankProvider $bankProvider
-     * @return object
      */
     public function delete(int $accountId, AliasBankProvider $bankProvider): object
     {

@@ -22,7 +22,7 @@ class PixTransferFactory extends Factory
     public function definition()
     {
         return [
-            'idEndToEnd' => 'E0874481' . $this->faker->regexify('/[A-Z0-9]{24}/'),
+            'idEndToEnd' => 'E0874481'.$this->faker->regexify('/[A-Z0-9]{24}/'),
             'transactionDate' => now()->toDateTimeString(),
             'idAdjustment' => $this->faker->numberBetween(1111, 9999),
             'transactionCode' => $this->faker->uuid(),

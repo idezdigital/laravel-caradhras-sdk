@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class PixDecodedDynamicDueDateQr
- * @package App\Models\Caradhras
  *
  * @property string $status
  * @property string $idEndToEnd

@@ -26,10 +26,10 @@ class CaradhrasAliasClientTest extends TestCase
     {
         $accountId = $this->faker->randomNumber(5);
 
-        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . "/v1/accounts*";
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl().'/v1/accounts*';
 
         $fakeResponse = [
-            "message" => "Transaction not allowed due to lack of regulatory informations or documents.",
+            'message' => 'Transaction not allowed due to lack of regulatory informations or documents.',
         ];
 
         Http::fake([
@@ -39,7 +39,7 @@ class CaradhrasAliasClientTest extends TestCase
         ]);
 
         $this->expectException(CaradhrasException::class);
-        $this->expectExceptionMessage("A conta possui informações ou documentos pendentes.");
+        $this->expectExceptionMessage('A conta possui informações ou documentos pendentes.');
 
         $this->aliasClient->findOrCreate($accountId, AliasBankProvider::Votorantim);
     }
@@ -48,7 +48,7 @@ class CaradhrasAliasClientTest extends TestCase
     {
         $accountId = $this->faker->randomNumber(5);
 
-        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . "/v1/accounts?idAccount={$accountId}";
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl()."/v1/accounts?idAccount={$accountId}";
 
         $expectedItems = [
             [
@@ -87,7 +87,7 @@ class CaradhrasAliasClientTest extends TestCase
         $accountId = $this->faker->randomNumber(5);
         $bankNumber = AliasBankProvider::Votorantim;
 
-        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . '/v1/accounts';
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl().'/v1/accounts';
 
         Http::fake([
             $expectedRequestUrl => Http::response(

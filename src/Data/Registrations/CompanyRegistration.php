@@ -28,7 +28,10 @@ use Idez\Caradhras\Data\Data;
 class CompanyRegistration extends Data
 {
     public const STATUS_WAITING_DOCUMENTS = 'WAITING_DOCUMENTS';
+
     public const STATUS_WAITING_ANALYSIS = 'WAITING_ANALYSIS';
+
     public const STATUS_APPROVED = 'APPROVED';
+
     public const STATUS_ACTIVE = 'ACTIVE';
 }

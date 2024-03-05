@@ -8,10 +8,6 @@ namespace Idez\Caradhras\Data;
  */
 class Fingerprint extends Data
 {
-    /**
-     * @param  string  $userAgent
-     * @param  string  $ip
-     */
     public function __construct(string $userAgent, string $ip)
     {
         parent::__construct([

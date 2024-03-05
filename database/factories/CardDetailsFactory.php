@@ -2,9 +2,9 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use Idez\Caradhras\Data\CardDetails;
 use App\Models\Card;
 use Carbon\Carbon;
+use Idez\Caradhras\Data\CardDetails;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CardDetailsFactory extends Factory
@@ -33,9 +33,9 @@ class CardDetailsFactory extends Factory
             'idConta' => $this->faker->randomNumber(3),
             'idCartao' => $this->faker->randomNumber(3),
             'numeroAgencia' => 0,
-            'numeroContaCorente' => "",
-            "idStatusConta" => 0,
-            "statusConta" => "Normal",
+            'numeroContaCorente' => '',
+            'idStatusConta' => 0,
+            'statusConta' => 'Normal',
             'idStatusCartao' => 1,
             'statusCartao' => 'Normal',
             'idMifare' => null,

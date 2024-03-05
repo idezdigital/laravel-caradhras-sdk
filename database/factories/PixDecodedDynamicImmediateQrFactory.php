@@ -12,8 +12,6 @@ class PixDecodedDynamicImmediateQrFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -23,8 +21,8 @@ class PixDecodedDynamicImmediateQrFactory extends Factory
             'payee' => (object) [
                 'ispb' => $this->faker->regexify('/\d{8}/'),
                 'bankName' => bankNameFromId($this->faker->randomElement(config('constants.banks'))['id']),
-                'bankAccountNumber' => (string)$this->faker->randomNumber(6),
-                'bankBranchNumber' => (string)$this->faker->randomNumber(4),
+                'bankAccountNumber' => (string) $this->faker->randomNumber(6),
+                'bankBranchNumber' => (string) $this->faker->randomNumber(4),
                 'bankAccountType' => 'CC',
                 'beneficiaryType' => 'F',
                 'nationalRegistration' => $this->faker->cpf(false),
@@ -48,7 +46,7 @@ class PixDecodedDynamicImmediateQrFactory extends Factory
             'dateCreated' => today(),
             'datePresentation' => now(),
             'review' => 2,
-            'details' => (object)[
+            'details' => (object) [
                 0 => (object) [
                     'title' => $this->faker->text(30),
                     'content' => $this->faker->text(30),

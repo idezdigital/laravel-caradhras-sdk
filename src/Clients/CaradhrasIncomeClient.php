@@ -8,12 +8,6 @@ class CaradhrasIncomeClient extends BaseApiClient
 {
     public const API_PREFIX = 'income';
 
-    /**
-     * @param int $accountId
-     * @param int $profitablePercentage
-     * @param int $splitPercentage
-     * @return Response
-     */
     public function createParametrizationForAccount(
         int $accountId,
         int $profitablePercentage,

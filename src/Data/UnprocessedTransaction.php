@@ -50,5 +50,6 @@ class UnprocessedTransaction extends Data
     use HasFactory;
 
     public const TYPE_PIER = 3;
+
     public const TYPE_ADJUSTMENT = 1;
 }

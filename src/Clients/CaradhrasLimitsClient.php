@@ -35,7 +35,7 @@ class CaradhrasLimitsClient extends BaseApiClient
 
     public function getAccountLimits(string $accountId, string $beneficiaryType)
     {
-        return $this->apiClient()->get("/limits/v2/accounts/{$accountId}", ['beneficiaryType' => $beneficiaryType,])
+        return $this->apiClient()->get("/limits/v2/accounts/{$accountId}", ['beneficiaryType' => $beneficiaryType])
             ->object();
     }
 
@@ -43,7 +43,7 @@ class CaradhrasLimitsClient extends BaseApiClient
     {
         $response = $this
             ->apiClient()
-            ->get('/limits/v2/requests', ['idAccount' => $accountId, 'beneficiaryType' => $beneficiaryType,])
+            ->get('/limits/v2/requests', ['idAccount' => $accountId, 'beneficiaryType' => $beneficiaryType])
             ->toPsrResponse();
 
         return new LimitCollection($response);

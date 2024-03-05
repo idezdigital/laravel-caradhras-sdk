@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use Idez\Caradhras\Data\PixTransferReversal;
 use App\Models\PixTransfer;
+use Idez\Caradhras\Data\PixTransferReversal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PixTransferReversalFactory extends Factory
@@ -17,8 +17,6 @@ class PixTransferReversalFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {

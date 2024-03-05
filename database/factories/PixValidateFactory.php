@@ -28,8 +28,8 @@ class PixValidateFactory extends Factory
         return [
             'ispb' => $this->faker->regexify('/\d{8}/'),
             'bankName' => bankNameFromId($bankId),
-            'bankAccountNumber' => (string)$this->faker->randomNumber(6),
-            'bankBranchNumber' => (string)$this->faker->randomNumber(4),
+            'bankAccountNumber' => (string) $this->faker->randomNumber(6),
+            'bankBranchNumber' => (string) $this->faker->randomNumber(4),
             'bankAccountType' => 'CC',
             'dateAccountCreated' => $this->faker->iso8601(),
             'beneficiaryType' => 'F',
@@ -67,7 +67,7 @@ class PixValidateFactory extends Factory
     public function phoneNumber(): PixValidateFactory
     {
         return $this->state([
-            'key' => '+55' . $this->faker->regexify('/\d{9}/'),
+            'key' => '+55'.$this->faker->regexify('/\d{9}/'),
             'keyType' => DictKeyType::Phone->value,
         ]);
     }

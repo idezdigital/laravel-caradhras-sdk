@@ -12,6 +12,7 @@ namespace Idez\Caradhras\Data;
 class InvoicePaymentSlipInterest extends Data
 {
     public const CODE_FIXED_AMOUNT = '1';
+
     public const CODE_PERCENTUAL = '2';
 
     public const CODES = [

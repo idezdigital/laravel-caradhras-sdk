@@ -29,10 +29,6 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
     /**
      * Create a payment slip of type recharge.
      *
-     * @param  int  $accountId
-     * @param  float  $amount
-     * @param  CarbonInterface  $dueDate
-     * @return RechargePaymentSlip
      *
      * @throws CreatePaymentSlipException
      */
@@ -55,8 +51,6 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
     /**
      * Get the payment slip PDF.
      *
-     * @param  string  $uniqueId
-     * @return string
      *
      * @throws PaymentSlipExpiredException
      * @throws GetPaymentSlipPdfException
@@ -82,9 +76,6 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
     /**
      * Find a payment slip.
      *
-     * @param  int  $accountId
-     * @param  string  $paymentSlipUniqueId
-     * @return RechargePaymentSlip|InvoicePaymentSlip
      *
      * @throws \Idez\Caradhras\Exceptions\PaymentSlip\PaymentSlipNotFoundException
      */
@@ -110,8 +101,6 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
     /**
      * Get a payment slip using their adjustment id.
      *
-     * @param  string  $adjustmentId
-     * @return RechargePaymentSlip|InvoicePaymentSlip
      *
      * @throws PaymentSlipNotFoundException
      */
@@ -136,18 +125,7 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
     /**
      * Create a payment slip of type invoice.
      *
-     * @param  int  $accountId
-     * @param  float  $amount
-     * @param  CarbonInterface  $dueDate
-     * @param  string  $invoiceTypeCode
-     * @param  \Idez\Caradhras\Data\InvoicePaymentSlipPayer  $payer
      * @param  int  $deadline  (optional). Default 120.
-     *
-     * @param  null|InvoicePaymentSlipFine  $fine
-     * @param  null|InvoicePaymentSlipDiscount  $discount
-     * @param  null|InvoicePaymentSlipInterest  $interest
-     *
-     * @return InvoicePaymentSlip
      *
      * @throws \Idez\Caradhras\Exceptions\CaradhrasException
      * @throws \Idez\Caradhras\Exceptions\PaymentSlip\CreatePaymentSlipException
@@ -159,9 +137,9 @@ class CaradhrasPaymentSlipClient extends BaseApiClient
         string $invoiceTypeCode,
         InvoicePaymentSlipPayer $payer,
         int $deadline = 120,
-        InvoicePaymentSlipFine $fine = null,
-        InvoicePaymentSlipDiscount $discount = null,
-        InvoicePaymentSlipInterest $interest = null,
+        ?InvoicePaymentSlipFine $fine = null,
+        ?InvoicePaymentSlipDiscount $discount = null,
+        ?InvoicePaymentSlipInterest $interest = null,
     ): InvoicePaymentSlip {
         if (! PaymentSlipInvoiceType::tryFrom($invoiceTypeCode)) {
             throw new CaradhrasException('Invalid invoice type code.', 400);

@@ -30,34 +30,34 @@ class CaradhrasPaymentClientTest extends TestCase
     {
         $barcode = $this->faker->regexify('\d{48}');
 
-        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl()."/v1/validate/{$barcode}";
 
         $fakeResponse = [
-            "Barcode" => $barcode,
-            "Result" => [
-                "Success" => true,
-                "BillPaymentTypeId" => 2,
-                "BillPaymentTypeDescription" => "Normal",
-                "HasEnoughBalance" => true,
-                "WasPaid" => false,
-                "PaymentSchedulingDate" => "N\/A",
-                "ReachedLimit" => false,
-                "ValidateBarCode" => [
-                    "Id" => $this->faker->randomNumber(3),
-                    "Description" => $this->faker->company(),
-                    "Value" => $this->faker->randomFloat(2, 10, 100),
-                    "DueDate" => "2020-04-29",
-                    "IsOutTime" => false,
-                    "TimeWindow" => 0,
-                    "MinTime" => "07:30h",
-                    "MaxTime" => "20:30h",
-                    "IsDefaultTime" => true,
-                    "PaymentType" => 0,
-                    "HasDueDate" => false,
-                    "BarCodeNumber" => $barcode,
-                    "CurrentDate" => today()->toDateString(),
+            'Barcode' => $barcode,
+            'Result' => [
+                'Success' => true,
+                'BillPaymentTypeId' => 2,
+                'BillPaymentTypeDescription' => 'Normal',
+                'HasEnoughBalance' => true,
+                'WasPaid' => false,
+                'PaymentSchedulingDate' => "N\/A",
+                'ReachedLimit' => false,
+                'ValidateBarCode' => [
+                    'Id' => $this->faker->randomNumber(3),
+                    'Description' => $this->faker->company(),
+                    'Value' => $this->faker->randomFloat(2, 10, 100),
+                    'DueDate' => '2020-04-29',
+                    'IsOutTime' => false,
+                    'TimeWindow' => 0,
+                    'MinTime' => '07:30h',
+                    'MaxTime' => '20:30h',
+                    'IsDefaultTime' => true,
+                    'PaymentType' => 0,
+                    'HasDueDate' => false,
+                    'BarCodeNumber' => $barcode,
+                    'CurrentDate' => today()->toDateString(),
                 ],
-                "PaymentInfoNPC" => [],
+                'PaymentInfoNPC' => [],
             ],
         ];
 
@@ -85,7 +85,7 @@ class CaradhrasPaymentClientTest extends TestCase
             $this->faker->regexify('\d{61}'),
         ]);
 
-        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl()."/v1/validate/{$barcode}";
 
         Http::fake([
             $expectedRequestUrl => Http::response([], 400),
@@ -100,12 +100,12 @@ class CaradhrasPaymentClientTest extends TestCase
     public function testHandlePaidOrUnregisteredException()
     {
         $barcode = $this->faker->regexify('\d{48}');
-        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl()."/v1/validate/{$barcode}";
 
         Http::fake([
             $expectedRequestUrl => Http::response([
-                "message" => $this->paymentClient::FAILED_TO_PROCESS_ERROR,
-                "uuid" => $this->faker->uuid(),
+                'message' => $this->paymentClient::FAILED_TO_PROCESS_ERROR,
+                'uuid' => $this->faker->uuid(),
             ], 409),
         ]);
 
@@ -118,12 +118,12 @@ class CaradhrasPaymentClientTest extends TestCase
     public function testHandleNotRegisteredAtCipException()
     {
         $barcode = $this->faker->regexify('\d{48}');
-        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl()."/v1/validate/{$barcode}";
 
         Http::fake([
             $expectedRequestUrl => Http::response([
-                "message" => $this->paymentClient::BARCODE_NOT_REGISTERED_AT_CIP_ERROR,
-                "uuid" => $this->faker->uuid(),
+                'message' => $this->paymentClient::BARCODE_NOT_REGISTERED_AT_CIP_ERROR,
+                'uuid' => $this->faker->uuid(),
             ], 422),
         ]);
 
@@ -136,12 +136,12 @@ class CaradhrasPaymentClientTest extends TestCase
     public function testHandleValidatePaymentException()
     {
         $barcode = $this->faker->regexify('\d{48}');
-        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl()."/v1/validate/{$barcode}";
 
         Http::fake([
             $expectedRequestUrl => Http::response([
-                "message" => $this->paymentClient::EXTERNAL_FAILURE_ERROR,
-                "uuid" => $this->faker->uuid(),
+                'message' => $this->paymentClient::EXTERNAL_FAILURE_ERROR,
+                'uuid' => $this->faker->uuid(),
             ], 424),
         ]);
 
@@ -154,12 +154,12 @@ class CaradhrasPaymentClientTest extends TestCase
     public function testHandlePaymentTimeoutException()
     {
         $barcode = $this->faker->regexify('\d{48}');
-        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl()."/v1/validate/{$barcode}";
 
         Http::fake([
             $expectedRequestUrl => Http::response([
-                "message" => $this->paymentClient::TIMEOUT_ERROR,
-                "uuid" => $this->faker->uuid(),
+                'message' => $this->paymentClient::TIMEOUT_ERROR,
+                'uuid' => $this->faker->uuid(),
             ], 504),
         ]);
 
@@ -172,12 +172,12 @@ class CaradhrasPaymentClientTest extends TestCase
     public function testHandleConenantNotAuthorized()
     {
         $barcode = $this->faker->regexify('\d{48}');
-        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl() . "/v1/validate/{$barcode}";
+        $expectedRequestUrl = $this->paymentClient->getApiBaseUrl()."/v1/validate/{$barcode}";
 
         Http::fake([
             $expectedRequestUrl => Http::response([
-                "message" => $this->paymentClient::COVENANT_NOT_AUTHORIZED,
-                "uuid" => $this->faker->uuid(),
+                'message' => $this->paymentClient::COVENANT_NOT_AUTHORIZED,
+                'uuid' => $this->faker->uuid(),
             ], 424),
         ]);
 

@@ -52,25 +52,41 @@ class TransactionLegacy extends Data
     use HasFactory;
 
     public const P2P_SENT = 10031;
+
     public const P2P_RECEIVED = 10032;
+
     public const TRANSFER_SENT = 10038;
+
     public const TRANSFER_RECEIVED = 10024;
+
     public const PURCHASE_NATIONAL = 10045;
+
     public const PURCHASE_INTL = 10046;
+
     public const WITHDRAWAL = 10048;
+
     public const PAYMENT = 10000;
+
     public const DEPOSIT = 29;
+
     public const PHONE_RECHARGE = 10005;
 
     public const REFUND_PURCHASE_INTL = 9796;
+
     public const REFUND_PAYMENT = 10001;
+
     public const REFUND_TRANSFER = 10039;
+
     public const REFUND_IOF = 4521;
+
     public const REFUND_PHONE_RECHARGE = 10006;
 
     public const FEE_IOF = 462;
+
     public const FEE_TRANSFER = 10040;
+
     public const FEE_WITHDRAWAL = 10050;
+
     public const FEE_SUBSCRIPTION = 10092;
 
     public const CREDIT_BACKOFFICE = 10059;

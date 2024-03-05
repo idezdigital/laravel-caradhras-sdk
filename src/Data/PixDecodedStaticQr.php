@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class PixDecodedStaticQr
- * @package App\Models\Caradhras
  *
  * @property string $idEndToEnd
  * @property int $codeType

@@ -15,11 +15,18 @@ use Idez\Caradhras\Enums\PersonType;
 class PixPayee extends Data
 {
     public string $ispb;
+
     public string $bankAccountNumber;
+
     public string $bankBranchNumber;
+
     public string $bankAccountType;
+
     public PersonType $beneficiaryType;
+
     public string $nationalRegistration;
+
     public string $payeeName;
+
     public ?string $key;
 }

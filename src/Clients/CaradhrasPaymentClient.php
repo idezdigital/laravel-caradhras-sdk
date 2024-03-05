@@ -19,23 +19,32 @@ class CaradhrasPaymentClient extends BaseApiClient
     public const API_PREFIX = 'payments';
 
     public const DEADLINE_EXCEEDED_ERROR = 'Barcode had its payment deadline exceeded';
+
     public const FAILED_TO_PROCESS_ERROR = 'Failed to process barcode validation. Unregistered barcode or payment already paid';
+
     public const BARCODE_UNREGISTERED_ERROR = 'Barcode unregistered, cancelled or payment already paid';
+
     public const BANK_NOT_REGISTERED_AT_CIP_ERROR = 'Bank not registered at CIP';
+
     public const BARCODE_NOT_REGISTERED_AT_CIP_ERROR = 'Barcode not registered at CIP';
+
     public const INVALID_AMOUNT_ERROR = 'Payment amount submitted differs from value recorded for barcode';
+
     public const EXPIRATION_DATE_EXCEEDED_ERROR = 'Barcode had its payment expiration date exceeded';
+
     public const NOT_ALLOWED_NOW_ERROR = 'Payment request not allowed for this time';
+
     public const ALREADY_PROCESSED_ERROR = 'This payment slip was already processed and can no longer be paid';
+
     public const EXTERNAL_FAILURE_ERROR = 'External failure while executing transaction';
+
     public const TIMEOUT_ERROR = 'Timeout expired while executing transaction';
+
     public const COVENANT_NOT_AUTHORIZED = 'Covenant not authorized to receive payments';
 
     /**
      * Validate a payment barcode.
      *
-     * @param  string  $barcode
-     * @return object
      * @throws ExpirationDateException
      * @throws InvalidAmountException
      * @throws InvalidPaymentBarcodeException
@@ -84,17 +93,6 @@ class CaradhrasPaymentClient extends BaseApiClient
 
     /**
      * Create payment.
-     *
-     * @param  int  $accountId
-     * @param  string  $barCodeNumber
-     * @param  \Carbon\CarbonInterface  $dueDate
-     * @param  string  $assignor
-     * @param  float  $discount
-     * @param  float  $interest
-     * @param  float  $fine
-     * @param  float  $amount
-     * @param  string  $description
-     * @return object
      */
     public function create(
         int $accountId,
@@ -127,9 +125,6 @@ class CaradhrasPaymentClient extends BaseApiClient
 
     /**
      * Search payments
-     *
-     * @param  array  $filters
-     * @return object
      */
     public function search(array $filters): object
     {

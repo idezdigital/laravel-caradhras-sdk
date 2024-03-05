@@ -11,15 +11,13 @@ class CaradhrasBankTransferInClient extends BaseApiClient
     /**
      * Get Bank Transfer In.
      *
-     * @param  string  $transactionCode
-     * @return object
      * @throws \Idez\Caradhras\Exceptions\BankTransferNotFoundException
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function getBankTransferIn(string $transactionCode): object
     {
         $response = $this->apiClient()
-            ->get("/v1/receipts", ['transactionCode' => $transactionCode])
+            ->get('/v1/receipts', ['transactionCode' => $transactionCode])
             ->throw()
             ->object();
 
@@ -35,14 +33,12 @@ class CaradhrasBankTransferInClient extends BaseApiClient
     /**
      * List bank transfer in.
      *
-     * @param  array  $data
-     * @return object|null
      * @throws \Illuminate\Http\Client\RequestException
      */
-    public function listBankTransferIn(array $data): object|null
+    public function listBankTransferIn(array $data): ?object
     {
         return $this->apiClient()
-            ->get("/v1/receipts", $data)
+            ->get('/v1/receipts', $data)
             ->throw()
             ->object();
     }

@@ -13,7 +13,7 @@ class CaradhrasMainClient extends BaseApiClient
     public function getTransfer(array $filters): P2PTransferPayload
     {
         $transfers = $this->apiClient()
-            ->get("/p2ptransfer", $filters)
+            ->get('/p2ptransfer', $filters)
             ->throw()
             ->json();
 
@@ -24,11 +24,6 @@ class CaradhrasMainClient extends BaseApiClient
         return new P2PTransferPayload(head((array) $transfers));
     }
 
-    /**
-     * @param  int  $accountId
-     * @param  AccountStatus  $status
-     * @return object
-     */
     public function cancelAccount(int $accountId, AccountStatus $status = AccountStatus::Canceled): object
     {
         return $this
@@ -39,9 +34,6 @@ class CaradhrasMainClient extends BaseApiClient
 
     /**
      * Get account.
-     *
-     * @param  int  $accountId
-     * @return object
      */
     public function getAccount(int $accountId): object
     {
@@ -52,16 +44,7 @@ class CaradhrasMainClient extends BaseApiClient
             ->object();
     }
 
-    /**
-     * @param  int  $originAccountId
-     * @param  int  $destinationAccountId
-     * @param  float  $amount
-     * @param  string|null  $uuid
-     * @param  string  $description
-     * @param  string  $details
-     * @return object
-     */
-    public function transfer(int $originAccountId, int $destinationAccountId, float $amount, string $uuid = null, string $description = '', string $details = ''): object
+    public function transfer(int $originAccountId, int $destinationAccountId, float $amount, ?string $uuid = null, string $description = '', string $details = ''): object
     {
         return $this
             ->apiClient()
@@ -82,7 +65,7 @@ class CaradhrasMainClient extends BaseApiClient
      * Get individual.
      *
      * @param  int  $personId
-     * @return object
+     *
      * @throws Exception
      */
     public function getIndividual($personId): object
@@ -94,6 +77,6 @@ class CaradhrasMainClient extends BaseApiClient
         return $this
             ->apiClient()
             ->asJson()
-            ->get("/v2/individuals/$personId", ["statusSPD" => 'true']);
+            ->get("/v2/individuals/$personId", ['statusSPD' => 'true']);
     }
 }
