@@ -105,7 +105,7 @@ class CaradhrasPaymentClient extends BaseApiClient
         float $amount,
         string $description
     ): object {
-        $response = $this->apiClient(false)
+        $response = $this->apiClient()
             ->asJson()
             ->retry(5, 2000, fn (Exception $exception, PendingRequest $request) => in_array($exception->getCode(), [424, 422, 409]), false)
             ->post('/v1', [
