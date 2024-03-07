@@ -15,7 +15,7 @@ class CaradhrasAliasClient extends BaseApiClient
      * Create an alias.
      *
      * @param  int  $accountId
-     * @param AliasBankProvider $bankProvider
+     * @param  \Idez\Caradhras\Enums\AliasBankProvider  $bankProvider
      * @return Response
      */
     public function create(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Dock): Response
@@ -32,9 +32,9 @@ class CaradhrasAliasClient extends BaseApiClient
      * Find or create an alias.
      *
      * @param  int  $accountId
-     * @param AliasBankProvider $bankProvider
-     * @return AliasBankAccount
-     * @throws CaradhrasException
+     * @param  \Idez\Caradhras\Enums\AliasBankProvider  $bankProvider
+     * @return object
+     * @throws \Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function findOrCreate(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Dock): AliasBankAccount
     {
@@ -63,10 +63,10 @@ class CaradhrasAliasClient extends BaseApiClient
         }
 
         if (
-            $responseStatus === 409 &&
-            data_get($responseData, 'message') === 'Transaction not allowed due to lack of regulatory informations or documents.'
+            $response->status() === 409 &&
+            $responseObject?->message === "Transaction not allowed due to lack of regulatory informations or documents."
         ) {
-            throw new CaradhrasException('A conta possui informações ou documentos pendentes.', $responseStatus);
+            throw new CaradhrasException("A conta possui informações ou documentos pendentes.", $response->status());
         }
 
         return new AliasBankAccount($responseData['data']);
@@ -112,7 +112,7 @@ class CaradhrasAliasClient extends BaseApiClient
      * Delete an alias.
      *
      * @param  int  $accountId
-     * @param AliasBankProvider $bankProvider
+     * @param  \Idez\Caradhras\Enums\AliasBankProvider $bankProvider
      * @return object
      */
     public function delete(int $accountId, AliasBankProvider $bankProvider): object

@@ -3,9 +3,9 @@
 namespace Idez\Caradhras\Database\Factories;
 
 use App\Enums\Transactions\TransactionOperation;
+use Carbon\Carbon;
 use Idez\Caradhras\Data\Transaction;
 use Idez\Caradhras\Data\TransactionLegacy;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -63,9 +63,9 @@ class TransactionFactory extends Factory
             'groupMcc' => null,
             'groupDescriptionMcc' => null,
             'idEstablishment' => 0,
-            'nameEstablishment' => Str::upper(str_pad($placeName, 25).$cityName."BR"),
+            'nameEstablishment' => Str::upper(str_pad($placeName, 25).$cityName.'BR'),
             'tradeNameEstablishment' => $placeName,
-            'placeEstablishment' => str_pad($cityName, 13)."/BR",
+            'placeEstablishment' => str_pad($cityName, 13).'/BR',
             'adjustmentExternalId' => '231167789-7964-515584893 822072-621446-558735',
             'transactionDetails' => null,
         ];
@@ -74,36 +74,36 @@ class TransactionFactory extends Factory
     public function base1(): self
     {
         return $this->state([
-            "status" => 3,
+            'status' => 3,
         ]);
     }
 
     public function base2(): self
     {
         return $this->state([
-            "status" => 2,
+            'status' => 2,
         ]);
     }
 
     public function credit(): self
     {
         return $this->state([
-            "creditFlag" => 1,
+            'creditFlag' => 1,
         ]);
     }
 
     public function deposit(): self
     {
         return $this->credit()->state([
-            "description" => TransactionOperation::Deposit->getDescription(),
+            'description' => TransactionOperation::Deposit->getDescription(),
         ]);
     }
 
     public function payment(): self
     {
         return $this->state([
-            "idTipoTransacao" => TransactionLegacy::PAYMENT,
-            "description" => TransactionOperation::PaymentSent->getDescription(),
+            'idTipoTransacao' => TransactionLegacy::PAYMENT,
+            'description' => TransactionOperation::PaymentSent->getDescription(),
         ]);
     }
 
@@ -113,16 +113,16 @@ class TransactionFactory extends Factory
         $usdRate = $this->faker->randomFloat(2, 5, 6);
 
         return $this->state(fn (array $attributes) => [
-            "description" => TransactionOperation::PurchaseInternational->getDescription(),
-            "amountBrl" => $usdAmt * $usdRate,
-            "amountUsd" => $usdAmt,
-            "usdExchangeRate" => $usdRate,
-            "amountIof" => $usdAmt * 0.38,
-            "feeService" => 0.0,
-            "amountTotalTransaction" => ($usdAmt + $usdAmt * 0.38) * $usdRate,
-            "transactionDate" => Carbon::parse($this->faker->dateTimeThisMonth())->toDateTimeString(),
-            "sourceCurrencyCode" => 'USD',
-            "destinationCurrencyCode" => 'USD',
+            'description' => TransactionOperation::PurchaseInternational->getDescription(),
+            'amountBrl' => $usdAmt * $usdRate,
+            'amountUsd' => $usdAmt,
+            'usdExchangeRate' => $usdRate,
+            'amountIof' => $usdAmt * 0.38,
+            'feeService' => 0.0,
+            'amountTotalTransaction' => ($usdAmt + $usdAmt * 0.38) * $usdRate,
+            'transactionDate' => Carbon::parse($this->faker->dateTimeThisMonth())->toDateTimeString(),
+            'sourceCurrencyCode' => 'USD',
+            'destinationCurrencyCode' => 'USD',
         ]);
     }
 
@@ -150,8 +150,8 @@ class TransactionFactory extends Factory
     public function transferTedSent(): self
     {
         return $this->state([
-            "description" => "Transf Bancaria Enviada",
-            "idAdjustmentType" => 1086,
+            'description' => 'Transf Bancaria Enviada',
+            'idAdjustmentType' => 1086,
         ]);
     }
 

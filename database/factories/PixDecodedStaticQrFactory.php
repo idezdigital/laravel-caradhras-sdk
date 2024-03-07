@@ -4,8 +4,8 @@ namespace Idez\Caradhras\Database\Factories;
 
 use App\Enums\Caradhras\PersonType;
 use App\Enums\Pix\PixMethod;
-use Idez\Caradhras\Data\PixDecodedStaticQr;
 use App\Services\PixService;
+use Idez\Caradhras\Data\PixDecodedStaticQr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PixDecodedStaticQrFactory extends Factory
@@ -19,8 +19,6 @@ class PixDecodedStaticQrFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -32,8 +30,8 @@ class PixDecodedStaticQrFactory extends Factory
             'codeType' => PixMethod::StaticQrCode->value,
             'ispb' => $this->faker->regexify('/\d{8}/'),
             'bankName' => bankNameFromId($bankId),
-            'bankAccountNumber' => (string)$this->faker->randomNumber(6),
-            'bankBranchNumber' => (string)$this->faker->randomNumber(4),
+            'bankAccountNumber' => (string) $this->faker->randomNumber(6),
+            'bankBranchNumber' => (string) $this->faker->randomNumber(4),
             'bankAccountType' => PixService::CR_BANK_ACCOUNT_CHECKING,
             'key' => $this->faker->email(),
             'beneficiaryType' => PersonType::Person->value,
@@ -45,10 +43,6 @@ class PixDecodedStaticQrFactory extends Factory
         ];
     }
 
-    /**
-     * @param  string|null  $name
-     * @return PixDecodedStaticQrFactory
-     */
     public function company(?string $name = null): PixDecodedStaticQrFactory
     {
         return $this->state([

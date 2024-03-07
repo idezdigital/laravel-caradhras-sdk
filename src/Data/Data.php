@@ -25,11 +25,6 @@ abstract class Data implements \JsonSerializable
         }
     }
 
-    /**
-     * @param  ResponseInterface  $response
-     * @param  bool  $assoc
-     * @return mixed
-     */
     public function toJson(ResponseInterface $response, bool $assoc = false): mixed
     {
         $contents = $response->getBody()->getContents();
@@ -39,8 +34,6 @@ abstract class Data implements \JsonSerializable
 
     /**
      * Set a value
-     * @param  string  $key
-     * @param  mixed  $value
      */
     public function __set(string $key, mixed $value)
     {
@@ -49,7 +42,7 @@ abstract class Data implements \JsonSerializable
 
     /**
      * Get a value
-     * @param  string  $key
+     *
      * @return mixed
      */
     public function __get(string $key)
@@ -59,7 +52,7 @@ abstract class Data implements \JsonSerializable
 
     /**
      * Check if a key is set
-     * @param  string  $key
+     *
      * @return bool
      */
     public function __isset(string $key)
@@ -67,9 +60,6 @@ abstract class Data implements \JsonSerializable
         return isset($this->attributes[$key]);
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         $vars = [...get_object_vars($this), ...$this->getAttributes()];

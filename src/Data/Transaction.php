@@ -41,17 +41,29 @@ class Transaction extends Data
     use HasFactory;
 
     public const STATUS_NORMAL = 0;
+
     public const STATUS_CANCELED = 1;
+
     public const STATUS_PROCESSED = 2;
+
     public const STATUS_PENDING = 3;
+
     public const STATUS_UNDONE = 4;
+
     public const STATUS_REVERSED = 5;
+
     public const STATUS_NON_PROCESSED_ADJUSTMENT = 9;
+
     public const STATUS_PENDING_AVAILABLE_GLOBAL = 15;
+
     public const STATUS_WRITE_OFF_BY_TIME_LIMIT = 20;
+
     public const STATUS_FRAUD_REFERRED = 21;
+
     public const STATUS_FRAUD_DENIED = 22;
+
     public const STATUS_WRITE_OFF_MANUALLY = 23;
+
     public const STATUS_DAILY_NUMBER_EXCEEDED = 24;
 
     public const STATUSES = [

@@ -21,9 +21,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 abstract class DataCollection extends Data
 {
-    /**
-     * @return string
-     */
     abstract protected static function getEntity(): string;
 
     protected static function getKey(): string

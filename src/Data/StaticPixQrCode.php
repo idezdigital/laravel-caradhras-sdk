@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class StaticPixQrCode
- * @package App\Models\Caradhras
  *
  * @property string $emv
  * @property string $text

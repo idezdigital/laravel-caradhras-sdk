@@ -15,12 +15,15 @@ use Illuminate\Support\Str;
 abstract class BaseApiClient
 {
     public const API_PREFIX = 'api';
+
     public const CARADHRAS_TOKEN_KEY = 'caradhras-token';
 
     private $accessToken;
 
     private $retryTimes = 0;
+
     private $retryInterval = 300;
+
     private $retryWhen;
 
     /**
@@ -29,6 +32,7 @@ abstract class BaseApiClient
      * @param  string  $apiKey
      * @param  string  $apiSecret
      * @return void
+     *
      * @throws \Exception
      */
     public function __construct(private $apiKey, private $apiSecret)
@@ -48,7 +52,6 @@ abstract class BaseApiClient
     /**
      * Cache refreshed auth token.
      *
-     * @return string
      * @throws \Idez\Caradhras\Exceptions\CaradhrasAuthException
      * @throws \Exception
      */
@@ -65,10 +68,8 @@ abstract class BaseApiClient
      * Return API Client with middlewares and auth.
      *
      * @param  bool  $throwsHttpError  (optional). Set as false to disable default exception handling.
-     * @param  string|null  $apiPrefix
-     * @return PendingRequest
      */
-    protected function apiClient(bool $throwsHttpError = true, string $apiPrefix = null): PendingRequest
+    protected function apiClient(bool $throwsHttpError = true, ?string $apiPrefix = null): PendingRequest
     {
         $options = $throwsHttpError ? ['http_errors' => true] : [];
         $baseUrl = $this->createApiBaseUri($apiPrefix ?? static::API_PREFIX);
@@ -91,9 +92,6 @@ abstract class BaseApiClient
 
     /**
      * Create API base URL from prefix.
-     *
-     * @param  string  $prefix
-     * @return string
      */
     protected function createApiBaseUri(string $prefix): string
     {
@@ -104,8 +102,6 @@ abstract class BaseApiClient
 
     /**
      * Get API base url.
-     *
-     * @return string
      */
     public function getApiBaseUrl(): string
     {
@@ -115,7 +111,6 @@ abstract class BaseApiClient
     /**
      * Get access token.
      *
-     * @return string
      * @throws \Exception
      */
     private function getAccessToken(): string
@@ -136,7 +131,6 @@ abstract class BaseApiClient
     /**
      * Get Api Client Authentication.
      *
-     * @return object
      * @throws \Idez\Caradhras\Exceptions\CaradhrasAuthException
      */
     public function getApiClientAuthentication(): object

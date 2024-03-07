@@ -10,7 +10,7 @@ class CaradhrasDataApiClient extends BaseApiClient
 
     public function requestExtraction(string $service, CarbonInterface $from, CarbonInterface $to, string $compress = 'zip', array $params = [])
     {
-        return $this->apiClient()->get("/v1/transactions", [
+        return $this->apiClient()->get('/v1/transactions', [
             'service' => $service,
             'from' => $from->toDateString(),
             'to' => $to->toDateString(),
@@ -24,7 +24,7 @@ class CaradhrasDataApiClient extends BaseApiClient
         return $this->apiClient()->get("/v1/transactions/{$ticketId}")->object();
     }
 
-    public function listTickets(string $service = null, string $status = null, int $page = 0)
+    public function listTickets(?string $service = null, ?string $status = null, int $page = 0)
     {
         $query = array_filter([
             'service' => $service,

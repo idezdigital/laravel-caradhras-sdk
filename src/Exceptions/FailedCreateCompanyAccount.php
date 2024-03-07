@@ -25,9 +25,6 @@ class FailedCreateCompanyAccount extends CaradhrasException
 
     /**
      * Format Caradhras Errors Response for company accounts
-     *
-     * @param  array  $errors
-     * @return array
      */
     private function getFormattedRawErrors(array $errors): array
     {
@@ -37,7 +34,7 @@ class FailedCreateCompanyAccount extends CaradhrasException
             $level = str_replace('/', '.', $error['level']);
 
             $problem = $error['problems'];
-            $field = $level . "." . $problem['field'];
+            $field = $level.'.'.$problem['field'];
             $formattedErrors[$field] = $problem['value'];
         }
 
@@ -46,9 +43,6 @@ class FailedCreateCompanyAccount extends CaradhrasException
 
     /**
      * Get the validation errors.
-     *
-     * @param  array  $formatedRawErrors
-     * @return array
      */
     private function getValidationErrors(array $formatedRawErrors): array
     {
@@ -101,7 +95,7 @@ class FailedCreateCompanyAccount extends CaradhrasException
                 if ($totalPartners > 1) {
                     if (! isset($validationErrors['partners.0.name'])) {
                         for ($i = 0; $i < $totalPartners; $i++) {
-                            $validationErrors["partners.{$i}.name"] = ["Por favor, verifique os dados pessoais deste sócio."];
+                            $validationErrors["partners.{$i}.name"] = ['Por favor, verifique os dados pessoais deste sócio.'];
                         }
                     }
 
@@ -121,7 +115,7 @@ class FailedCreateCompanyAccount extends CaradhrasException
             }
 
             // Get translated field name
-            $translatedFieldName = trans('validation.attributes.' . last(explode('.', $localFieldName)));
+            $translatedFieldName = trans('validation.attributes.'.last(explode('.', $localFieldName)));
 
             // Add the field error to validation messages.
             $validationErrors[$localFieldName] = ["O campo {$translatedFieldName} não é válido."];
@@ -133,15 +127,14 @@ class FailedCreateCompanyAccount extends CaradhrasException
     /**
      * Get error translation
      *
-     * @var  string
-     * @return string
+     * @var string
      */
     private function getErrorTranslation(string $errorMessage): string
     {
         $originalErrorSanitized = str_replace('.', '', strtolower($errorMessage));
         $originalErrorSanitized = str_replace(' ', '_', $originalErrorSanitized);
 
-        $errorKey = 'caradhras.account.validation.' . $originalErrorSanitized;
+        $errorKey = 'caradhras.account.validation.'.$originalErrorSanitized;
         $errorTranslation = trans($errorKey);
 
         // return the same message if not found translation

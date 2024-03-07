@@ -4,7 +4,6 @@ namespace Idez\Caradhras\Clients;
 
 use Idez\Caradhras\Data\Card;
 use Idez\Caradhras\Data\CardCollection;
-use Idez\Caradhras\Data\CardDetails;
 use Idez\Caradhras\Data\CardLimit;
 use Idez\Caradhras\Data\CardMccGroupControl;
 use Idez\Caradhras\Data\CardSettings;
@@ -16,15 +15,15 @@ use Idez\Caradhras\Exceptions\FailedRequestCardBatchException;
 use Idez\Caradhras\Exceptions\FindCardsException;
 use Idez\Caradhras\Exceptions\GetCardDetailsException;
 use Idez\Caradhras\Exceptions\IssuePhysicalCardException;
+use Illuminate\Support\Str;
 
 class CaradhrasCardClient extends BaseApiClient
 {
     /**
      * Set card password.
      *
-     * @param  string  $cardId
      * @param  string  $password
-     * @return object
+     *
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function setCardPassword(string $cardId, $password): object
@@ -39,10 +38,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Associate card to account.
      *
-     * @param int $cardId
-     * @param int $accountId
-     * @param int $individualId
-     * @return bool
      * @throws RequestException
      */
     public function associatePrepaidCardToAccount(int $cardId, int $accountId, int $individualId): bool
@@ -57,10 +52,6 @@ class CaradhrasCardClient extends BaseApiClient
         return true;
     }
 
-    /**
-     * @param  int  $cardId
-     * @return Card
-     */
     public function unlockSystemBlockedCard(int $cardId): Card
     {
         $unlockRequest = $this->apiClient()->post("/cartoes/{$cardId}/desbloquear-senha-incorreta");
@@ -71,7 +62,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Update card password.
      *
-     * @param  string  $cardId
      * @param  string  $password
      * @return array|object
      */
@@ -84,15 +74,9 @@ class CaradhrasCardClient extends BaseApiClient
     }
 
     /**
-     * Issue physical card.
-     *
-     * @param  int  $accountId
-     * @param  int  $individualId
-     * @return Card
-     * @throws \Illuminate\Http\Client\RequestException
-     * @throws \Exception
+     * @throws IssuePhysicalCardException
      */
-    public function issuePhysicalCard(int $accountId, int $individualId, $password): Card
+    public function issuePhysicalCard(int $accountId, int $individualId): Card
     {
         $data = [
             'id_pessoa' => $individualId,
@@ -108,17 +92,11 @@ class CaradhrasCardClient extends BaseApiClient
 
         $cardId = $issueCardResponse->json('idCartao');
 
-        $this->setCardPassword($cardId, $password);
-
         return $this->getCard($cardId);
     }
 
     /**
      * Create virtual card.
-     *
-     * @param  int  $accountId
-     * @param  int  $individualId
-     * @return Card
      */
     public function issueVirtualCard(int $accountId, int $individualId): Card
     {
@@ -128,7 +106,7 @@ class CaradhrasCardClient extends BaseApiClient
         ]);
 
         $card = $this->apiClient()
-            ->post("/contas/{$accountId}/gerar-cartao-virtual?" . $data)
+            ->post("/contas/{$accountId}/gerar-cartao-virtual?".$data)
             ->object();
 
         return $this->getCard($card->idCartao);
@@ -137,7 +115,7 @@ class CaradhrasCardClient extends BaseApiClient
     public function getAddressByIndividualId(int $individualId, int $tipoEndereco = 1)
     {
         return $this->apiClient()
-            ->get("/enderecos", ['idPessoa' => $individualId, 'idTipoEndereco' => $tipoEndereco])
+            ->get('/enderecos', ['idPessoa' => $individualId, 'idTipoEndereco' => $tipoEndereco])
             ->throw()
             ->object();
     }
@@ -145,28 +123,24 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Get Card details.
      *
-     * @param  int  $cardId
-     * @return CardDetails
-     * @throws Idez\Caradhras\Exceptions\GetCardDetailsException
+     * @throws GetCardDetailsException
      */
-    public function getCardDetails(int $cardId): CardDetails
+    public function getCardDetails(int $cardId, int $individualId): string
     {
         $response = $this
             ->apiClient(false)
-            ->get("/cartoes/{$cardId}/consultar-dados-reais");
+            ->get("/cards/{$cardId}/cardholders/{$individualId}/data/real");
 
         if ($response->failed()) {
-            throw new GetCardDetailsException($response->json());
+            throw new GetCardDetailsException();
         }
 
-        return new CardDetails($response->json());
+        return $response;
     }
 
     /**
      * Get card limit.
-     * @param  int  $cardId
-     * @param  int  $limitId
-     * @return CardLimit
+     *
      * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function getCardLimit(int $cardId, int $limitId): CardLimit
@@ -186,13 +160,6 @@ class CaradhrasCardClient extends BaseApiClient
         return new CardLimit($response->json());
     }
 
-    /**
-     *
-     * @param  int  $cardId
-     * @param  int  $limitId
-     * @param  float|null  $amount
-     * @return CardLimit
-     */
     public function updateCardLimit(int $cardId, int $limitId, ?float $amount = null): CardLimit
     {
         $response = $this
@@ -209,9 +176,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Create card limit.
      *
-     * @param  int  $cardId
-     * @param  float  $amount
-     * @return CardLimit
      * @throws Exception
      */
     public function createCardLimit(int $cardId, float $amount): CardLimit
@@ -228,13 +192,11 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Get cards.
      *
-     * @param  array  $query
-     * @return CardCollection
      * @throws FindCardsException
      */
     public function listCards(array $query = []): CardCollection
     {
-        $response = $this->apiClient(throwsHttpError: false)->get("/cartoes", $query);
+        $response = $this->apiClient(throwsHttpError: false)->get('/cartoes', $query);
 
         if ($response->failed()) {
             if ($response->status() === 404) {
@@ -250,8 +212,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Validate cvv.
      *
-     * @param  int  $cardId
-     * @param  string  $cvv
      * @throws Idez\Caradhras\Exceptions\CaradhrasException
      * @throws CVVMismatchException
      * @throws Exception
@@ -278,11 +238,8 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Cancel card.
      *
-     * @param  string  $cardId
-     * @param  string  $description
-     * @return object
-     * @throws Idez\Caradhras\Exceptions\CaradhrasException
-     * @throws \Illuminate\Http\Client\RequestException
+     * @throws CaradhrasException
+     * @throws \Idez\Caradhras\Exceptions\Cards\CardAlreadyCanceledException
      */
     public function cancelCard(string $cardId, string $description = ''): object
     {
@@ -290,22 +247,27 @@ class CaradhrasCardClient extends BaseApiClient
             throw new CaradhrasException('Invalid card.');
         }
 
-        return $this
-            ->apiClient()
-            ->post("/cartoes/{$cardId}/cancelar?id_status=3&observacao={$description}")
-            ->throw()
-            ->object();
+        $response = $this
+            ->apiClient(false)
+            ->post("/cartoes/{$cardId}/cancelar?id_status=3&observacao={$description}");
+
+        if ($response->failed()) {
+            if ($response->status() === 400 && Str::of($response->json('message'))->contains('Cartão já encontra-se cancelado')) {
+                throw new \Idez\Caradhras\Exceptions\Cards\CardAlreadyCanceledException();
+            }
+
+            throw new CaradhrasException($response->json('message'), $response->status());
+        }
+
+        return $response->object();
     }
 
     /**
      * Create an individual from data.
-     *
-     * @param  array  $data
-     * @return Individual
      */
     public function createIndividual(array $data): Individual
     {
-        $response = $this->apiClient()->asForm()->post("/pessoas", $data);
+        $response = $this->apiClient()->asForm()->post('/pessoas', $data);
 
         return new Individual($response->object());
     }
@@ -313,13 +275,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Create request of Noname Cards batch
      *
-     * @param  int  $businessSourceId
-     * @param  int  $productId
-     * @param  int  $plasticId
-     * @param  int  $cardImageId
-     * @param  int  $addressId
-     * @param  int  $cardQuantity
-     * @return object
      * @throws \Idez\Caradhras\Exceptions\FailedRequestCardBatchException;
      */
     public function createNonameCardsBatch(
@@ -340,7 +295,7 @@ class CaradhrasCardClient extends BaseApiClient
         ]);
 
         $request = $this->apiClient(false)
-            ->post('/cartoes/lotes-cartoes-pre-pagos?' . $query);
+            ->post('/cartoes/lotes-cartoes-pre-pagos?'.$query);
 
         if ($request->failed()) {
             throw new FailedRequestCardBatchException();
@@ -360,9 +315,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Lock card.
      *
-     * @param  int  $cardId
-     * @param  string  $description
-     * @return object
      * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function lockCard(int $cardId, string $description): object
@@ -383,8 +335,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Unlock card.
      *
-     * @param  int  $cardId
-     * @return Card
      * @throws Idez\Caradhras\Exceptions\CaradhrasException
      */
     public function unlockCard(int $cardId): Card
@@ -399,8 +349,6 @@ class CaradhrasCardClient extends BaseApiClient
     }
 
     /**
-     * @param $cardId
-     * @return Card
      * @throws CaradhrasException
      */
     public function unlockUserBlockedCard($cardId): Card
@@ -446,9 +394,9 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Attach MCC groups to a card.
      *
-     * @param  int  $cardId
      * @param  array<int>  $idsGruposMCC
      * @return CardMccGroupControl[]
+     *
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function attachMccGroupsToCard(int $cardId, array $idsGruposMCC): array
@@ -468,9 +416,6 @@ class CaradhrasCardClient extends BaseApiClient
     /**
      * Delete a MCC groups from card.
      *
-     * @param  int  $cardId
-     * @param  int  $mccGroupControlId
-     * @return bool
      * @throws \Illuminate\Http\Client\RequestException
      */
     public function deleteCardMccGroup(int $cardId, int $mccGroupControlId): bool

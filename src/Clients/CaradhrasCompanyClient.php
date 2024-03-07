@@ -25,11 +25,6 @@ class CaradhrasCompanyClient extends BaseApiClient
     public const API_DOCUMENTS_PREFIX = 'docspy-api';
 
     /**
-     *
-     * @param  array  $companyData
-     * @param  array  $productSettings
-     * @param  string  $registrationId
-     * @return object
      * @throws UpdateCompanyRegistrationException
      */
     public function updateRegistration(array $companyData, array $productSettings, string $registrationId): object
@@ -50,8 +45,6 @@ class CaradhrasCompanyClient extends BaseApiClient
     /**
      * Get a company registration.
      *
-     * @param  string  $registrationId
-     * @return object
      * @throws GetCompanyRegistrationException
      */
     public function getRegistration(string $registrationId, bool $spd = true): object
@@ -111,11 +104,6 @@ class CaradhrasCompanyClient extends BaseApiClient
     /**
      * Add a company document.
      *
-     * @param  string  $registrationId
-     * @param  string  $documentType
-     * @param  Stream  $file
-     * @param  string  $contentType
-     * @return \Idez\Caradhras\Data\CompanyDocument
      *
      * @throws DuplicatedImageException
      * @throws FaceNotVisibleException
@@ -139,11 +127,6 @@ class CaradhrasCompanyClient extends BaseApiClient
     /**
      * Add a partner document.
      *
-     * @param  string  $registrationId
-     * @param  string  $documentType
-     * @param  Stream  $file
-     * @param  string  $contentType
-     * @return \Idez\Caradhras\Data\CompanyDocument
      *
      * @throws DuplicatedImageException
      * @throws FaceNotVisibleException
@@ -165,15 +148,8 @@ class CaradhrasCompanyClient extends BaseApiClient
     }
 
     /**
-     *
      * Send company or partner document with custom API prefix and endpoint.
      *
-     * @param string $apiPrefix
-     * @param string $endpoint
-     * @param string $documentType
-     * @param Stream $file
-     * @param string $contentType
-     * @return \Idez\Caradhras\Data\CompanyDocument
      *
      * @throws DuplicatedImageException
      * @throws FaceNotVisibleException
@@ -194,7 +170,7 @@ class CaradhrasCompanyClient extends BaseApiClient
         $response = $this->apiClient(false)
             ->withBody($file, $contentType)
             ->baseUrl($this->createApiBaseUri($apiPrefix))
-            ->post($endpoint . '?' . $queryParams);
+            ->post($endpoint.'?'.$queryParams);
 
         if ($response->failed()) {
             $this->throwsDocumentError($response);
@@ -206,14 +182,12 @@ class CaradhrasCompanyClient extends BaseApiClient
     public function getPendingDocuments(string $registrationId): object
     {
         return $this->apiClient()
-                    ->get("/v1/registrations/{$registrationId}/documents/status")
-                    ->throw()
-                    ->object();
+            ->get("/v1/registrations/{$registrationId}/documents/status")
+            ->throw()
+            ->object();
     }
 
     /**
-     * @param $response
-     * @return never
      * @throws DuplicatedImageException
      * @throws FaceNotVisibleException
      * @throws InconsistentSelfieException
@@ -276,7 +250,7 @@ class CaradhrasCompanyClient extends BaseApiClient
         };
 
         $response = $this->apiClient(false)
-            ->post("/v1/registrations/{$registrationId}/documents/biometric?" . $queryParams, $body);
+            ->post("/v1/registrations/{$registrationId}/documents/biometric?".$queryParams, $body);
 
         if ($response->failed()) {
             $this->throwsDocumentError($response);

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class PixTransferDetail
- * @package App\Models\Caradhras
  *
  * @property int $idAccount
  * @property string $idEndToEnd

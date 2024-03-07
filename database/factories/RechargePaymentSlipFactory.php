@@ -32,37 +32,37 @@ class RechargePaymentSlipFactory extends Factory
         $idBankNumber = $this->faker->regexify('\d{10}');
 
         return [
-            "idAccount" => $account->cr_account_id,
-            "covenantNumber" => $this->faker->regexify('\d{4}'),
-            "issuerBankNumber" => $idBankNumber,
-            "idBankNumber" => $idBankNumber,
-            "uniqueId" => $this->faker->regexify('\d{25}'),
-            "dueDate" => $this->faker->date(),
-            "amount" => $this->faker->randomFloat(2, 100, 1000),
-            "dateDocument" => today()->toDateString(),
-            "payer" => new RechargePaymentSlipPayer([
-                "documentType" => $documentType,
-                "documentNumber" => $account->document,
-                "name" => $account->name,
+            'idAccount' => $account->cr_account_id,
+            'covenantNumber' => $this->faker->regexify('\d{4}'),
+            'issuerBankNumber' => $idBankNumber,
+            'idBankNumber' => $idBankNumber,
+            'uniqueId' => $this->faker->regexify('\d{25}'),
+            'dueDate' => $this->faker->date(),
+            'amount' => $this->faker->randomFloat(2, 100, 1000),
+            'dateDocument' => today()->toDateString(),
+            'payer' => new RechargePaymentSlipPayer([
+                'documentType' => $documentType,
+                'documentNumber' => $account->document,
+                'name' => $account->name,
             ]),
-            "beneficiary" => [
-                "documentType" => $documentType,
-                "documentNumber" => $account->document,
-                "name" => $account->name,
+            'beneficiary' => [
+                'documentType' => $documentType,
+                'documentNumber' => $account->document,
+                'name' => $account->name,
             ],
-            "coBeneficiary" => [
-                "documentType" => "J",
-                "documentNumber" => $this->faker->cnpj(false),
-                "name" => $this->faker->company(),
+            'coBeneficiary' => [
+                'documentType' => 'J',
+                'documentNumber' => $this->faker->cnpj(false),
+                'name' => $this->faker->company(),
             ],
-            "bankBranchNumber" => 1111,
-            "bankNumber" => CaradhrasPaymentSlipClient::DEFAULT_BANK_NUMBER,
-            "instructions" => "Não receber após vencimento",
-            "acceptance" => "N",
-            "status" => BankSlip::CR_STATUS_CODE_REGISTERED,
-            "barCode" => $this->faker->regexify('\d{44}'),
-            "barCodeNumber" => $this->faker->regexify('\d{47}'),
-            "type" => BankSlip::CR_TYPES_RECHARGE,
+            'bankBranchNumber' => 1111,
+            'bankNumber' => CaradhrasPaymentSlipClient::DEFAULT_BANK_NUMBER,
+            'instructions' => 'Não receber após vencimento',
+            'acceptance' => 'N',
+            'status' => BankSlip::CR_STATUS_CODE_REGISTERED,
+            'barCode' => $this->faker->regexify('\d{44}'),
+            'barCodeNumber' => $this->faker->regexify('\d{47}'),
+            'type' => BankSlip::CR_TYPES_RECHARGE,
         ];
     }
 
@@ -71,16 +71,16 @@ class RechargePaymentSlipFactory extends Factory
         $documentType = $account->holder_type === \App\Models\Person::class ? 'F' : 'J';
 
         return $this->state([
-            "idAccount" => $account->cr_account_id,
-            "payer" => new RechargePaymentSlipPayer([
-                "documentType" => $documentType,
-                "documentNumber" => $account->document,
-                "name" => $account->name,
+            'idAccount' => $account->cr_account_id,
+            'payer' => new RechargePaymentSlipPayer([
+                'documentType' => $documentType,
+                'documentNumber' => $account->document,
+                'name' => $account->name,
             ]),
-            "beneficiary" => [
-                "documentType" => $documentType,
-                "documentNumber" => $account->document,
-                "name" => $account->name,
+            'beneficiary' => [
+                'documentType' => $documentType,
+                'documentNumber' => $account->document,
+                'name' => $account->name,
             ],
         ]);
     }

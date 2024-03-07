@@ -27,7 +27,7 @@ class CaradhrasIncomeClientTest extends TestCase
         $profitablePercentage = $this->faker->randomNumber(2);
         $splitPercentage = $this->faker->randomNumber(2);
 
-        $expectedRequestUrl = $this->incomeClient->getApiBaseUrl() . '/v1/setup/accounts';
+        $expectedRequestUrl = $this->incomeClient->getApiBaseUrl().'/v1/setup/accounts';
 
         Http::fake([
             $expectedRequestUrl => Http::response(

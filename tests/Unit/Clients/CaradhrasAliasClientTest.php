@@ -27,10 +27,10 @@ class CaradhrasAliasClientTest extends TestCase
     {
         $accountId = $this->faker->randomNumber(5);
 
-        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . "/v1/accounts*";
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl().'/v1/accounts*';
 
         $fakeResponse = [
-            "message" => "Transaction not allowed due to lack of regulatory informations or documents.",
+            'message' => 'Transaction not allowed due to lack of regulatory informations or documents.',
         ];
 
         Http::fake([
@@ -40,7 +40,7 @@ class CaradhrasAliasClientTest extends TestCase
         ]);
 
         $this->expectException(CaradhrasException::class);
-        $this->expectExceptionMessage("A conta possui informações ou documentos pendentes.");
+        $this->expectExceptionMessage('A conta possui informações ou documentos pendentes.');
 
         $this->aliasClient->findOrCreate($accountId);
     }
@@ -49,7 +49,7 @@ class CaradhrasAliasClientTest extends TestCase
     {
         $accountId = $this->faker->randomNumber(5);
 
-        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . "/v1/accounts?idAccount={$accountId}";
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl()."/v1/accounts?idAccount={$accountId}";
 
         $aliasAccount1 = new AliasBankAccount([
             'idAccount' => $accountId,
@@ -93,7 +93,7 @@ class CaradhrasAliasClientTest extends TestCase
         $accountId = $this->faker->randomNumber(5);
         $bankNumber = AliasBankProvider::Dock;
 
-        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl() . '/v1/accounts';
+        $expectedRequestUrl = $this->aliasClient->getApiBaseUrl().'/v1/accounts';
 
         Http::fake([
             $expectedRequestUrl => Http::response(['message' => 'This account are closed']),

@@ -30,46 +30,46 @@ class CaradhrasCompanyClientTest extends TestCase
     {
         $registrationId = $this->faker->uuid;
         $body = [
-            "registrationId" => $registrationId,
-            "nationalRegistration" => "99999999999999",
-            "legalNature" => "9999",
-            "status" => "WAITING_DOCUMENTS",
-            "note" => [
-                "id" => "ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj",
-                "create" => "2023-05-10T12:41:08.581590Z",
-                "text" => "{'name': 'stepBasicDataCompanyRules', 'description': 'PJ Dados Básicos - Validacao com sucesso', 'status': 'APPROVED', 'reasonCode': 'PJBDC-012'}",
+            'registrationId' => $registrationId,
+            'nationalRegistration' => '99999999999999',
+            'legalNature' => '9999',
+            'status' => 'WAITING_DOCUMENTS',
+            'note' => [
+                'id' => 'ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj',
+                'create' => '2023-05-10T12:41:08.581590Z',
+                'text' => "{'name': 'stepBasicDataCompanyRules', 'description': 'PJ Dados Básicos - Validacao com sucesso', 'status': 'APPROVED', 'reasonCode': 'PJBDC-012'}",
             ],
-            "documents" => [
-                "uploaded" => [
-                    "company" => [],
-                    "individuals" => [],
+            'documents' => [
+                'uploaded' => [
+                    'company' => [],
+                    'individuals' => [],
                 ],
-                "pendingUpload" => [
-                    "company" => [
-                        "mustHave" => [],
-                        "atLeastOne" => [],
+                'pendingUpload' => [
+                    'company' => [
+                        'mustHave' => [],
+                        'atLeastOne' => [],
                     ],
-                    "individuals" => [
+                    'individuals' => [
                         [
-                            "partnerId" => "kkkkkkkk-llll-mmmm-nnnn-oooooooooooo",
-                            "profile" => "OWNER",
-                            "type" => [
-                                "MASTER",
+                            'partnerId' => 'kkkkkkkk-llll-mmmm-nnnn-oooooooooooo',
+                            'profile' => 'OWNER',
+                            'type' => [
+                                'MASTER',
                             ],
-                            "mustHave" => [
-                                "SELFIE",
+                            'mustHave' => [
+                                'SELFIE',
                             ],
-                            "atLeastOne" => [
+                            'atLeastOne' => [
                                 [
-                                    "IDENTITY_CARD_FRONT",
-                                    "IDENTITY_CARD_VERSE",
+                                    'IDENTITY_CARD_FRONT',
+                                    'IDENTITY_CARD_VERSE',
                                 ],
                                 [
-                                    "DRIVER_LICENSE_FRONT",
-                                    "DRIVER_LICENSE_VERSE",
+                                    'DRIVER_LICENSE_FRONT',
+                                    'DRIVER_LICENSE_VERSE',
                                 ],
                                 [
-                                    "DIGITAL_DRIVER_LICENSE",
+                                    'DIGITAL_DRIVER_LICENSE',
                                 ],
                             ],
                         ],
@@ -78,7 +78,7 @@ class CaradhrasCompanyClientTest extends TestCase
             ],
         ];
 
-        $url = $this->getApiBaseUrl() . "/v1/registrations/{$registrationId}/documents/status";
+        $url = $this->getApiBaseUrl()."/v1/registrations/{$registrationId}/documents/status";
         Http::fake([
             $url => Http::response($body),
         ]);
@@ -96,7 +96,7 @@ class CaradhrasCompanyClientTest extends TestCase
     public function testGetPendingDocumentsThrowsError()
     {
         $registrationId = $this->faker->uuid;
-        $url = $this->getApiBaseUrl() . "/v1/registrations/{$registrationId}/documents/status";
+        $url = $this->getApiBaseUrl()."/v1/registrations/{$registrationId}/documents/status";
         Http::fake([
             $url => Http::response([], 400),
         ]);

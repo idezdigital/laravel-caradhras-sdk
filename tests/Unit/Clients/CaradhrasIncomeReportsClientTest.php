@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 class CaradhrasIncomeReportsClientTest extends TestCase
 {
     use WithFaker;
+
     public CaradhrasIncomeReportsClient $client;
 
     protected function setUp(): void
@@ -35,14 +36,14 @@ class CaradhrasIncomeReportsClientTest extends TestCase
     public function testCanGetAvailableIncomeReports()
     {
         $body = [
-            "reports" => [
-                "year" => 2020,
-                "quarter" => null,
-                "reportCode" => "2020",
+            'reports' => [
+                'year' => 2020,
+                'quarter' => null,
+                'reportCode' => '2020',
             ],
         ];
 
-        $url = $this->getApiBaseUrl() . "/v1/reports/1";
+        $url = $this->getApiBaseUrl().'/v1/reports/1';
         Http::fake([
             $url => Http::response($body),
         ]);
@@ -60,7 +61,7 @@ class CaradhrasIncomeReportsClientTest extends TestCase
     /** @test */
     public function tesFailedToGetAvailableIncomeReportsThrowCorrectException()
     {
-        $url = $this->getApiBaseUrl() . "/v1/reports/1";
+        $url = $this->getApiBaseUrl().'/v1/reports/1';
         Http::fake([
             $url => Http::response('error', 500),
         ]);
@@ -80,7 +81,7 @@ class CaradhrasIncomeReportsClientTest extends TestCase
     /** @test */
     public function tesFailedToSendIncomeReportsToEmailThrowCorrectException()
     {
-        $url = $this->getApiBaseUrl() . "/v1/requests";
+        $url = $this->getApiBaseUrl().'/v1/requests';
         Http::fake([
             $url => Http::response('error', 500),
         ]);
@@ -101,9 +102,9 @@ class CaradhrasIncomeReportsClientTest extends TestCase
     public function tesCanToSendIncomeReportsToEmailThrowCorrectException()
     {
         $body = [
-            "ticket" => $this->faker->uuid(),
+            'ticket' => $this->faker->uuid(),
         ];
-        $url = $this->getApiBaseUrl() . "/v1/requests";
+        $url = $this->getApiBaseUrl().'/v1/requests';
         Http::fake([
             $url => Http::response($body, 202),
         ]);

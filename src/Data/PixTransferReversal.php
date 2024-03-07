@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class PixTransferReversal
- * @package App\Models\Caradhras
  *
  * @property string $idEndToEndOriginal
  * @property string $transactionDate

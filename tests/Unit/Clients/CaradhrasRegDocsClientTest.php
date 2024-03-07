@@ -14,6 +14,7 @@ class CaradhrasRegDocsClientTest extends TestCase
     use WithFaker;
 
     protected CaradhrasRegDocsClient $regDocsClient;
+
     protected string $baseAPI;
 
     protected function setUp(): void

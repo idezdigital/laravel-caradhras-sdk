@@ -63,15 +63,15 @@ class TransactionCollectionFactory extends Factory
         ]);
 
         return [
-            "previousPage" => 0,
-            "currentPage" => 0,
-            "nextPage" => 1,
-            "last" => false,
-            "totalPages" => 1,
-            "totalItems" => count($transactions),
-            "maxItemsPerPage" => 50,
-            "totalItemsPage" => count($transactions),
-            "items" => $transactions,
+            'previousPage' => 0,
+            'currentPage' => 0,
+            'nextPage' => 1,
+            'last' => false,
+            'totalPages' => 1,
+            'totalItems' => count($transactions),
+            'maxItemsPerPage' => 50,
+            'totalItemsPage' => count($transactions),
+            'items' => $transactions,
         ];
     }
 }

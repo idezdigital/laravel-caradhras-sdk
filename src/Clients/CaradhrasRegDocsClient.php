@@ -11,6 +11,7 @@ class CaradhrasRegDocsClient extends BaseApiClient
     public const API_PREFIX = 'regdocs';
 
     public const TYPE_PRIVACY_POLICY = 'PRIVACY_POLICY';
+
     public const TYPE_TERMS_OF_USE = 'TERMS_OF_USE';
 
     public const TYPES = [
@@ -27,7 +28,7 @@ class CaradhrasRegDocsClient extends BaseApiClient
             $types = implode('&types=', $types);
         }
 
-        $types = 'types=' . $types;
+        $types = 'types='.$types;
 
         $request = $this->apiClient()->get("/v1/registration?{$types}");
 
@@ -49,10 +50,8 @@ class CaradhrasRegDocsClient extends BaseApiClient
     /**
      * Validate regulatory documents tokens.
      *
-     * @param  array  $tokens
-     * @param  \Idez\Caradhras\Data\Fingerprint  $fingerprint
      * @param  null  $registrationId
-     * @return object
+     *
      * @throws \Idez\Caradhras\Exceptions\RegDocsException
      */
     public function validateTokens(array $tokens, Fingerprint $fingerprint, $registrationId = null): object

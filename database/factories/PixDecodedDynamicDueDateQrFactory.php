@@ -12,8 +12,6 @@ class PixDecodedDynamicDueDateQrFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -24,8 +22,8 @@ class PixDecodedDynamicDueDateQrFactory extends Factory
             'payee' => (object) [
                 'ispb' => $this->faker->regexify('/\d{8}/'),
                 'bankName' => bankNameFromId($this->faker->randomElement(config('constants.banks'))['id']),
-                'bankAccountNumber' => (string)$this->faker->randomNumber(6),
-                'bankBranchNumber' => (string)$this->faker->randomNumber(4),
+                'bankAccountNumber' => (string) $this->faker->randomNumber(6),
+                'bankBranchNumber' => (string) $this->faker->randomNumber(4),
                 'bankAccountType' => 'CC',
                 'beneficiaryType' => 'F',
                 'nationalRegistration' => $this->faker->cpf(false),
@@ -43,14 +41,14 @@ class PixDecodedDynamicDueDateQrFactory extends Factory
             'address' => $this->faker->address,
             'state' => $this->faker->stateAbbr(),
             'amount' => (object) [
-                "original" => 100,
-                "fees" => [
-                    "discount" => 19.6,
-                    "abatement" => 2,
-                    "fine" => 0,
-                    "interest" => 0,
+                'original' => 100,
+                'fees' => [
+                    'discount' => 19.6,
+                    'abatement' => 2,
+                    'fine' => 0,
+                    'interest' => 0,
                 ],
-                "final" => 78.4,
+                'final' => 78.4,
             ],
             'idTx' => $this->faker->text(30),
             'dueDate' => today()->addWeek(),
@@ -58,7 +56,7 @@ class PixDecodedDynamicDueDateQrFactory extends Factory
             'dateCreated' => today(),
             'datePresentation' => now(),
             'review' => 2,
-            'details' => (object)[
+            'details' => (object) [
                 0 => (object) [
                     'title' => $this->faker->text(30),
                     'content' => $this->faker->text(30),

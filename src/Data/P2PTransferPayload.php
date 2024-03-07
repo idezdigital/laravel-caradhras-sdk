@@ -30,6 +30,7 @@ class P2PTransferPayload
 
     /** @var mixed */
     public $amount;
+
     public $transactionDate;
 
     /** @var P2PStatus */

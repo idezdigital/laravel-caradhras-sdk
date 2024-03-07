@@ -23,7 +23,7 @@ class CaradhrasLimitsClientTest extends TestCase
     public function testCanGetAccountLimitRequests(): void
     {
         $accountId = uniqid();
-        $expectedRequestUrl = $this->limitsClient->getApiBaseUrl() . "/limits/v2/requests?idAccount={$accountId}";
+        $expectedRequestUrl = $this->limitsClient->getApiBaseUrl()."/limits/v2/requests?idAccount={$accountId}";
 
         $expectedResponse = $this->generateFakeResponse();
 
@@ -63,13 +63,13 @@ class CaradhrasLimitsClientTest extends TestCase
                     'limitType' => '3',
                     'idRequest' => 5678,
                     'idBatch' => null,
-                    'status' => "APPROVED",
+                    'status' => 'APPROVED',
                     'idServicesGroup' => 1,
-                    'beneficiaryType' => "",
-                    'requestResultDate' => "2023-06-21T20:00:33Z",
-                    'requestDate' => "2023-06-20T19:55:29Z",
-                    'requestDeadline' => "2023-06-22T19:55:28Z",
-                    'requestMinApprovalDate' => "2023-06-20T19:55:29Z",
+                    'beneficiaryType' => '',
+                    'requestResultDate' => '2023-06-21T20:00:33Z',
+                    'requestDate' => '2023-06-20T19:55:29Z',
+                    'requestDeadline' => '2023-06-22T19:55:28Z',
+                    'requestMinApprovalDate' => '2023-06-20T19:55:29Z',
                     'trustedDestination' => [
                         'nationalRegistration' => null,
                         'ispb' => null,
@@ -81,16 +81,16 @@ class CaradhrasLimitsClientTest extends TestCase
                 [
                     'idAccount' => 1234,
                     'requestLimit' => 150000,
-                    'limitType' => "1",
+                    'limitType' => '1',
                     'idRequest' => 5679,
                     'idBatch' => null,
-                    'status' => "APPROVED",
+                    'status' => 'APPROVED',
                     'idServicesGroup' => 1,
-                    'beneficiaryType' => "",
-                    'requestResultDate' => "2023-06-20T19:53:10Z",
-                    'requestDate' => "2023-06-19T17:56:51Z",
-                    'requestDeadline' => "2023-06-21T17:56:51Z",
-                    'requestMinApprovalDate' => "2023-06-19T17:56:51Z",
+                    'beneficiaryType' => '',
+                    'requestResultDate' => '2023-06-20T19:53:10Z',
+                    'requestDate' => '2023-06-19T17:56:51Z',
+                    'requestDeadline' => '2023-06-21T17:56:51Z',
+                    'requestMinApprovalDate' => '2023-06-19T17:56:51Z',
                     'trustedDestination' => [
                         'nationalRegistration' => null,
                         'ispb' => null,
@@ -102,16 +102,16 @@ class CaradhrasLimitsClientTest extends TestCase
                 [
                     'idAccount' => 1234,
                     'requestLimit' => 150000,
-                    'limitType' => "2",
+                    'limitType' => '2',
                     'idRequest' => 5670,
                     'idBatch' => null,
-                    'status' => "APPROVED",
+                    'status' => 'APPROVED',
                     'idServicesGroup' => 1,
-                    'beneficiaryType' => "",
-                    'requestResultDate' => "2023-06-20T19:53:06Z",
-                    'requestDate' => "2023-06-19T17:54:08Z",
-                    'requestDeadline' => "2023-06-21T17:54:08Z",
-                    'requestMinApprovalDate' => "2023-06-19T17:54:08Z",
+                    'beneficiaryType' => '',
+                    'requestResultDate' => '2023-06-20T19:53:06Z',
+                    'requestDate' => '2023-06-19T17:54:08Z',
+                    'requestDeadline' => '2023-06-21T17:54:08Z',
+                    'requestMinApprovalDate' => '2023-06-19T17:54:08Z',
                     'trustedDestination' => [
                         'nationalRegistration' => null,
                         'ispb' => null,
@@ -121,6 +121,6 @@ class CaradhrasLimitsClientTest extends TestCase
                     ],
                 ],
             ],
-         ];
+        ];
     }
 }

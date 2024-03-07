@@ -3,9 +3,9 @@
 namespace Idez\Caradhras\Database\Factories;
 
 use App\Models\Account;
-use Idez\Caradhras\Data\PixTransferDetail;
 use App\Models\PixTransfer;
 use App\Services\PixService;
+use Idez\Caradhras\Data\PixTransferDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PixTransferDetailFactory extends Factory
@@ -28,30 +28,30 @@ class PixTransferDetailFactory extends Factory
 
         return [
             'idAccount' => $this->faker->numberBetween(1000, 9999),
-            'idEndToEnd' => 'E0874481' . $this->faker->regexify('/[A-Z0-9]{24}/'),
+            'idEndToEnd' => 'E0874481'.$this->faker->regexify('/[A-Z0-9]{24}/'),
             'transactionDate' => now()->toDateTimeString(),
             'transactionType' => 'TRANSFER_CREDIT',
             'transactionStatus' => $this->faker->randomElement(\App\Models\Caradhras\PixTransfer::STATUS),
             'transferType' => $this->faker->randomElement(\App\Models\Caradhras\PixTransfer::TYPES),
             'errorType' => null,
-            'debitParty' => (object)[
-                "ispb" => $this->faker->randomNumber(8, true),
-                "bankName" => $this->faker->company(),
-                "nationalRegistration" => $this->faker->cpf(),
-                "name" => $this->faker->name(),
-                "bankBranchNumber" => $this->faker->regexify('\d{4}'),
-                "bankAccountType" => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
-                "bankAccountNumber" => $this->faker->regexify('\d{4}'),
+            'debitParty' => (object) [
+                'ispb' => $this->faker->randomNumber(8, true),
+                'bankName' => $this->faker->company(),
+                'nationalRegistration' => $this->faker->cpf(),
+                'name' => $this->faker->name(),
+                'bankBranchNumber' => $this->faker->regexify('\d{4}'),
+                'bankAccountType' => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
+                'bankAccountNumber' => $this->faker->regexify('\d{4}'),
             ],
-            'creditParty' => (object)[
-                "ispb" => $this->faker->randomNumber(8, true),
-                "bankName" => $this->faker->company(),
-                "nationalRegistration" => $this->faker->cpf(),
-                "name" => $this->faker->name(),
-                "bankBranchNumber" => $this->faker->regexify('\d{4}'),
-                "bankAccountType" => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
-                "bankAccountNumber" => $this->faker->regexify('\d{4}'),
-                "key" => "03266716450",
+            'creditParty' => (object) [
+                'ispb' => $this->faker->randomNumber(8, true),
+                'bankName' => $this->faker->company(),
+                'nationalRegistration' => $this->faker->cpf(),
+                'name' => $this->faker->name(),
+                'bankBranchNumber' => $this->faker->regexify('\d{4}'),
+                'bankAccountType' => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
+                'bankAccountNumber' => $this->faker->regexify('\d{4}'),
+                'key' => '03266716450',
             ],
             'amount' => $amount,
             'tariffAmount' => 0,
@@ -68,13 +68,13 @@ class PixTransferDetailFactory extends Factory
         return $this->state(fn () => [
             'idAccount' => $account->cr_account_id,
             'debitParty' => (object) [
-                "ispb" => $this->faker->randomNumber(8, true),
-                "bankName" => $this->faker->company(),
-                "nationalRegistration" => $account->document,
-                "name" => $account->name,
-                "bankBranchNumber" => $this->faker->regexify('\d{4}'),
-                "bankAccountType" => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
-                "bankAccountNumber" => $this->faker->regexify('\d{4}'),
+                'ispb' => $this->faker->randomNumber(8, true),
+                'bankName' => $this->faker->company(),
+                'nationalRegistration' => $account->document,
+                'name' => $account->name,
+                'bankBranchNumber' => $this->faker->regexify('\d{4}'),
+                'bankAccountType' => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
+                'bankAccountNumber' => $this->faker->regexify('\d{4}'),
             ],
         ]);
     }

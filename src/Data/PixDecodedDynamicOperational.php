@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class PixDecodedDynamicQr
- * @package App\Models\Caradhras
  *
  * @property string $idEndToEnd
  * @property int $codeType
