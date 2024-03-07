@@ -67,7 +67,7 @@ class CaradhrasAliasClientTest extends TestCase
             'items' => [
                 $aliasAccount1->jsonSerialize(),
                 $aliasAccount2->jsonSerialize(),
-            ]
+            ],
         ];
 
         Http::fake([
