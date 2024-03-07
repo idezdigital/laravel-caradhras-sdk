@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Clients;
 
+use Idez\Caradhras\Data\AliasBankAccount;
 use Idez\Caradhras\Enums\AliasBankProvider;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Illuminate\Http\Client\Response;
@@ -13,7 +14,7 @@ class CaradhrasAliasClient extends BaseApiClient
     /**
      * Create an alias.
      */
-    public function create(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Votorantim): Response
+    public function create(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Dock): Response
     {
         return $this
             ->apiClient()
@@ -26,9 +27,9 @@ class CaradhrasAliasClient extends BaseApiClient
     /**
      * Find or create an alias.
      *
-     * @throws \Idez\Caradhras\Exceptions\CaradhrasException
+     * @throws CaradhrasException
      */
-    public function findOrCreate(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Votorantim): object
+    public function findOrCreate(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Dock): AliasBankAccount
     {
         $alias = $this->find($accountId, $bankProvider);
 
@@ -43,36 +44,42 @@ class CaradhrasAliasClient extends BaseApiClient
                 'bankNumber' => $bankProvider->value,
             ]);
 
-        if (! in_array($response->status(), [200, 201, 202, 409])) {
-            throw match ($response->status()) {
-                400 => new CaradhrasException('Conta inválida.', $response->status()),
-                404 => new CaradhrasException('Conta não encontrada.', $response->status()),
-                default => new CaradhrasException('Tente novamente mais tarde.', $response->status()),
+        $responseStatus = $response->status();
+        $responseData = $response->json();
+
+        if (! in_array($responseStatus, [200, 201, 202, 409])) {
+            throw match ($responseStatus) {
+                400 => new CaradhrasException('Conta inválida.', $responseStatus),
+                404 => new CaradhrasException('Conta não encontrada.', $responseStatus),
+                default => new CaradhrasException('Tente novamente mais tarde.', $responseStatus),
             };
         }
 
-        $responseObject = $response->object();
-
         if (
             $response->status() === 409 &&
-            $responseObject?->message === 'Transaction not allowed due to lack of regulatory informations or documents.'
+            $responseData['message'] === 'Transaction not allowed due to lack of regulatory informations or documents.'
         ) {
             throw new CaradhrasException('A conta possui informações ou documentos pendentes.', $response->status());
         }
 
-        return $responseObject->data;
+        return new AliasBankAccount($responseData['data']);
     }
 
-    public function find(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Votorantim): array
+    /**
+     * Find an alias.
+     *
+     * @return AliasBankAccount[]
+     */
+    public function find(int $accountId, AliasBankProvider $bankProvider = AliasBankProvider::Dock): array
     {
         $response = $this
             ->apiClient(false)
             ->get('/v1/accounts', [
                 'idAccount' => $accountId,
                 'bankNumber' => $bankProvider->value,
-            ])->object();
+            ])->json();
 
-        return $response->items;
+        return array_map(fn ($item) => new AliasBankAccount($item), $response['items']);
     }
 
     /**
@@ -84,9 +91,9 @@ class CaradhrasAliasClient extends BaseApiClient
             ->apiClient()
             ->get('/v1/accounts', [
                 'idAccount' => $accountId,
-            ])->object();
+            ])->json();
 
-        return $response->items;
+        return array_map(fn ($item) => new AliasBankAccount($item), $response['items']);
     }
 
     /**

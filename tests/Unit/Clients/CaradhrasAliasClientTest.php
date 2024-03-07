@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
 use Idez\Caradhras\Clients\CaradhrasAliasClient;
+use Idez\Caradhras\Data\AliasBankAccount;
 use Idez\Caradhras\Enums\AliasBankProvider;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Tests\TestCase;
@@ -41,7 +42,7 @@ class CaradhrasAliasClientTest extends TestCase
         $this->expectException(CaradhrasException::class);
         $this->expectExceptionMessage('A conta possui informações ou documentos pendentes.');
 
-        $this->aliasClient->findOrCreate($accountId, AliasBankProvider::Votorantim);
+        $this->aliasClient->findOrCreate($accountId);
     }
 
     public function testIfCanListWithSuccess(): void
@@ -50,30 +51,35 @@ class CaradhrasAliasClientTest extends TestCase
 
         $expectedRequestUrl = $this->aliasClient->getApiBaseUrl()."/v1/accounts?idAccount={$accountId}";
 
-        $expectedItems = [
-            [
-                'idAccount' => $accountId,
-                'bankNumber' => '301',
-                'bankAccountStatus' => 'OPEN',
-            ],
-            [
-                'idAccount' => $accountId,
-                'bankNumber' => '208',
-                'bankAccountStatus' => 'CLOSED',
-            ],
-        ];
+        $aliasAccount1 = new AliasBankAccount([
+            'idAccount' => $accountId,
+            'bankNumber' => '301',
+            'bankAccountStatus' => 'OPEN',
+        ]);
+
+        $aliasAccount2 = new AliasBankAccount([
+            'idAccount' => $accountId,
+            'bankNumber' => '208',
+            'bankAccountStatus' => 'CLOSED',
+        ]);
 
         $fakeResponse = [
-            'items' => $expectedItems,
+            'items' => [
+                $aliasAccount1->jsonSerialize(),
+                $aliasAccount2->jsonSerialize(),
+            ],
         ];
 
         Http::fake([
-            $expectedRequestUrl => Http::response(body: $fakeResponse, status: 200),
+            $expectedRequestUrl => Http::response($fakeResponse),
         ]);
 
         $result = $this->aliasClient->list($accountId);
 
-        $this->assertEquals($result, $this->arrayToObject($expectedItems));
+        $this->assertContainsOnlyInstancesOf(AliasBankAccount::class, $result);
+
+        $this->assertEquals($aliasAccount1, $result[0]);
+        $this->assertEquals($aliasAccount2, $result[1]);
 
         Http::assertSent(
             fn (Request $request) => $request->url() === $expectedRequestUrl
@@ -85,17 +91,12 @@ class CaradhrasAliasClientTest extends TestCase
     public function testIfCanCancelAccountWithSuccess(): void
     {
         $accountId = $this->faker->randomNumber(5);
-        $bankNumber = AliasBankProvider::Votorantim;
+        $bankNumber = AliasBankProvider::Dock;
 
         $expectedRequestUrl = $this->aliasClient->getApiBaseUrl().'/v1/accounts';
 
         Http::fake([
-            $expectedRequestUrl => Http::response(
-                body: [
-                    'message' => 'This account are closed',
-                ],
-                status: 200,
-            ),
+            $expectedRequestUrl => Http::response(['message' => 'This account are closed']),
         ]);
 
         $this->aliasClient->delete($accountId, $bankNumber);
