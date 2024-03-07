@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Clients;
 
+use App\Enums\Caradhras\AccountStatusCode;
 use Idez\Caradhras\Data\P2PTransferPayload;
-use Idez\Caradhras\Enums\AccountStatus;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 
 class CaradhrasMainClient extends BaseApiClient
@@ -24,7 +24,7 @@ class CaradhrasMainClient extends BaseApiClient
         return new P2PTransferPayload(head((array) $transfers));
     }
 
-    public function cancelAccount(int $accountId, AccountStatus $status = AccountStatus::Canceled): object
+    public function cancelAccount(int $accountId, AccountStatusCode $status = AccountStatusCode::Canceled): object
     {
         return $this
             ->apiClient()
