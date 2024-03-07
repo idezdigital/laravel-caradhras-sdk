@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Clients;
 
-use App\Enums\Caradhras\AccountStatusCode;
 use Idez\Caradhras\Data\P2PTransferPayload;
+use Idez\Caradhras\Enums\AccountStatusCode;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 
 class CaradhrasMainClient extends BaseApiClient
