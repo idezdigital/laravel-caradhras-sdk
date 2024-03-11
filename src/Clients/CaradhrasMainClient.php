@@ -1,10 +1,12 @@
 <?php
 
 namespace Idez\Caradhras\Clients;
-
+;
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Enums\AccountStatusCode;
 use Idez\Caradhras\Exceptions\CaradhrasException;
+use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
+use Illuminate\Http\Client\RequestException;
 
 class CaradhrasMainClient extends BaseApiClient
 {
@@ -78,5 +80,44 @@ class CaradhrasMainClient extends BaseApiClient
             ->apiClient()
             ->asJson()
             ->get("/v2/individuals/$personId", ['statusSPD' => 'true']);
+    }
+
+    /**
+     * Create phone recharge.
+     *
+     * @param  string  $dealerCode
+     * @param  string  $areaCode
+     * @param  string  $phoneNumber
+     * @return object
+     * @throws RequestException
+     */
+    public function createPhoneRecharge(string $dealerCode, string $areaCode, string $phoneNumber): object
+    {
+        return $this->apiClient()->post('/recharges', [
+            'dealerCode' => $dealerCode,
+            'ddd' => $areaCode,
+            'phoneNumber' => $phoneNumber,
+        ])->throw()->object();
+    }
+
+    /**
+     * @param  string  $orderId
+     * @param  int  $accountId
+     * @param  float  $amount
+     * @return object|array
+     * @throws PhoneRechargeConfirmationFailedException
+     */
+    public function confirmPhoneRecharge(string $orderId, int $accountId, float $amount): object|array
+    {
+        $response = $this->apiClient(false)->post("/recharges/{$orderId}/confirm", [
+            'accountId' => $accountId,
+            'amount' => $amount,
+        ]);
+
+        if ($response->failed()) {
+            throw new PhoneRechargeConfirmationFailedException((array) $response->body());
+        }
+
+        return $response->object();
     }
 }
