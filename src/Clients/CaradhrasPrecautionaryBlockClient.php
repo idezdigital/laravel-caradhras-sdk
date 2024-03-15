@@ -43,5 +43,4 @@ class CaradhrasPrecautionaryBlockClient extends BaseApiClient
             'limit' => $limit,
         ])->object();
     }
-
 }
