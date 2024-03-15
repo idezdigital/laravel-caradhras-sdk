@@ -85,10 +85,6 @@ class CaradhrasMainClient extends BaseApiClient
     /**
      * Create phone recharge.
      *
-     * @param  string  $dealerCode
-     * @param  string  $areaCode
-     * @param  string  $phoneNumber
-     * @return object
      * @throws RequestException
      */
     public function createPhoneRecharge(string $dealerCode, string $areaCode, string $phoneNumber): object
@@ -101,10 +97,6 @@ class CaradhrasMainClient extends BaseApiClient
     }
 
     /**
-     * @param  string  $orderId
-     * @param  int  $accountId
-     * @param  float  $amount
-     * @return object|array
      * @throws PhoneRechargeConfirmationFailedException
      */
     public function confirmPhoneRecharge(string $orderId, int $accountId, float $amount): object|array

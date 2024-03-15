@@ -32,7 +32,6 @@ class CaradhrasPrecautionaryBlockClient extends BaseApiClient
             throw new CaradhrasException($errorMessage, $response->status(), data: $response->json());
         }
 
-
         return true;
     }
 

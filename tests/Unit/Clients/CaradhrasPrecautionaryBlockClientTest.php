@@ -39,19 +39,19 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
         Http::fake([
             'v1/locks/E00038166201907261559y6j6mt9l0pi' => Http::response(
                 [
-                    "error" => [
-                        "id" => "a3e6e02b-8f20-4c4e-8e40-c4aa8083d070",
-                        "description" => "Bad request",
-                        "code" => 0,
-                        "error_details" => [
+                    'error' => [
+                        'id' => 'a3e6e02b-8f20-4c4e-8e40-c4aa8083d070',
+                        'description' => 'Bad request',
+                        'code' => 0,
+                        'error_details' => [
                             [
-                                "attribute" => "query.page, query.limit",
-                                "messages" => [
-                                    "INVALID_DATA_TYPE",
-                                    "INVALID_LENGTH",
-                                    "INVALID_FORMAT",
-                                    "INVALID_VALUE",
-                                    "REQUIRED_ATTRIBUTE_MISSING",
+                                'attribute' => 'query.page, query.limit',
+                                'messages' => [
+                                    'INVALID_DATA_TYPE',
+                                    'INVALID_LENGTH',
+                                    'INVALID_FORMAT',
+                                    'INVALID_VALUE',
+                                    'REQUIRED_ATTRIBUTE_MISSING',
                                 ],
                             ],
                         ],
@@ -72,10 +72,10 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
         Http::fake([
             'v1/locks/E00038166201907261559y6j6mt9l0pi' => Http::response(
                 [
-                    "error" => [
-                        "id" => "a3e6e02b-8f20-4c4e-8e40-c4aa8083d070",
-                        "description" => "Not found",
-                        "code" => 404,
+                    'error' => [
+                        'id' => 'a3e6e02b-8f20-4c4e-8e40-c4aa8083d070',
+                        'description' => 'Not found',
+                        'code' => 404,
                     ],
                 ],
                 404
@@ -93,10 +93,10 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
         Http::fake([
             'v1/locks/E00038166201907261559y6j6mt9l0pi' => Http::response(
                 [
-                    "error" => [
-                        "id" => "a3e6e02b-8f20-4c4e-8e40-c4aa8083d070",
-                        "description" => "externalId already used",
-                        "code" => "BLOQ-0001",
+                    'error' => [
+                        'id' => 'a3e6e02b-8f20-4c4e-8e40-c4aa8083d070',
+                        'description' => 'externalId already used',
+                        'code' => 'BLOQ-0001',
                     ],
                 ],
                 422
@@ -109,20 +109,20 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
     public function testCanListLockedTransactions()
     {
         Http::fake(['v1/locks?page=1&limit=10' => [
-            "content" => [
+            'content' => [
                 [
-                    "external_id" => "string",
-                    "created_date" => "2019-08-24T14:15:22Z",
-                    "account_id" => 0,
-                    "amount" => 0,
+                    'external_id' => 'string',
+                    'created_date' => '2019-08-24T14:15:22Z',
+                    'account_id' => 0,
+                    'amount' => 0,
                 ],
             ],
-            "metadata" => [
+            'metadata' => [
                 [
-                    "pagination" => [
+                    'pagination' => [
                         [
-                            "page" => 0,
-                            "limit" => 0,
+                            'page' => 0,
+                            'limit' => 0,
                         ],
                     ],
                 ],
