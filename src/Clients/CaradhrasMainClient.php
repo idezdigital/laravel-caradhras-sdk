@@ -1,7 +1,6 @@
 <?php
 
 namespace Idez\Caradhras\Clients;
-
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Enums\AccountStatusCode;
 use Idez\Caradhras\Exceptions\CaradhrasException;
