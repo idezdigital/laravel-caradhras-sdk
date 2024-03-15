@@ -15,6 +15,7 @@ use Idez\Caradhras\Clients\CaradhrasLimitsClient;
 use Idez\Caradhras\Clients\CaradhrasMainClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
+use Idez\Caradhras\Clients\CaradhrasPrecautionaryBlockClient;
 use Idez\Caradhras\Clients\CaradhrasRegDocsClient;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -34,6 +35,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
         CaradhrasLimitsClient::class,
         CaradhrasDataApiClient::class,
         CaradhrasCardClient::class,
+        CaradhrasPrecautionaryBlockClient::class,
     ];
 
     public function configurePackage(Package $package): void
