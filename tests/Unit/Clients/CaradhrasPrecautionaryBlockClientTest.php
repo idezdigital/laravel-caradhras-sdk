@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Tests\Unit\Clients;
 
-use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Clients\CaradhrasPrecautionaryBlockClient;
+use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 
@@ -51,11 +51,11 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
                                     "INVALID_LENGTH",
                                     "INVALID_FORMAT",
                                     "INVALID_VALUE",
-                                    "REQUIRED_ATTRIBUTE_MISSING"
-                                ]
-                            ]
-                        ]
-                    ]
+                                    "REQUIRED_ATTRIBUTE_MISSING",
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 400
             ),
@@ -75,8 +75,8 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
                     "error" => [
                         "id" => "a3e6e02b-8f20-4c4e-8e40-c4aa8083d070",
                         "description" => "Not found",
-                        "code" => 404
-                    ]
+                        "code" => 404,
+                    ],
                 ],
                 404
             ),
@@ -96,8 +96,8 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
                     "error" => [
                         "id" => "a3e6e02b-8f20-4c4e-8e40-c4aa8083d070",
                         "description" => "externalId already used",
-                        "code" => "BLOQ-0001"
-                    ]
+                        "code" => "BLOQ-0001",
+                    ],
                 ],
                 422
             ),
@@ -114,19 +114,19 @@ class CaradhrasPrecautionaryBlockClientTest extends TestCase
                     "external_id" => "string",
                     "created_date" => "2019-08-24T14:15:22Z",
                     "account_id" => 0,
-                    "amount" => 0
-                ]
+                    "amount" => 0,
+                ],
             ],
             "metadata" => [
                 [
                     "pagination" => [
                         [
                             "page" => 0,
-                            "limit" => 0
-                        ]
-                    ]
-                ]
-            ]
+                            "limit" => 0,
+                        ],
+                    ],
+                ],
+            ],
         ]]);
 
         $response = $this->caradhras->listLockedTransactions(1, 10);
