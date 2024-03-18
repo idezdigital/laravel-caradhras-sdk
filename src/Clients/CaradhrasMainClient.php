@@ -159,6 +159,7 @@ class CaradhrasMainClient extends BaseApiClient
 
         if ($response->failed()) {
             $message = $response->object()?->message;
+
             throw new CaradhrasException($message);
         }
 
