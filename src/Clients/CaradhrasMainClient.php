@@ -112,4 +112,23 @@ class CaradhrasMainClient extends BaseApiClient
 
         return $response->object();
     }
+
+    /**
+     * Update account product.
+     *
+     * @param  int  $accountId
+     * @return object|null
+     */
+    public function updateAccountProduct(int $accountId, int $productId, int $businessSourceId): null|object
+    {
+        return $this
+            ->apiClient()
+            ->asJson()
+            ->post("/contas/{$accountId}/alterar-produto", [
+                'idProduto' => $productId,
+                'idOrigemComercial' => $businessSourceId,
+            ])
+            ->object();
+    }
+
 }
