@@ -165,4 +165,22 @@ class CaradhrasMainClient extends BaseApiClient
         return true;
     }
 
+    public function listIndividualDocuments(string $registrationId): array
+    {
+        $response = $this
+            ->apiClient()
+            ->asJson()
+            ->get("/v2/individuals/$registrationId/documents");
+
+        return $response->object()?->result ?? [];
+    }
+
+    public function getDocumentUrl(string $documentId): string
+    {
+        $response = $this->apiClient()
+            ->withoutRedirecting()
+            ->get("/docspy/v1/documents/download/{$documentId}");
+
+        return $response->header('Location');
+    }
 }
