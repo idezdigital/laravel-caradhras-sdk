@@ -4,6 +4,7 @@ namespace Idez\Caradhras\Clients;
 
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Enums\AccountStatusCode;
+use Idez\Caradhras\Enums\AddressType;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
 use Illuminate\Http\Client\RequestException;
@@ -115,11 +116,8 @@ class CaradhrasMainClient extends BaseApiClient
 
     /**
      * Update account product.
-     *
-     * @param  int  $accountId
-     * @return object|null
      */
-    public function updateAccountProduct(int $accountId, int $productId, int $businessSourceId): null|object
+    public function updateAccountProduct(int $accountId, int $productId, int $businessSourceId): ?object
     {
         return $this
             ->apiClient()
@@ -133,10 +131,6 @@ class CaradhrasMainClient extends BaseApiClient
 
     /**
      * Block account.
-     *
-     * @param int $accountId
-     * @param int $idStatus
-     * @return object
      */
     public function blockAccount(int $accountId, int $idStatus = 1): object
     {
@@ -149,8 +143,7 @@ class CaradhrasMainClient extends BaseApiClient
 
     /**
      * Reactivate account.
-     * @param  int  $accountId
-     * @return bool
+     *
      * @throws CaradhrasException
      */
     public function reactivateAccount(int $accountId): bool
@@ -163,6 +156,41 @@ class CaradhrasMainClient extends BaseApiClient
         }
 
         return true;
+    }
+
+    /**
+     * Create address.
+     */
+    public function createAddress(
+        int $idPessoa,
+        string $logradouro,
+        int $numero,
+        ?string $complemento,
+        string $bairro,
+        string $cidade,
+        string $uf,
+        string $cep,
+        string $pais = 'Brasil',
+        AddressType $tipoEndereco = AddressType::Home
+    ): object {
+        $data = [
+            'idTipoEndereco' => $tipoEndereco->value,
+            'idPessoa' => $idPessoa,
+            'logradouro' => $logradouro,
+            'numero' => $numero,
+            'complemento' => $complemento ?? '-',
+            'bairro' => $bairro,
+            'cidade' => $cidade,
+            'uf' => $uf,
+            'cep' => $cep,
+            'pais' => $pais,
+        ];
+
+        $query = http_build_query($data);
+
+        return $this->apiClient()
+            ->post("/enderecos?{$query}")
+            ->object();
     }
 
     public function listIndividualDocuments(string $registrationId): array
