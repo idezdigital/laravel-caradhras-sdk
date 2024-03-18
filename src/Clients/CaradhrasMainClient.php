@@ -2,7 +2,6 @@
 
 namespace Idez\Caradhras\Clients;
 
-use _PHPStan_1292afebc\Nette\Neon\Exception;
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Enums\AccountStatusCode;
 use Idez\Caradhras\Exceptions\CaradhrasException;
@@ -152,7 +151,7 @@ class CaradhrasMainClient extends BaseApiClient
      * Reactivate account.
      * @param  int  $accountId
      * @return bool
-     * @throws Exception
+     * @throws CaradhrasException
      */
     public function reactivateAccount(int $accountId): bool
     {
@@ -160,7 +159,7 @@ class CaradhrasMainClient extends BaseApiClient
 
         if ($response->failed()) {
             $message = $response->object()?->message;
-            throw new Exception($message);
+            throw new CaradhrasException($message);
         }
 
         return true;
