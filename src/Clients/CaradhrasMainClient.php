@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Clients;
 
+use _PHPStan_1292afebc\Nette\Neon\Exception;
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Enums\AccountStatusCode;
 use Idez\Caradhras\Exceptions\CaradhrasException;
@@ -129,6 +130,40 @@ class CaradhrasMainClient extends BaseApiClient
                 'idOrigemComercial' => $businessSourceId,
             ])
             ->object();
+    }
+
+    /**
+     * Block account.
+     *
+     * @param int $accountId
+     * @param int $idStatus
+     * @return object
+     */
+    public function blockAccount(int $accountId, int $idStatus = 1): object
+    {
+        return $this
+            ->apiClient()
+            ->withQueryParameters(['id_status' => $idStatus])
+            ->post("/contas/{$accountId}/bloquear")
+            ->object();
+    }
+
+    /**
+     * Reactivate account.
+     * @param  int  $accountId
+     * @return bool
+     * @throws Exception
+     */
+    public function reactivateAccount(int $accountId): bool
+    {
+        $response = $this->apiClient(false)->post("/contas/{$accountId}/reativar");
+
+        if ($response->failed()) {
+            $message = $response->object()?->message;
+            throw new Exception($message);
+        }
+
+        return true;
     }
 
 }
