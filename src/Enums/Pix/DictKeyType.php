@@ -3,7 +3,7 @@
 namespace Idez\Caradhras\Enums\Pix;
 enum DictKeyType: string
 {
-    case Evp = 'EVP';
+    case Evp = 'evp';
     case Email = 'email';
     case Phone = 'phoneNumber';
     case Document = 'nationalRegistration';
