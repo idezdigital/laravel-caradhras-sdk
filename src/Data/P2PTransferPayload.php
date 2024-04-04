@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Data;
 
-use Idez\Caradhras\Enums\Transfers\P2PStatus;
 use Carbon\Carbon;
+use Idez\Caradhras\Enums\Transfers\P2PStatus;
 
 class P2PTransferPayload
 {
