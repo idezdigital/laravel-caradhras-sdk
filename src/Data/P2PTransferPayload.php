@@ -36,6 +36,9 @@ class P2PTransferPayload
     /** @var P2PStatus */
     public $status;
 
+    /** @var string|null  */
+    public $cause;
+
     private $raw;
 
     public function __construct(array $payload)
@@ -50,6 +53,7 @@ class P2PTransferPayload
         $this->amount = $payload['amount'];
         $this->transactionDate = Carbon::parse($payload['transactionDate']);
         $this->status = P2PStatus::tryFrom($payload['status']);
+        $this->cause = $payload['cause'] ?? null;
         $this->raw = $payload;
     }
 
