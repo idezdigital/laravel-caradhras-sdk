@@ -1,6 +1,7 @@
 <?php
 
 namespace Idez\Caradhras\Enums\Pix;
+
 enum DictKeyType: string
 {
     case Evp = 'evp';

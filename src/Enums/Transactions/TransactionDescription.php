@@ -1,6 +1,7 @@
 <?php
 
 namespace Idez\Caradhras\Enums\Transactions;
+
 enum TransactionDescription: string
 {
     case PixSent = 'Pix Enviado-Conta Transacional';

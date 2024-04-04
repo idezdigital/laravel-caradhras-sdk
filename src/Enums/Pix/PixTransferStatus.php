@@ -1,6 +1,7 @@
 <?php
 
 namespace Idez\Caradhras\Enums\Pix;
+
 enum PixTransferStatus: string
 {
     case Executed = 'EXECUTED';
