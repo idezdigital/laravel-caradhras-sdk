@@ -36,7 +36,7 @@ class P2PTransferPayload
     /** @var P2PStatus */
     public $status;
 
-    /** @var string|null  */
+    /** @var string|null */
     public $cause;
 
     private $raw;
