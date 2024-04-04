@@ -2,9 +2,9 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Caradhras\PersonType;
-use App\Enums\Pix\PixMethod;
-use App\Services\PixService;
+use Idez\Caradhras\Enums\BankAccount\BankAccountType;
+use Idez\Caradhras\Enums\Pix\PixTransferType;
+use Idez\Caradhras\Enums\PersonType;
 use Idez\Caradhras\Data\PixDecodedStaticQr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,17 +22,25 @@ class PixDecodedStaticQrFactory extends Factory
      */
     public function definition(): array
     {
-        $bankId = $this->faker->randomElement(config('constants.banks'))['id'];
+        $bankName = $this->faker->randomElement([
+            'Itaú Unibanco S.A.',
+            'BCO DO BRASIL S.A.',
+            'BCO BRADESCO S.A.',
+            'BCO SANTANDER (BRASIL) S.A.',
+            'NU PAGAMENTOS S.A.',
+            'Banco Inter S.A.',
+            'CAIXA ECONOMICA FEDERAL'
+        ]);
 
         return [
             'idTx' => $this->faker->regexify('/[A-Z0-9]{32}/'),
             'idEndToEnd' => $this->faker->regexify('/[A-Z0-9]{32}/'),
-            'codeType' => PixMethod::StaticQrCode->value,
+            'codeType' => PixTransferType::StaticQRCode->value,
             'ispb' => $this->faker->regexify('/\d{8}/'),
-            'bankName' => bankNameFromId($bankId),
+            'bankName' => $bankName,
             'bankAccountNumber' => (string) $this->faker->randomNumber(6),
             'bankBranchNumber' => (string) $this->faker->randomNumber(4),
-            'bankAccountType' => PixService::CR_BANK_ACCOUNT_CHECKING,
+            'bankAccountType' => BankAccountType::Checking->value,
             'key' => $this->faker->email(),
             'beneficiaryType' => PersonType::Person->value,
             'nationalRegistration' => $this->faker->cpf(false),

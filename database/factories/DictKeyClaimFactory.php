@@ -2,11 +2,8 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Caradhras\PersonType;
-use App\Enums\Caradhras\Pix\DictKeyType;
-use App\Models\Account;
-use App\Models\Company;
-use App\Models\Person;
+use Idez\Caradhras\Enums\PersonType;
+use Idez\Caradhras\Enums\Pix\DictKeyType;
 use Idez\Caradhras\Data\DictKeyClaim;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -47,21 +44,5 @@ class DictKeyClaimFactory extends Factory
             'claimDeadline' => now()->addWeeks(2)->toIso8601String(),
             'claimUUID' => $this->faker->uuid(),
         ];
-    }
-
-    public function keyClaimantAccount(Account $account): DictKeyClaimFactory
-    {
-        return $this->state([
-            'keyClaimant' => (object) [
-                'ispb' => $this->faker->randomNumber(8, true),
-                'idAccount' => $account->cr_account_id,
-                'beneficiaryType' => match ($account->holder_type) {
-                    Company::class => PersonType::Company->value,
-                    Person::class => PersonType::Person->value,
-                },
-                'nationalRegistration' => $account->document,
-                'bankAccountNumber' => $this->faker->regexify('\d{7}'),
-            ],
-        ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Caradhras\Pix\QrCodeTypes;
+use Idez\Caradhras\Enums\Pix\QrCodeTypes;
 use Idez\Caradhras\Data\PixDecodedDynamicImmediateQr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

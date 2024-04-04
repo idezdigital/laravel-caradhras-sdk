@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Caradhras\Cards\CardStatus;
+use Idez\Caradhras\Enums\Cards\CardStatus;
 use Idez\Caradhras\Data\Card;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

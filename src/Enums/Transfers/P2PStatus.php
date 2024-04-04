@@ -18,4 +18,5 @@ enum P2PStatus: string
     case Pending = 'PENDING';
     case PendingGlobalAvailability = 'PENDING_GLOBAL_AVAILABILITY';
     case DailyAmountExceeded = 'DAILY_AMOUNT_EXCEEDED';
+    case Denied = 'DENIED';
 }

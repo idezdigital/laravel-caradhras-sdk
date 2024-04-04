@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Data;
 
-use App\Enums\Pix\LocType;
+use Idez\Caradhras\Enums\Pix\LocType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
