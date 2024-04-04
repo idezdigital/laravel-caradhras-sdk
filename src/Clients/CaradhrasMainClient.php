@@ -84,6 +84,39 @@ class CaradhrasMainClient extends BaseApiClient
     }
 
     /**
+     * Get individual.
+     *
+     * @param  string  $registrationId
+     * @param  string  $document
+     * @return object
+     * @throws \App\Exceptions\CaradhrasException
+     */
+    public function findIndividual(string $registrationId, string $document): object
+    {
+        $response = $this
+            ->apiClient(throwsHttpError: false)
+            ->asJson()
+            ->get("/v2/individuals", ['document' => $document]);
+
+        if ($response->failed()) {
+            $message = $response->status() === 404 ? 'Failed to get individual.' : 'Individual not found.';
+            $statusCode = $response->status() === 404 ? 404 : 502;
+
+            throw new CaradhrasException($message, $statusCode);
+        }
+
+        $individual = collect(object_get($response->object(), 'items', []))
+            ->filter(fn ($individual) => $individual?->idRegistration === $registrationId)
+            ->first();
+
+        if (! isset($individual)) {
+            throw new CaradhrasException('Individual not found.', 404);
+        }
+
+        return $individual;
+    }
+
+    /**
      * Create phone recharge.
      *
      * @throws RequestException
