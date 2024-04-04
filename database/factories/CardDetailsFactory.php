@@ -2,7 +2,6 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Models\Card;
 use Carbon\Carbon;
 use Idez\Caradhras\Data\CardDetails;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -43,19 +42,5 @@ class CardDetailsFactory extends Factory
             'idProduto' => $this->faker->randomDigitNotNull(),
             'flagVirtual' => 1,
         ];
-    }
-
-    public function fromCard(Card $card)
-    {
-        $fullNumberCard = preg_replace('/\*{8}/', $this->faker->randomNumber(8, true), $card->number);
-
-        return $this->state([
-            'numeroCartao' => $fullNumberCard,
-            'idConta' => $card->account->cr_account_id,
-            'idCartao' => $card->cr_card_id,
-            'flagVirtual' => (int) $card->isVirtual(),
-            'nomePlastico' => $card->account->name,
-            'dataValidade' => Carbon::parse($card->expiration_date)->toIso8601String(),
-        ]);
     }
 }

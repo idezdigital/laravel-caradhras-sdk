@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Enums\Pix;
 
-use App\Contracts\Caradhras\CrType;
+use Idez\Caradhras\Contracts\CrType;
 
 enum DiscountType: string implements CrType
 {

@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Caradhras\PersonType;
-use App\Enums\Caradhras\Pix\DictKeyType;
+use Idez\Caradhras\Enums\PersonType;
+use Idez\Caradhras\Enums\Pix\DictKeyType;
 use Idez\Caradhras\Data\PixValidate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -2,8 +2,6 @@
 
 namespace Idez\Caradhras\Data;
 
-use App\Enums\Account\AccountStatus;
-
 /**
  * @property int $id
  * @property int $idPessoa
@@ -48,13 +46,6 @@ use App\Enums\Account\AccountStatus;
  */
 class Account extends Data
 {
-    public const STATUS_MAP = [
-        0 => AccountStatus::Active,
-        1 => AccountStatus::Blocked,
-        33 => AccountStatus::Blocked,
-        2 => AccountStatus::Canceled,
-    ];
-
     public const CR_WAITING_DOCUMENTS = 'WAITING_DOCUMENTS';
 
     public const CR_WAITING_ANALYSIS = 'WAITING_ANALYSIS';
@@ -66,13 +57,4 @@ class Account extends Data
     public const CR_DECLINED = 'DECLINED';
 
     public const CR_CANCELED = 'CANCELED';
-
-    public const STATUS = [
-        self::CR_WAITING_DOCUMENTS => AccountStatus::WaitingDocuments,
-        self::CR_WAITING_ANALYSIS => AccountStatus::UnderReview,
-        self::CR_WAITING_CORRECTIONS => AccountStatus::UnderReview,
-        self::CR_ACTIVE => AccountStatus::Active,
-        self::CR_DECLINED => AccountStatus::Denied,
-        self::CR_CANCELED => AccountStatus::Canceled,
-    ];
 }

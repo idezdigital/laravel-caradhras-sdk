@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Data;
 
-use App\Enums\Caradhras\Pix\DynamicQrTypes;
+use Idez\Caradhras\Enums\Pix\DynamicQrTypes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**

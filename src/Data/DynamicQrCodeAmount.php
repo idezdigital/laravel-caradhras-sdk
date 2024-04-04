@@ -2,10 +2,10 @@
 
 namespace Idez\Caradhras\Data;
 
-use App\Enums\Caradhras\Pix\DiscountType;
-use App\Enums\Caradhras\Pix\FineType;
-use App\Enums\Caradhras\Pix\InterestType;
-use App\Enums\Caradhras\Pix\RebateType;
+use Idez\Caradhras\Enums\Pix\DiscountType;
+use Idez\Caradhras\Enums\Pix\FineType;
+use Idez\Caradhras\Enums\Pix\InterestType;
+use Idez\Caradhras\Enums\Pix\RebateType;
 
 class DynamicQrCodeAmount
 {

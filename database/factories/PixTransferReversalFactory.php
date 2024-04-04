@@ -2,7 +2,6 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Models\PixTransfer;
 use Idez\Caradhras\Data\PixTransferReversal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,12 +26,5 @@ class PixTransferReversalFactory extends Factory
             'transactionCode' => $this->faker->uuid(),
             'transactionStatus' => 'PENDING',
         ];
-    }
-
-    public function forPixTransfer(PixTransfer $pixTransfer): PixTransferReversalFactory
-    {
-        return $this->state([
-            'idEndToEndOriginal' => $pixTransfer->e2e_id,
-        ]);
     }
 }
