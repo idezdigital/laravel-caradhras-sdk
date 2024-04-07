@@ -192,4 +192,15 @@ class CaradhrasMainClient extends BaseApiClient
             ->post("/enderecos?{$query}")
             ->object();
     }
+
+    /**
+     * Get pending account documents.
+     */
+    public function getPendingAccountDocuments(string $registrationId): object
+    {
+        $response = $this->apiClient()
+            ->get("/v2/individuals/{$registrationId}/documents/status");
+
+        return $response->object();
+    }
 }
