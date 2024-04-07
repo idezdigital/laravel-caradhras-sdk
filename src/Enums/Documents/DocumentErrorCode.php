@@ -11,4 +11,6 @@ enum DocumentErrorCode: int
     case InvalidHeadersDocument = 4001021;
     case InvalidFormat = 4001020;
     case UniquePartner = 4002023;
+    case FailedConvert = 4001016;
+    case FailSendBiometricValidation = 4001014;
 }
