@@ -80,7 +80,8 @@ class CaradhrasMainClient extends BaseApiClient
         return $this
             ->apiClient()
             ->asJson()
-            ->get("/v2/individuals/$personId", ['statusSPD' => 'true']);
+            ->get("/v2/individuals/$personId", ['statusSPD' => 'true'])
+            ->object();
     }
 
     /**
