@@ -2,12 +2,10 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Models\Account;
-use App\Models\BankSlip;
-use App\Models\Person;
 use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
 use Idez\Caradhras\Data\InvoicePaymentSlip;
 use Idez\Caradhras\Data\RechargePaymentSlipPayer;
+use Idez\Caradhras\Enums\PaymentSlip\PaymentSlipInvoiceType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvoicePaymentSlipFactory extends Factory
@@ -33,14 +31,14 @@ class InvoicePaymentSlipFactory extends Factory
         $idBankNumber = $this->faker->regexify('\d{10}');
 
         return [
-            'idAccount' => $account->cr_account_id,
+            'idAccount' => $this->faker->numberBetween(100, 9999),
             'covenantNumber' => $this->faker->regexify('\d{4}'),
             'issuerBankNumber' => $idBankNumber,
             'idBankNumber' => $idBankNumber,
             'uniqueId' => $this->faker->regexify('\d{25}'),
             'dateDocument' => today()->toDateString(),
             'paymentslip' => (object) [
-                'type' => $this->faker->randomElement(BankSlip::CR_INVOICE_TYPES_CODE),
+                'type' => $this->faker->randomElement(PaymentSlipInvoiceType::cases()),
                 'dueDate' => $this->faker->date(),
                 'amount' => $this->faker->randomFloat(2, 100, 1000),
             ],
@@ -74,25 +72,6 @@ class InvoicePaymentSlipFactory extends Factory
             'interest' => [],
             'discount' => [],
         ];
-    }
-
-    public function fromAccount(Account $account)
-    {
-        $documentType = $account->holder_type === Person::class ? 'F' : 'J';
-
-        return $this->state([
-            'idAccount' => $account->cr_account_id,
-            'payer' => new RechargePaymentSlipPayer([
-                'documentType' => $documentType,
-                'documentNumber' => $account->document,
-                'name' => $account->name,
-            ]),
-            'beneficiary' => [
-                'documentType' => $documentType,
-                'documentNumber' => $account->document,
-                'name' => $account->name,
-            ],
-        ]);
     }
 
     public function payer(string $name, string $document): InvoicePaymentSlipFactory

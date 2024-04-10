@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Enums\Pix\LocType;
+use Idez\Caradhras\Enums\Pix\LocType;
 use Idez\Caradhras\Data\QrCodeLoc;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

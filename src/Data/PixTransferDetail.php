@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Data;
 
-use App\Contracts\Caradhras\PixTransferCreditParty;
-use App\Contracts\Caradhras\PixTransferDebitParty;
+use Idez\Caradhras\Contracts\PixTransferCreditParty;
+use Idez\Caradhras\Contracts\PixTransferDebitParty;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**

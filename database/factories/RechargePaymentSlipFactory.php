@@ -2,11 +2,11 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Models\Account;
-use App\Models\BankSlip;
 use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
 use Idez\Caradhras\Data\RechargePaymentSlip;
 use Idez\Caradhras\Data\RechargePaymentSlipPayer;
+use Idez\Caradhras\Enums\PaymentSlip\PaymentSlipStatus;
+use Idez\Caradhras\Enums\PaymentSlip\PaymentSlipType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RechargePaymentSlipFactory extends Factory
@@ -25,14 +25,11 @@ class RechargePaymentSlipFactory extends Factory
      */
     public function definition()
     {
-        /** @var Account $account */
-        $account = Account::factory()->create();
-        $documentType = $account->holder_type === \App\Models\Person::class ? 'F' : 'J';
-
+        $documentType = $this->faker->randomElement(['F', 'J']);
         $idBankNumber = $this->faker->regexify('\d{10}');
 
         return [
-            'idAccount' => $account->cr_account_id,
+            'idAccount' => $this->faker->numberBetween(100, 9999),
             'covenantNumber' => $this->faker->regexify('\d{4}'),
             'issuerBankNumber' => $idBankNumber,
             'idBankNumber' => $idBankNumber,
@@ -42,13 +39,13 @@ class RechargePaymentSlipFactory extends Factory
             'dateDocument' => today()->toDateString(),
             'payer' => new RechargePaymentSlipPayer([
                 'documentType' => $documentType,
-                'documentNumber' => $account->document,
-                'name' => $account->name,
+                'documentNumber' => $documentType === 'F' ? $this->faker->cpf(false) : $this->faker->cnpj(false),
+                'name' => $this->faker->name,
             ]),
             'beneficiary' => [
                 'documentType' => $documentType,
-                'documentNumber' => $account->document,
-                'name' => $account->name,
+                'documentNumber' => $documentType === 'F' ? $this->faker->cpf(false) : $this->faker->cnpj(false),
+                'name' => $this->faker->name,
             ],
             'coBeneficiary' => [
                 'documentType' => 'J',
@@ -59,29 +56,10 @@ class RechargePaymentSlipFactory extends Factory
             'bankNumber' => CaradhrasPaymentSlipClient::DEFAULT_BANK_NUMBER,
             'instructions' => 'Não receber após vencimento',
             'acceptance' => 'N',
-            'status' => BankSlip::CR_STATUS_CODE_REGISTERED,
+            'status' => PaymentSlipStatus::Registered->value,
             'barCode' => $this->faker->regexify('\d{44}'),
             'barCodeNumber' => $this->faker->regexify('\d{47}'),
-            'type' => BankSlip::CR_TYPES_RECHARGE,
+            'type' => PaymentSlipType::Recharge->value,
         ];
-    }
-
-    public function fromAccount(Account $account)
-    {
-        $documentType = $account->holder_type === \App\Models\Person::class ? 'F' : 'J';
-
-        return $this->state([
-            'idAccount' => $account->cr_account_id,
-            'payer' => new RechargePaymentSlipPayer([
-                'documentType' => $documentType,
-                'documentNumber' => $account->document,
-                'name' => $account->name,
-            ]),
-            'beneficiary' => [
-                'documentType' => $documentType,
-                'documentNumber' => $account->document,
-                'name' => $account->name,
-            ],
-        ]);
     }
 }

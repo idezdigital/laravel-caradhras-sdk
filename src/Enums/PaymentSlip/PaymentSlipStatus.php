@@ -2,19 +2,19 @@
 
 namespace Idez\Caradhras\Enums\PaymentSlip;
 
-enum PaymentSlipStatus: string
+enum PaymentSlipStatus: int
 {
-    case Registered = 'registered';
-    case RegisteredAndConfirmed = 'registered_and_confirmed';
-    case NotIssued = 'not_issued';
-    case PaidAndConfirmed = 'paid_and_confirmed';
-    case CancelledAndConfirmed = 'cancelled_and_confirmed';
-    case CancelledAndNotConfirmed = 'cancelled_and_not_confirmed';
-    case ChangedAndConfirmed = 'changed_and_confirmed';
-    case ChangedAndNotConfirmed = 'changed_and_not_confirmed';
-    case InstructionsDeclined = 'instructions_declined';
-    case Contested = 'contestated';
-    case CancelledByContestation = 'cancelled_by_contestation';
-    case DeniedByAntiFraud = 'denied_by_anti_fraud';
-    case Other = 'other';
+    case Registered = 1;
+    case RegisteredAndConfirmed = 2;
+    case NotIssued = 3;
+    case PaidAndConfirmed = 4;
+    case CancelledAndConfirmed = 5;
+    case CancelledAndNotConfirmed = 6;
+    case ChangedAndConfirmed = 7; // todo: what do in this case?
+    case ChangedAndNotConfirmed = 8; // todo: what do in this case?
+    case Other = 9;
+    case InstructionsDeclined = 10;
+    case Contested = 11;
+    case CancelledByContestation = 12;
+    case DeniedByAntiFraud = 13; // todo: not sure
 }

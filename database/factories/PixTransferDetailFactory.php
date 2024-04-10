@@ -2,10 +2,10 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use App\Models\Account;
-use App\Models\PixTransfer;
-use App\Services\PixService;
 use Idez\Caradhras\Data\PixTransferDetail;
+use Idez\Caradhras\Enums\BankAccount\BankAccountType;
+use Idez\Caradhras\Enums\Pix\PixTransferStatus;
+use Idez\Caradhras\Enums\Pix\PixTransferType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PixTransferDetailFactory extends Factory
@@ -31,8 +31,8 @@ class PixTransferDetailFactory extends Factory
             'idEndToEnd' => 'E0874481'.$this->faker->regexify('/[A-Z0-9]{24}/'),
             'transactionDate' => now()->toDateTimeString(),
             'transactionType' => 'TRANSFER_CREDIT',
-            'transactionStatus' => $this->faker->randomElement(\App\Models\Caradhras\PixTransfer::STATUS),
-            'transferType' => $this->faker->randomElement(\App\Models\Caradhras\PixTransfer::TYPES),
+            'transactionStatus' => $this->faker->randomElement(PixTransferStatus::cases())->value,
+            'transferType' => $this->faker->randomElement(PixTransferType::cases())->value,
             'errorType' => null,
             'debitParty' => (object) [
                 'ispb' => $this->faker->randomNumber(8, true),
@@ -40,7 +40,7 @@ class PixTransferDetailFactory extends Factory
                 'nationalRegistration' => $this->faker->cpf(),
                 'name' => $this->faker->name(),
                 'bankBranchNumber' => $this->faker->regexify('\d{4}'),
-                'bankAccountType' => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
+                'bankAccountType' => $this->faker->randomElement(BankAccountType::cases())->value,
                 'bankAccountNumber' => $this->faker->regexify('\d{4}'),
             ],
             'creditParty' => (object) [
@@ -49,7 +49,7 @@ class PixTransferDetailFactory extends Factory
                 'nationalRegistration' => $this->faker->cpf(),
                 'name' => $this->faker->name(),
                 'bankBranchNumber' => $this->faker->regexify('\d{4}'),
-                'bankAccountType' => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
+                'bankAccountType' => $this->faker->randomElement(BankAccountType::cases())->value,
                 'bankAccountNumber' => $this->faker->regexify('\d{4}'),
                 'key' => '03266716450',
             ],
@@ -61,25 +61,5 @@ class PixTransferDetailFactory extends Factory
             'idTx' => null,
             'payerAnswer' => $this->faker->sentence(3),
         ];
-    }
-
-    public function creditAccount(Account $account): PixTransferDetailFactory
-    {
-        return $this->state(fn () => [
-            'idAccount' => $account->cr_account_id,
-            'debitParty' => (object) [
-                'ispb' => $this->faker->randomNumber(8, true),
-                'bankName' => $this->faker->company(),
-                'nationalRegistration' => $account->document,
-                'name' => $account->name,
-                'bankBranchNumber' => $this->faker->regexify('\d{4}'),
-                'bankAccountType' => $this->faker->randomElement(PixService::CR_BANK_ACCOUNT_TYPES),
-                'bankAccountNumber' => $this->faker->regexify('\d{4}'),
-            ],
-        ]);
-    }
-
-    public function forLocalPixTransfer(PixTransfer $pixTransfer)
-    {
     }
 }
