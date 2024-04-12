@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Caradhras\Registrations;
+namespace Idez\Caradhras\Database\Factories\Registrations;
 
 use Idez\Caradhras\Data\Registrations\PersonRegistration;
 use Idez\Caradhras\Data\Registrations\PersonRegistrationAddress;
