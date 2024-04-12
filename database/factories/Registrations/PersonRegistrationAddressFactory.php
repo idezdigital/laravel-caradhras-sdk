@@ -2,7 +2,7 @@
 
 namespace Idez\Caradhras\Database\Factories\Registrations;
 
-use Idez\Caradhras\Data\Card;
+use Idez\Caradhras\Data\Registrations\PersonRegistrationAddress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PersonRegistrationAddressFactory extends Factory
@@ -12,7 +12,7 @@ class PersonRegistrationAddressFactory extends Factory
      *
      * @var string
      */
-    protected $model = Card::class;
+    protected $model = PersonRegistrationAddress::class;
 
     public function definition()
     {
