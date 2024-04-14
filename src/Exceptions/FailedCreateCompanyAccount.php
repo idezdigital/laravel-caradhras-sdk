@@ -124,11 +124,6 @@ class FailedCreateCompanyAccount extends CaradhrasException
         return $validationErrors;
     }
 
-    /**
-     * Get error translation
-     *
-     * @var string
-     */
     private function getErrorTranslation(string $errorMessage): string
     {
         $originalErrorSanitized = str_replace('.', '', strtolower($errorMessage));

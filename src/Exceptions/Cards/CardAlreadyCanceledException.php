@@ -3,6 +3,7 @@
 namespace Idez\Caradhras\Exceptions\Cards;
 
 use Idez\Caradhras\Exceptions\CaradhrasException;
+use Sentry\Severity;
 
 class CardAlreadyCanceledException extends CaradhrasException
 {
