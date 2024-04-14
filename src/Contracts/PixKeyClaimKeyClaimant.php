@@ -10,8 +10,6 @@ namespace Idez\Caradhras\Contracts;
  * @property string $beneficiaryType
  * @property string $nationalRegistration
  * @property string $bankAccountNumber
- *
- * @package Idez\Caradhras\Contracts
  */
 interface PixKeyClaimKeyClaimant
 {

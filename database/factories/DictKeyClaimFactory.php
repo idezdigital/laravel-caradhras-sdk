@@ -2,9 +2,9 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
+use Idez\Caradhras\Data\DictKeyClaim;
 use Idez\Caradhras\Enums\PersonType;
 use Idez\Caradhras\Enums\Pix\DictKeyType;
-use Idez\Caradhras\Data\DictKeyClaim;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DictKeyClaimFactory extends Factory

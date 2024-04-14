@@ -2,9 +2,9 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
+use Idez\Caradhras\Data\PixValidate;
 use Idez\Caradhras\Enums\PersonType;
 use Idez\Caradhras\Enums\Pix\DictKeyType;
-use Idez\Caradhras\Data\PixValidate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PixValidateFactory extends Factory

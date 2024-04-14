@@ -2,10 +2,10 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use Idez\Caradhras\Enums\BankAccount\BankAccountType;
-use Idez\Caradhras\Enums\Pix\PixTransferType;
-use Idez\Caradhras\Enums\PersonType;
 use Idez\Caradhras\Data\PixDecodedStaticQr;
+use Idez\Caradhras\Enums\BankAccount\BankAccountType;
+use Idez\Caradhras\Enums\PersonType;
+use Idez\Caradhras\Enums\Pix\PixTransferType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PixDecodedStaticQrFactory extends Factory
@@ -29,7 +29,7 @@ class PixDecodedStaticQrFactory extends Factory
             'BCO SANTANDER (BRASIL) S.A.',
             'NU PAGAMENTOS S.A.',
             'Banco Inter S.A.',
-            'CAIXA ECONOMICA FEDERAL'
+            'CAIXA ECONOMICA FEDERAL',
         ]);
 
         return [

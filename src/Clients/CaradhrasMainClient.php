@@ -8,6 +8,7 @@ use Idez\Caradhras\Enums\AddressType;
 use Idez\Caradhras\Exceptions\CaradhrasException;
 use Idez\Caradhras\Exceptions\PhoneRechargeConfirmationFailedException;
 use Illuminate\Http\Client\RequestException;
+use Throwable;
 
 class CaradhrasMainClient extends BaseApiClient
 {
@@ -87,9 +88,6 @@ class CaradhrasMainClient extends BaseApiClient
     /**
      * Get individual.
      *
-     * @param  string  $registrationId
-     * @param  string  $document
-     * @return object
      * @throws \App\Exceptions\CaradhrasException
      */
     public function findIndividual(string $registrationId, string $document): object
@@ -97,7 +95,7 @@ class CaradhrasMainClient extends BaseApiClient
         $response = $this
             ->apiClient(throwsHttpError: false)
             ->asJson()
-            ->get("/v2/individuals", ['document' => $document]);
+            ->get('/v2/individuals', ['document' => $document]);
 
         if ($response->failed()) {
             $message = $response->status() === 404 ? 'Failed to get individual.' : 'Individual not found.';
@@ -256,5 +254,82 @@ class CaradhrasMainClient extends BaseApiClient
             ->get("/docspy/v1/documents/download/{$documentId}");
 
         return $response->header('Location');
+    }
+
+    public function listAddresses(array $filters): ?object
+    {
+        return $this->apiClient()
+            ->get('/enderecos', $filters)
+            ->throw()
+            ->object();
+    }
+
+    /**
+     * Update address.
+     *
+     * @throws \App\Exceptions\CaradhrasException
+     */
+    public function updateAddress(array $addressData): object
+    {
+        try {
+            $queryString = http_build_query($addressData);
+            $request = $this->apiClient()->put("/enderecos?{$queryString}")->throw();
+        } catch (Throwable $exception) {
+            $errorKey = 'caradhras.update_address_failed';
+
+            throw new CaradhrasException(trans("errors.services.{$errorKey}"), 502, $errorKey);
+        }
+
+        return $request->object();
+    }
+
+    /**
+     * Create account with existing data.
+     */
+    public function createAccount(
+        int $idPessoa, int $idEnderecoCorrespondencia, int $idOrigemComercial, int $idProduto, int $diaVencimento, float $valorRenda, int $valorPontuacao = 0
+    ): object {
+        $response = $this
+            ->apiClient()
+            ->post('/contas', [
+                'idPessoa' => $idPessoa,
+                'idEnderecoCorrespondencia' => $idEnderecoCorrespondencia,
+                'idOrigemComercial' => $idOrigemComercial,
+                'idProduto' => $idProduto,
+                'diaVencimento' => $diaVencimento,
+                'valorRenda' => $valorRenda,
+                'valorPontuacao' => $valorPontuacao,
+            ]);
+
+        return $response->object();
+    }
+
+    /**
+     * Get accounts.
+     *
+     * @throws RequestException
+     */
+    public function listAccounts(array $search = []): object
+    {
+        return $this->apiClient()->get('/contas', $search)->throw()->object();
+    }
+
+    /**
+     * Link account additional.
+     */
+    public function linkAccountAdditional(
+        int $accountId,
+        int $individualId,
+        string $name,
+        ?string $email = null
+    ): object {
+        $response = $this->apiClient()
+            ->post("/contas/$accountId/adicionais", [
+                'idPessoa' => $individualId,
+                'nomeImpresso' => $name,
+                'email' => $email,
+            ]);
+
+        return $response->object();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use Idez\Caradhras\Enums\Pix\LocType;
 use Idez\Caradhras\Data\QrCodeLoc;
+use Idez\Caradhras\Enums\Pix\LocType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class QrCodeLocFactory extends Factory

@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Database\Factories;
 
-use Idez\Caradhras\Enums\Pix\QrCodeTypes;
 use Idez\Caradhras\Data\PixDecodedDynamicImmediateQr;
+use Idez\Caradhras\Enums\Pix\QrCodeTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PixDecodedDynamicImmediateQrFactory extends Factory
