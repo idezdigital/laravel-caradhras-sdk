@@ -2,6 +2,7 @@
 
 namespace Idez\Caradhras\Clients;
 
+use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Data\P2PTransferPayload;
 use Idez\Caradhras\Enums\AccountStatusCode;
 use Idez\Caradhras\Enums\AddressType;
@@ -331,5 +332,15 @@ class CaradhrasMainClient extends BaseApiClient
             ]);
 
         return $response->object();
+    }
+
+    public function listTransactions(int $accountId, array $query = []): TransactionCollection
+    {
+        $response = $this
+            ->apiClient()
+            ->retry(3, 500)
+            ->get("/accounts/{$accountId}/transactions", $query);
+
+        return new TransactionCollection($response->json());
     }
 }
