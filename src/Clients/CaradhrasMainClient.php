@@ -2,8 +2,8 @@
 
 namespace Idez\Caradhras\Clients;
 
-use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Data\P2PTransferPayload;
+use Idez\Caradhras\Data\TransactionCollection;
 use Idez\Caradhras\Enums\AccountStatusCode;
 use Idez\Caradhras\Enums\AddressType;
 use Idez\Caradhras\Exceptions\CaradhrasException;
