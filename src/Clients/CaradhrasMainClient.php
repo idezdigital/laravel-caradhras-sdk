@@ -343,4 +343,9 @@ class CaradhrasMainClient extends BaseApiClient
 
         return new TransactionCollection($response->json());
     }
+
+    public function getBalance(int $accountId)
+    {
+        return $this->getAccount($accountId)->saldoDisponivelGlobal;
+    }
 }
