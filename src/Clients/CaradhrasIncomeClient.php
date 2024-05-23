@@ -24,4 +24,12 @@ class CaradhrasIncomeClient extends BaseApiClient
                 ]
             );
     }
+
+    public function listAccountRemunerations($crAccountId, array $filters = [])
+    {
+        return $this->apiClient()->get(
+            url: '/v1/accounts/'.$crAccountId.'/remunerations',
+            query: $filters
+        );
+    }
 }
