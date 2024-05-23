@@ -354,4 +354,14 @@ class CaradhrasMainClient extends BaseApiClient
             'idProduto' => $productId,
         ])->json('content');
     }
+
+    public function listProducts()
+    {
+        return $this->apiClient()->get('/origens-comerciais')->object()->content;
+    }
+
+    public function listBusinessSources()
+    {
+        return $this->apiClient()->get('/origens-comerciais')->object()->content;
+    }
 }
