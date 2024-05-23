@@ -348,4 +348,10 @@ class CaradhrasMainClient extends BaseApiClient
     {
         return $this->getAccount($accountId)->saldoDisponivelGlobal;
     }
+
+    public function getProductFees(int $productId){
+        return $this->apiClient()->get('/produtos/configuracoes/acumuladores', [
+            'idProduto' => $productId,
+        ])->json('content');
+    }
 }
