@@ -364,7 +364,7 @@ class CaradhrasMainClient extends BaseApiClient
 
     public function listProducts()
     {
-        return $this->apiClient()->get('/origens-comerciais')->object()->content;
+        return $this->apiClient()->get('/produtos')->object()->content;
     }
 
     public function listBusinessSources()
