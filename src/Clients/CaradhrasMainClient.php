@@ -288,7 +288,13 @@ class CaradhrasMainClient extends BaseApiClient
      * Create account with existing data.
      */
     public function createAccount(
-        int $idPessoa, int $idEnderecoCorrespondencia, int $idOrigemComercial, int $idProduto, int $diaVencimento, float $valorRenda, int $valorPontuacao = 0
+        int $idPessoa,
+        int $idEnderecoCorrespondencia,
+        int $idOrigemComercial,
+        int $idProduto,
+        int $diaVencimento,
+        float $valorRenda,
+        int $valorPontuacao = 0
     ): object {
         $response = $this
             ->apiClient()
@@ -349,7 +355,8 @@ class CaradhrasMainClient extends BaseApiClient
         return $this->getAccount($accountId)->saldoDisponivelGlobal;
     }
 
-    public function getProductFees(int $productId){
+    public function getProductFees(int $productId)
+    {
         return $this->apiClient()->get('/produtos/configuracoes/acumuladores', [
             'idProduto' => $productId,
         ])->json('content');
@@ -357,7 +364,7 @@ class CaradhrasMainClient extends BaseApiClient
 
     public function listProducts()
     {
-        return $this->apiClient()->get('/origens-comerciais')->object()->content;
+        return $this->apiClient()->get('/produtos')->object()->content;
     }
 
     public function listBusinessSources()
