@@ -13,4 +13,5 @@ enum DocumentErrorCode: int
     case UniquePartner = 4002023;
     case FailedConvert = 4001016;
     case FailSendBiometricValidation = 4001014;
+    case OffCenterFace = 511;
 }
