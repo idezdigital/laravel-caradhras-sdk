@@ -12,6 +12,7 @@ use Idez\Caradhras\Exceptions\Documents\InconsistentSelfieException;
 use Idez\Caradhras\Exceptions\Documents\InvalidDocumentException;
 use Idez\Caradhras\Exceptions\Documents\InvalidSelfieException;
 use Idez\Caradhras\Exceptions\Documents\LowQualitySelfieException;
+use Idez\Caradhras\Exceptions\Documents\OffCenterFaceException;
 use Idez\Caradhras\Exceptions\Documents\SendDocumentException;
 use Idez\Caradhras\Exceptions\Documents\UniquePartnerException;
 use Idez\Caradhras\Exceptions\FailedCreateCompanyAccount;
@@ -212,6 +213,7 @@ class CaradhrasCompanyClient extends BaseApiClient
                     DocumentSelfieReasonCode::Inconsistent => new InconsistentSelfieException(),
                     default => new InvalidSelfieException()
                 },
+                DocumentErrorCode::OffCenterFace => new OffCenterFaceException(),
                 default => new InvalidDocumentException(),
             };
         }
