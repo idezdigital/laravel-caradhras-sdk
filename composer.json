@@ -20,7 +20,7 @@
         "php": "^8.1|^8.2|^8.3",
         "geekcom/validator-docs": "^3.7",
         "guzzlehttp/guzzle": "^7.4",
-        "illuminate/contracts": "^v11.3.1",
+        "illuminate/contracts": "^v10.0 || ^v11.3.1",
         "sentry/sentry-laravel": "^4.4.1",
         "spatie/laravel-package-tools": "^1.16.2"
     },
