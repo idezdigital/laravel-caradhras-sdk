@@ -409,7 +409,7 @@ class CaradhrasCardClient extends BaseApiClient
 
         return array_map(
             fn ($cardMccGroupControl) => new CardMccGroupControl($cardMccGroupControl),
-            (array) $response->object()
+            $response->json()
         );
     }
 
