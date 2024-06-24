@@ -427,6 +427,18 @@ class CaradhrasCardClient extends BaseApiClient
         return $response->successful();
     }
 
+    public function getCardMccGroups(int $cardId)
+    {
+        $response = $this->apiClient()->get('/cartoes/controles-grupomcc', [
+            'idCartao' => $cardId,
+        ]);
+
+        return array_map(
+            fn ($cardMccGroupControl) => new CardMccGroupControl($cardMccGroupControl),
+            $response->json('content')
+        );
+    }
+
     public function updateHolderName(int $accountId, int $personId, string $name)
     {
         $response = $this->apiClient()
