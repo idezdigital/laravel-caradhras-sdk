@@ -4,7 +4,6 @@ namespace Idez\Caradhras\Tests\Unit\Clients;
 
 use Idez\Caradhras\Clients\CaradhrasCardClient;
 use Idez\Caradhras\Data\CardMccGroupControl;
-use Idez\Caradhras\Data\LimitCollection;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Http;
