@@ -1,3 +1,0 @@
-<?php
-
-echo json_decode('{ "number": 0, "size": 50, "totalPages": 1, "numberOfElements": 2, "totalElements": 2, "firstPage": false, "hasPreviousPage": false, "hasNextPage": false, "hasContent": true, "first": true, "last": true, "nextPage": 0, "previousPage": 0, "content": [ { "id": 92, "idCartao": 311411, "grupoMCC": { "id": 19, "descricao": "Food/Drink", "descricaoExtrato": "Supermercados / Mercearia / Padarias / Lojas de Conveniência", "duracao": 7, "percentualMin": 10.00, "percentualMax": 10.00, "intervaloMatch": 5 } }, { "id": 93, "idCartao": 311411, "grupoMCC": { "id": 14, "descricao": "Eating/Drinking", "descricaoExtrato": "Restaurante / Lanchonete / Bar", "duracao": 7, "percentualMin": 10.00, "percentualMax": 10.00, "intervaloMatch': 5 } } ] }", true);
