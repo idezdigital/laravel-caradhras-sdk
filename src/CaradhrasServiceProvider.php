@@ -17,6 +17,7 @@ use Idez\Caradhras\Clients\CaradhrasPaymentClient;
 use Idez\Caradhras\Clients\CaradhrasPaymentSlipClient;
 use Idez\Caradhras\Clients\CaradhrasPrecautionaryBlockClient;
 use Idez\Caradhras\Clients\CaradhrasRegDocsClient;
+use Idez\Caradhras\Clients\CaradhrasRemunerationsClient;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -32,6 +33,7 @@ class CaradhrasServiceProvider extends PackageServiceProvider
         CaradhrasRegDocsClient::class,
         CaradhrasCompanyClient::class,
         CaradhrasIncomeReportsClient::class,
+        CaradhrasRemunerationsClient::class,
         CaradhrasLimitsClient::class,
         CaradhrasDataApiClient::class,
         CaradhrasCardClient::class,
