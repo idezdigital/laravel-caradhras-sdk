@@ -6,7 +6,6 @@ use Idez\Caradhras\Clients\CaradhrasRemunerationsClient;
 use Idez\Caradhras\Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Client\Request;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class CaradhrasRemunerationsClientTest extends TestCase
@@ -65,8 +64,8 @@ class CaradhrasRemunerationsClientTest extends TestCase
                 && $request->method() === 'GET'
         );
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertEquals($expectedResponse, $response->json());
+        $this->assertIsArray($response);
+        $this->assertEquals($expectedResponse, $response);
     }
 
     public function testCanListAccountRemunerationsWithCustomFilters(): void
@@ -116,7 +115,7 @@ class CaradhrasRemunerationsClientTest extends TestCase
                 && $request->method() === 'GET'
         );
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertEquals($expectedResponse, $response->json());
+        $this->assertIsArray($response);
+        $this->assertEquals($expectedResponse, $response);
     }
 }
